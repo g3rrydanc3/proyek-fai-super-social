@@ -1,3 +1,11 @@
+@font-face {
+	 font-family: 'MikadoBlack';
+    src: url('../fonts/MikadoBlack.otf');
+}
+
+.navbar-header, .navbar-brand{
+	font-family: MikadoBlack;
+}
 /* The Modal (background) */
 .modal {
 	background-color: rgb(0,0,0); /* Fallback color */

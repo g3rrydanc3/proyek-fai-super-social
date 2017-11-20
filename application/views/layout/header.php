@@ -10,13 +10,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/fileinput.min.css">
-	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/font-awesome.min.css" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap-footer.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/metisMenu.min.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/morris.css">
+	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/sb-admin-2.min.css">
 	<link rel="stylesheet" href="<?php echo base_url('asset/css/style.css');?>">
 
 	<script type="text/javascript" src="<?php echo base_url('asset/js/jquery-3.2.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>asset/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>asset/js/fileinput.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>asset/js/metisMenu.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>asset/js/morris.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>asset/js/raphael.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>asset/js/sb-admin-2.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url('asset/js/script.js');?>"></script>
 
 </head>
@@ -41,6 +48,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Super Social</a>
+			</div>
 			<?php if ($this->session->_userskrng && $this->session->_userskrng != null): ?>
 				<ul class="nav navbar-nav">
 					<li class="<?php if($this->uri->segment(2)=="newsfeed"){echo 'active';}?>"><a href="<?php echo site_url("cont/newsfeed");?>">News Feed</a></li>
