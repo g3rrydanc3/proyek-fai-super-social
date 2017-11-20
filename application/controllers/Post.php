@@ -54,8 +54,10 @@ class Post extends MY_Controller {
 		}
 		redirect($this->referrer);
 	}
-	public function delpost(){
-		$posts_id = $this->input->post('posts_id');
+	public function delpost($posts_id = null){
+		if ($posts_id == null) {
+			$posts_id = $this->input->post('posts_id');
+		}
 		$this->mydb->delete_posts($posts_id);
 		redirect($this->referrer);
 	}
@@ -84,9 +86,10 @@ class Post extends MY_Controller {
 		}
 		redirect($this->referrer);
 	}
-	public function delcomment(){
-		$friend_id = $this->input->post('friend_id');
-		$comments_id = $this->input->post('comments_id');
+	public function delcomment($comments_id = null){
+		if ($comments_id == null) {
+			$comments_id = $this->input->post('comments_id');
+		}
 		$this->mydb->delete_comments($comments_id);
 		redirect($this->referrer);
 	}

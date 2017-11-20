@@ -90,16 +90,8 @@ $this->load->view('layout/header.php');
 			</div>
 		</div>
 
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h2>My Post</h2>
-			</div>
-			<div class="panel-body">
-				<?php $this->load->view("layout/post");?>
-			</div>
-		</div>
-	</div>
-</div>
+		<h2>My Post</h2>
+		<?php $this->load->view("layout/post");?>
 
 <script>
 $("#post-foto").fileinput({showCaption: false,

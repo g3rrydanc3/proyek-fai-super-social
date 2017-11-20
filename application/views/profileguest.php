@@ -74,19 +74,12 @@ if (!in_array_r($friend_id, $friends)) {
 		</div>
 		<?php if ($bolehlihat): ?>
 			<div class="col-sm-8">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h2><?php echo $namadepan.' '. $namabelakang;?>'s Post</h2>
-					</div>
-					<div class="panel-body">
-						<?php $this->load->view('layout/post.php');?>
-					</div>
-				</div>
+				<h2><?php echo $namadepan.' '. $namabelakang;?>'s Post</h2>
+				<?php $this->load->view('layout/post.php');?>
 			</div>
-		</div>
-<?php else: ?>
-	<h2>Profile ini private</h2>
-	Berteman untuk melihat profile
-<?php endif; ?>
+		<?php else: ?>
+			<h2>Profile ini private</h2>
+			Berteman untuk melihat profile
+		<?php endif; ?>
 
 <?php $this->load->view('layout/footer.php');

@@ -1,8 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
+
+
+
 <?php if (count($posts) > 0): ?>
-<table border='1' class='table table-bordered table-striped'>
+
+
+
 	<?php for ($i = 0; $i<count($posts); $i++) : ?>
 		<!--MODAL-->
 		<div id="myModal<?php echo $i;?>" class="modal">
@@ -28,104 +34,156 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 		<!--END OF MODAL-->
-		<tr>
-			<td class="td-fit">
-				<b><?php echo $posts[$i]["namadepan"]." ".$posts[$i]["namabelakang"];?>  <?php if ($verified) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b><br>
-				<small><?php echo $posts[$i]['datetime']?></small>
-				<br>
-				<a href='#' onclick='showModal(<?php echo $i;?>)'>
-					<?php echo $posts[$i]['likes'];?> Like
-				</a>
-				<br>
-				<?php echo form_open('post/like');?>
-				<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
-				<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
-				<?php if (!in_array_r($this->session->_userskrng, $likes[$i])) :?>
-					<button type="submit" name="like" value="Like" class="btn-like">Like <span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span></button>
-				<?php else: ?>
-					<button type="submit" name="like" value="Unlike" class="btn-unlike">Unlike <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span></button>
-				<?php endif; ?>
-				<?php echo form_close();?>
-			</td>
-			<td>
-				<p><?php echo $posts[$i]['isi'];?></p>
-				<?php if ($posts[$i]["img"] != null): ?>
-					<img src="<?php echo base_url("uploads/").$posts[$i]["img"];?>" class="img-responsive img-zoom">
-				<?php endif; ?>
-			</td>
-			<td class="td-fit">
-					<?php if ($posts[$i]["user_id"] == $this->session->_userskrng): ?>
-							<?php echo form_open("post/delpost", 'onsubmit="return confirm(\'Do you really want to delete post?\');"');?>
-							<?php echo form_hidden("posts_id", $posts[$i]['id']);?>
-							<button type="submit" class="btn-delpost" name="delpost" value="X" data-toggle="modal" data-target="#confirm-submit"><i class="fa fa-times" aria-hidden="true"></i></button>
-							<?php echo form_close();?>
-					<?php endif; ?>
-					<?php
-						$date1=date_create($posts[$i]['datetime']);
-						$date2=date_create(date("Y-m-d H:i:s", time() - 119));
-						$diff=date_diff($date1,$date2);
-						$minute = $diff->format("%i") * 60;
-						$second = $minute + $diff->format("%s");
-					?>
-					<?php if ($posts[$i]['timed'] == "1"): ?>
-						Countdown :<div id='countdown<?php echo $i;?>'></div>
-						<script>new Countdown(<?php echo $second;?>, 'countdown<?php echo $i;?>').start();</script>
-					<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td colspan = 3>
-				<center><?php echo $totalcommentsperpost[$i];?> Comments</center>
-				<table border='1' class='table table-bordered'>
-					<?php foreach ($comments[$i] as $key1 => $value1):?>
-						<tr>
-							<td class="td-fit">
-								<p><b><?php echo $value1['namadepan'] ." ". $value1['namabelakang'];?>  <?php if ($value1['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b></p>
-								<p><small><?php echo $value1['datetime'];?></small></p>
-							</td>
-							<td>
-								<p><?php echo $value1['isi'];?></p>
-								<?php if ($value1["img"] != null): ?>
-									<img src="<?php echo base_url("uploads/").$value1["img"];?>" class="img-responsive img-zoom">
-								<?php endif; ?>
-							</td>
-							<td class="td-fit">
-								<?php if ($this->session->_userskrng == $value1['user_id']):?>
-									<?php echo form_open("post/delcomment", 'onsubmit="return confirm(\'Do you really want to delete comment?\');"');?>
-									<?php echo form_hidden("comments_id", $value1['id']);?>
-									<button type="submit" class="btn-delpost" name="delcomment" value="X"><i class="fa fa-times" aria-hidden="true"></i></button>
-									<?php echo form_close();?>
-								<?php endif;?>
-							</td>
-						</tr>
-					<?php endforeach;?>
-						<td><b><?php echo $this->session->name;?> <?php if ($verified) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b></td>
-						<td colspan = 2>
-							<?php echo form_open_multipart("post/addcomment");?>
-							<?php echo form_hidden("posts_id", $posts[$i]['id']);?>
-							<div class="divupload-foto form-group">
-								<input class="upload-foto" name="upload-foto" type="file">
-							</div>
-							<div class="row">
-								<div class="col-xs-9">
-									<?php echo form_input("comment", "", "class='form-control'");?>
+
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<section class="post-heading">
+					<div class="row">
+						<div class="col-xs-11">
+							<div class="media">
+								<div class="media-left">
+									<a href="#">
+										<img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" width="40" height="40" alt="...">
+									</a>
 								</div>
-								<div class="col-xs-3">
-									<div class="btn-group">
-										<button type="submit" class="btn btn-primary" name="addcomment" value="Add Comment">Add Comment</button>
-										<button type="button" class="btn btn-default btn-upload"><i class="fa fa-paperclip" aria-hidden="true"></i></button>
+								<div class="media-body">
+									<a href="#" class="anchor-username">
+										<h4 class="media-heading">
+											<?php echo $posts[$i]["namadepan"]." ".$posts[$i]["namabelakang"];?>  <?php if ($verified) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b>
+										</h4>
+									</a>
+									<span class="anchor-time">
+										<?php echo $posts[$i]['datetime']?>
+										<?php
+											$date1=date_create($posts[$i]['datetime']);
+											$date2=date_create(date("Y-m-d H:i:s", time() - 119));
+											$diff=date_diff($date1,$date2);
+											$minute = $diff->format("%i") * 60;
+											$second = $minute + $diff->format("%s");
+										?>
+										<?php if ($posts[$i]['timed'] == "1"): ?>
+											Countdown :<div id='countdown<?php echo $i;?>'></div>
+											<script>new Countdown(<?php echo $second;?>, 'countdown<?php echo $i;?>').start();</script>
+										<?php endif; ?>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-1 dropdown">
+							<button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+								<i class="glyphicon glyphicon-chevron-down"></i>
+							</button>
+							<ul class="dropdown-menu">
+								<?php if ($posts[$i]["user_id"] == $this->session->_userskrng): ?>
+									<li><a href="<?php echo site_url("post/delpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to delete post?\');">Delete Post</a></li>
+								<?php endif; ?>
+								<?php if ($posts[$i]["user_id"] != $this->session->_userskrng): ?>
+									<li><a href="<?php echo site_url("post/reportpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to report post?\');">Report Post</a></li>
+								<?php endif; ?>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section class="post-body">
+					<?php if ($posts[$i]["img"] != null): ?>
+						<img src="<?php echo base_url("uploads/").$posts[$i]["img"];?>" class="img-responsive img-zoom">
+					<?php endif; ?>
+					<p><?php echo $posts[$i]['isi'];?></p>
+				</section>
+				<hr class="hr-slim">
+				<section class="post-footer">
+					<div class="row">
+						<div class="col-xs-8">
+							<div class="post-footer-option">
+								<ul class="list-unstyled">
+									<?php echo form_open('post/like');?>
+										<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
+										<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
+										<?php if (!in_array_r($this->session->_userskrng, $likes[$i])) :?>
+											<li><button type="submit" name="like" value="Like" class="btn-like"><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span> Like</button></li>
+										<?php else: ?>
+											<li><button type="submit" name="like" value="Unlike" class="btn-unlike"><span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> Unlike</button></li>
+										<?php endif; ?>
+									<?php echo form_close();?>
+									<!--<li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>-->
+									<?php echo form_open('post/sharepost');?>
+										<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
+										<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
+										<li><button type="submit" class="btn-like"><i class="glyphicon glyphicon-share-alt"></i> Share</button></li>
+									<?php echo form_close();?>
+								</ul>
+							</div>
+						</div>
+						<div class="col-xs-4 text-right">
+							<a class="no-jump" href='#' onclick='showModal(<?php echo $i;?>)'>
+								<?php echo $posts[$i]['likes'];?> Like
+							</a>
+							&nbsp;<?php echo $totalcommentsperpost[$i];?> Comments
+						</div>
+					</div>
+					<div class="post-footer-comment-wrapper">
+						<div class="comment">
+							<div class="media">
+								<div class="media-left">
+									<a href="#">
+										<img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" width="32" height="32" alt="...">
+									</a>
+								</div>
+								<div class="media-body">
+									<?php echo form_open_multipart("post/addcomment");?>
+									<?php echo form_hidden("posts_id", $posts[$i]['id']);?>
+									<div class="divupload-foto">
+										<input class="upload-foto" name="upload-foto" type="file">
+									</div>
+									<div class="input-group" class="form-group">
+										<input type="text" name="comment" class="form-control" placeholder="Type your message here..." />
+										<span class="input-group-btn">
+											<button class="btn btn-primary" type="submit" name="addcomment" value="1" id="btn-chat">Send</button>
+											<button class="btn btn-default btn-upload" type="button" class="btn-upload">
+												<i class="fa fa-paperclip" aria-hidden="true"></i>
+											</button>
+										</span>
+									</div>
+									<?php echo form_close();?>
+								</div>
+							</div>
+							<?php foreach ($comments[$i] as $key1 => $value1):?>
+								<div class="media">
+									<div class="media-left">
+										<a href="<?php echo site_url("cont/user/").$value1['user_id']?>">
+											<img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" width="32" height="32" alt="...">
+										</a>
+									</div>
+									<div class="media-body">
+										<div class="row">
+											<div class="col-xs-11">
+												<a href="<?php echo site_url("cont/user/").$value1['user_id']?>" class="anchor-username"><h5 class="media-heading"><b><?php echo $value1['namadepan'] ." ". $value1['namabelakang'];?>  <?php if ($value1['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b></h5></a>
+											</div>
+											<div class="col-xs-1">
+												<a href="<?php echo site_url("post/delcomment/").$value1['id']?>" onclick="return confirm(\'Do you really want to delete comment?\');"><i class="fa fa-times" aria-hidden="true"></i></a>
+											</div>
+										</div>
+
+										<p class="anchor-time"><?php echo $value1['datetime'];?></p>
+										<p>
+											<?php if ($value1["img"] != null): ?>
+												<img src="<?php echo base_url("uploads/").$value1["img"];?>" class="img-responsive img-zoom">
+											<?php endif; ?>
+											<?php echo $value1['isi'];?>
+										</p>
 									</div>
 								</div>
-							</div>
-							<?php echo form_close();?>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
+								<hr class="hr-slim">
+							<?php endforeach;?>
+
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
 
 	<?php	endfor;?>
-</table>
 <?php echo $links;?>
 <?php else: ?>
 	<p><span class="label label-default">Anda belum pernah post.</span></p>
@@ -137,7 +195,8 @@ $(document).ready(function(){
 	$(".upload-foto").fileinput({showUpload: false});
 
 	$(".btn-upload").click(function(){
-		$(this).parents("td").find(".divupload-foto").toggle("fast");
+		$(this).parents("div").find(".divupload-foto").toggle("fast");
 	});
 });
+
 </script>

@@ -195,3 +195,8 @@ body{
 .strikethrough{
 	text-decoration: line-through;
 }
+
+.hr-slim{
+	margin-top: 7px;
+	margin-bottom: 7px;
+}

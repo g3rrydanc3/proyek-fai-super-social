@@ -1,16 +1,4 @@
-// Get the modal
-/*var modal = document.getElementById('myModal0');
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn0");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}/*/
 
 // When the user clicks on <span> (x), close the modal
 document.getElementsByClassName("close").onclick = function() {
@@ -64,6 +52,11 @@ function str_pad_left(string,pad,length) {
 }
 
 $(document).ready(function() {
+	$('[data-toggle="popover"]').popover();
+	$('.no-jump').click(function(event) {
+		event.preventDefault();
+		return false;
+	});
 
 	$(".btn-like").hover(function(){
 		$(this).find("span").html('<i class="fa fa-thumbs-up" aria-hidden="true"></i>');
