@@ -2,13 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-
-
-
 <?php if (count($posts) > 0): ?>
-
-
-
 	<?php for ($i = 0; $i<count($posts); $i++) : ?>
 		<!--MODAL-->
 		<div id="myModal<?php echo $i;?>" class="modal">
@@ -63,7 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											$second = $minute + $diff->format("%s");
 										?>
 										<?php if ($posts[$i]['timed'] == "1"): ?>
-											Countdown :<div id='countdown<?php echo $i;?>'></div>
+											| Time Left : <div id='countdown<?php echo $i;?>' style="display:inline;"></div>
 											<script>new Countdown(<?php echo $second;?>, 'countdown<?php echo $i;?>').start();</script>
 										<?php endif; ?>
 									</span>

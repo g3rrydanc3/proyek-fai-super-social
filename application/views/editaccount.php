@@ -37,7 +37,7 @@ $this->load->view('layout/header.php');
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="password"><i class="fa fa-asterisk" aria-hidden="true"></i> Password</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="password" name="password" placeholder="Enter password" value="<?php echo $password;?>">
+			<input type="text" class="form-control" id="password" name="password" placeholder="Enter password" value="<?php echo $password;?>" data-toggle="tooltip" data-html="true" title="password must have at least 6 characters<br>a number<br>an uppercase character<br>a lowercase character<br>a symbol">
 		</div>
 	</div>
 	<div class="form-group">

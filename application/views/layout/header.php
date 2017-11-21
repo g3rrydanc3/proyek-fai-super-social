@@ -54,20 +54,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<?php if ($this->session->_userskrng && $this->session->_userskrng != null): ?>
 				<ul class="nav navbar-nav">
-					<li class="<?php if($this->uri->segment(2)=="newsfeed"){echo 'active';}?>"><a href="<?php echo site_url("cont/newsfeed");?>">News Feed</a></li>
+					<li class="<?php if($this->uri->segment(1)=="newsfeed"){echo 'active';}?>"><a href="<?php echo site_url("newsfeed");?>">News Feed</a></li>
 					<li class="<?php if($this->uri->segment(2)=="explore"){echo 'active';}?>"><a href="<?php echo site_url("cont/explore");?>">Explore</a></li>
 					<li class="<?php if($this->uri->segment(2)=="notification"){echo 'active';}?>"><a href="<?php echo site_url("cont/notification");?>">Notification</a></li>
 					<li class="<?php if($this->uri->segment(1)=="profile"){echo 'active';}?>"><a href="<?php echo site_url("profile");?>"><span class="glyphicon glyphicon-user"></span> My Profile</a></li>
 					<li class="<?php if($this->uri->segment(2)=="chat"){echo 'active';}?>"><a href="<?php echo site_url("cont/chat");?>">Chat</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-			      <li><a href="<?php echo site_url("cont/logout");?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+			      <li><a href="<?php echo site_url("user/logout");?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 			      <li><a><?php echo "Hello, ".$this->session->name;?></a></li>
 			    </ul>
 			<?php else: ?>
 				<ul class="nav navbar-nav">
-					<li class="<?php if($this->uri->segment(2)=="login"){echo 'active';}?>"><a href="<?php echo site_url("cont/login");?>">Login</a></li>
-					<li class="<?php if($this->uri->segment(2)=="register"){echo 'active';}?>"><a href="<?php echo site_url("cont/register");?>">Register</a></li>
+					<li class="<?php if($this->uri->segment(2)=="login"){echo 'active';}?>"><a href="<?php echo site_url("user/login");?>">Login</a></li>
+					<li class="<?php if($this->uri->segment(2)=="register"){echo 'active';}?>"><a href="<?php echo site_url("user/register");?>">Register</a></li>
 				</ul>
 			<?php endif; ?>
 		</div>

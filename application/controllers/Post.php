@@ -20,9 +20,9 @@ class Post extends MY_Controller {
 		redirect($this->referrer);
 	}
 	public function posts(){
-		if ($this->input->post("posts")) {
+		if ($this->input->post("btn_posts")) {
 			$posts = $this->input->post('posts');
-			if ($_FILES["post-foto"] != null) {
+			if ($_FILES["post-foto"]["name"] != "") {
 				if(!$this->upload->do_upload('post-foto')){
 					$this->session->set_flashdata("post-image-error", $this->upload->display_errors());
 					echo $this->upload->display_errors();
@@ -36,9 +36,9 @@ class Post extends MY_Controller {
 				$this->mydb->insert_posts($this->session->_userskrng, $posts);
 			}
 		}
-		else if ($this->input->post("posts_timed")) {
+		else if ($this->input->post("btn_posts_timed")) {
 			$posts = $this->input->post('posts');
-			if ($_FILES["post-foto"] != null) {
+			if ($_FILES["post-foto"]["name"] != "") {
 				if(!$this->upload->do_upload('post-foto')){
 					$this->session->set_flashdata("post-image-error", $this->upload->display_errors());
 					echo $this->upload->display_errors();

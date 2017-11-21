@@ -7,7 +7,7 @@ $this->load->view('layout/header.php');
 		  <?php echo $this->session->flashdata('errors'); ?>
 		</div>
 	<?php endif; ?>
-	<?php echo form_open('cont/register_process', 'class="form-horizontal"');?>
+	<?php echo form_open('user/register_process', 'class="form-horizontal"');?>
 		<h1 class="form-signin-heading">Register</h1>
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="namadepan"><i class="fa fa-asterisk" aria-hidden="true"></i> Nama Depan:</label>
@@ -36,13 +36,13 @@ $this->load->view('layout/header.php');
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="password"><i class="fa fa-asterisk" aria-hidden="true"></i> Password</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="password" name="password" placeholder="Enter password">
+				<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" data-toggle="tooltip" data-html="true" title="password must have at least 6 characters<br>a number<br>an uppercase character<br>a lowercase character<br>a symbol">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="password2"><i class="fa fa-asterisk" aria-hidden="true"></i> Konfirmasi Password:</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" id="password2" name="password2" placeholder="Enter konfirmasi password">
+				<input type="password" class="form-control" id="password2" name="password2" placeholder="Enter konfirmasi password">
 			</div>
 		</div>
 		<div class="form-group">

@@ -8,7 +8,7 @@ class Cont extends MY_Controller {
 
 	public function index(){
 		if (!$this->session->userdata('_userskrng')) {
-			redirect("cont/login");
+			redirect("user/login");
 		}
 		else {
 			//-----------------------------------------------------
@@ -303,98 +303,11 @@ class Cont extends MY_Controller {
 				redirect("cont/skill");
 			}
 			else{
-				redirect("profile/index");
+				redirect("profile");
 			}
 		}
 	}
 
-	public function login(){
-		if (!$this->check_logged_in()) {
-			$this->load->view('login');
-		}
-		else redirect("profile/index");
-	}
-	public function login_process(){
-		if (!$this->check_logged_in()) {
-			$emailhp = $this->input->post('emailhp');
-			$password = $this->input->post('password');
-
-			$id = $this->mydb->get_id($emailhp);
-
-			$rules = array(
-				array(
-					'field' => 'emailhp',
-					'label' => 'Email / No HP',
-					'rules' => 'required|callback_emailhp_check[' . $id . ']'
-				),
-				array(
-					'field' => 'password',
-					'label' => 'Password',
-					'rules' => 'required|callback_password_check[' . $id . ']'
-				)
-			);
-			$this->form_validation->set_rules($rules);
-
-			if($this->form_validation->run()){
-				$this->session->set_userdata("_userskrng", $id);
-				$this->session_refresh();
-
-				redirect("profile/index");
-			}
-			else{
-				$this->session->set_flashdata('errors', validation_errors());
-				redirect("cont/login");
-			}
-		}
-		else redirect("profile/index");
-	}
-	public function register(){
-		if (!$this->check_logged_in()) {
-			$this->load->view("register");
-		}
-		else redirect("profile/index");
-	}
-	public function register_process(){
-		if($this->input->post('r_register')){
-			$this->form_validation->set_rules($this->rulesRegister1);
-			$this->form_validation->set_message('regex_match', '{field} harus terdapat huruf kecil, huruf kapital, angka, dan simbol');
-			$this->form_validation->set_message('alphamatches', 'Konfirmasi {field} tidak cocok');
-
-			$this->session->set_flashdata('errors', validation_errors());
-
-			if($this->form_validation->run()){
-				$namadepan = $this->input->post('namadepan');
-				$namabelakang = $this->input->post('namabelakang');
-				$email = strtolower($this->input->post('email'));
-				$nohp = $this->input->post('nohp');
-				$password = $this->input->post('password');
-
-				if (!$this->mydb->register($namadepan, $namabelakang, $email, $nohp, $password)) {
-					echo "INSERT ERROR";
-				}else{
-					$id = $this->mydb->get_id($email);
-					$this->session->set_userdata("_userskrng", $id);
-					$this->session_refresh();
-					$this->load->view("register2");
-				}
-			}
-			else{
-				$this->session->set_flashdata('errors', validation_errors());
-				redirect("cont/register");
-			}
-		}
-		else redirect("profile/index");
-	}
-	public function logout(){
-		if ($this->check_logged_in()) {
-			$this->session->set_flashdata("goodbye", $this->session->name." berhasil logout!");
-			$this->session->unset_userdata("_userskrng");
-			$this->session->unset_userdata("name");
-
-			redirect("cont/login");
-		}
-		else redirect("profile/index");
-	}
 	public function explore(){
 		if ($this->check_logged_in()) {
 			$this->load->view("explore");
@@ -530,49 +443,6 @@ class Cont extends MY_Controller {
 		}
 		else{
 			redirect("cont/login");
-		}
-	}
-	public function newsfeed(){
-		if ($this->check_logged_in()) {
-			$config['base_url'] = site_url("cont/newsfeed");
-			$config['total_rows'] = $this->mydb->count_newsfeed($this->session->_userskrng);
-			$config['per_page'] = 10;
-			$config['uri_segment'] = 3;
-			$page = ($this->uri->segment($config['uri_segment'])) ? $this->uri->segment($config['uri_segment']) : 0;
-			$this->pagination->initialize($config);
-			$data['links'] = $this->pagination->create_links();
-
-			$data += $this->datapost = $this->mydb->get_userdata($this->session->_userskrng) + $this->mydb->get_newsfeed($this->session->_userskrng, $config["per_page"], $page);
-			$this->load->view('newsfeed', $data);
-		}
-		else redirect("cont/login");
-	}
-
-	//-------------------------
-	//FORM VALIDATION FALLBACK
-	//-------------------------
-	public function emailhp_check($str, $id){
-		if ($id == -1) {
-			$this->form_validation->set_message('emailhp_check', 'Email/No HP tidak terdaftar');
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
-	public function password_check($str, $id){
-		$password = $this->mydb->get_password($id);
-		if ($id == -1) {
-			$this->form_validation->set_message('password_check', '');
-			return false;
-		}
-		else if ($str == $password) {
-			return true;
-		}
-		else {
-			$this->form_validation->set_message('password_check', 'Password Salah');
-			return false;
 		}
 	}
 

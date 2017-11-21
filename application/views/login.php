@@ -13,7 +13,7 @@ $this->load->view('layout/header.php');
 		  <?php echo $this->session->flashdata('errors'); ?>
 		</div>
 	<?php endif; ?>
-	<?php echo form_open('cont/login_process');?>
+	<?php echo form_open('user/login_process');?>
 			<div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
@@ -29,7 +29,7 @@ $this->load->view('layout/header.php');
                        </div>
                        <!-- Change this to a button or input when using this as a form -->
                        <button type="submit" name="l_login" class="btn btn-lg btn-success btn-block">Login</button>
-                       <a href="<?php echo site_url("cont/register");?>"<button type="submit" class="btn btn-info btn-block btn-lg">Register</button></a>
+                       <a href="<?php echo site_url("user/register");?>"<button type="submit" class="btn btn-info btn-block btn-lg">Register</button></a>
                     </div>
                 </div>
             </div>

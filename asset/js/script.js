@@ -57,6 +57,10 @@ $(document).ready(function() {
 		event.preventDefault();
 		return false;
 	});
+	$('input').tooltip({ /*or use any other selector, class, ID*/
+		placement: "bottom",
+		trigger: "focus"
+	});
 
 	$(".btn-like").hover(function(){
 		$(this).find("span").html('<i class="fa fa-thumbs-up" aria-hidden="true"></i>');
