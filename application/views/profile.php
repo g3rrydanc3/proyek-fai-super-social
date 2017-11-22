@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 <div class="row">
 	<div class="col-sm-4">
 		<div class="panel panel-default">
@@ -68,6 +69,7 @@ $this->load->view('layout/header.php');
 		<h2>My Post</h2>
 		<?php $this->load->view("layout/post");?>
 	</div>
+</div>
 </div>
 
 <script>

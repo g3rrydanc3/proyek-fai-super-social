@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 	<h1>Chat</h1>
 	<?php if ($this->session->flashdata('errors') != null): ?>
 		<div class="alert alert-danger">
@@ -119,4 +120,5 @@ $this->load->view('layout/header.php');
 	<?php endforeach; ?>
 </table>
 <?php echo $links;?>
+</div>
 <?php $this->load->view('layout/footer.php');

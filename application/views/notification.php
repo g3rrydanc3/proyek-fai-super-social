@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 	<h1>Friend Request</h1>
 	<?php if (count($friends_request) != 0): ?>
 		<table class="table table-striped">
@@ -46,5 +47,5 @@ $this->load->view('layout/header.php');
 	<?php else: ?>
 		Tidak ada Notification.
 	<?php endif; ?>
-
+</div>
 <?php $this->load->view('layout/footer.php');
