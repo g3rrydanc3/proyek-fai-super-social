@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 	<h1>Explore</h1>
 	<div class="form-group">
 		<input type="text" class="form-control" id="search" placeholder="Enter keyword">
@@ -20,6 +21,7 @@ $this->load->view('layout/header.php');
 		</select>
 	</div>
 	<div id="dataExplore"></div>
+</div>
 
 <?php $this->load->view('layout/footer.php');?>
 <script>

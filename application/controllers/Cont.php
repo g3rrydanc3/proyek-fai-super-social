@@ -8,7 +8,7 @@ class Cont extends MY_Controller {
 
 	public function index(){
 		if (!$this->session->userdata('_userskrng')) {
-			redirect("user/login");
+			redirect($this->default_page);
 		}
 		else {
 			//-----------------------------------------------------

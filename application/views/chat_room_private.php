@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 	<h1>Chat Room</h1>
 	<?php
 	echo form_open("cont", 'class="form-mention"') .
@@ -56,4 +57,5 @@ $this->load->view('layout/header.php');
 		form_input("msg", "", "class='form-control'") .
 		form_hidden("private", "1") .
 		form_submit("c_sendchat", "Send", "class='btn btn-primary'");?>
+</div>
 <?php $this->load->view('layout/footer.php');

@@ -13,6 +13,12 @@
 			$query = $this->db->select("ifnull(($subquery), '-1') as id")->get();
 			return $query->row_array()['id'];
 		}
+		public function get_id_from_email(){
+			$this->db->select('id')->from('user')->where('email', $emailhp)->limit(1);
+			$subquery = $this->db->get_compiled_select();
+			$query = $this->db->select("ifnull(($subquery), '-1') as id")->get();
+			return $query->row_array()['id'];
+		}
 		public function get_password($id){
 			$query = $this->db->select('password')->from('user')->where('id', $id)->get();
 			return $query->row_array()['password'];

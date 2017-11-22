@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 	<h1>News Feed</h1>
 
 <?php $this->load->view("layout/post_new");?>
@@ -15,5 +16,5 @@ $this->load->view('layout/header.php');
 		showUpload: false
 	});
 	</script>
-
+</div>
 <?php $this->load->view('layout/footer.php');

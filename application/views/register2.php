@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
+<div class='container wrapper'>
 <?php if ($this->session->flashdata('errors') != null): ?>
 	<div class="alert alert-danger">
 	  <?php echo $this->session->flashdata('errors'); ?>
@@ -311,5 +312,5 @@ $this->load->view('layout/header.php');
 		</div>
 	</div>
 <?php echo form_close();?>
-
+</div>
 <?php $this->load->view('layout/footer.php');?>

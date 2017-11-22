@@ -14,23 +14,19 @@ $this->load->view('layout/header.php');
 		  <?php echo $this->session->flashdata('errors'); ?>
 		</div>
 	<?php endif; ?>
-	<?php echo form_open('user/login_process');?>
+	<?php echo form_open('user/forgot_password_process');?>
 			<div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3>Please Log in</h3>
+                        <h3>Forgot Password</h3>
                     </div>
                     <div class="panel-body">
                        <div class="form-group">
-                           <input class="form-control input-lg" placeholder="E-mail / No HP" name="emailhp" type="email" autofocus>
-                       </div>
-                       <div class="form-group">
-                           <input class="form-control input-lg" placeholder="Password" name="password" type="password" value="">
+                           <input class="form-control input-lg" placeholder="E-mail" name="email" type="email" autofocus>
                        </div>
                        <!-- Change this to a button or input when using this as a form -->
-                       <button type="submit" name="l_login" class="btn btn-lg btn-success btn-block">Login</button>
-                       <a href="<?php echo site_url("user/forgot_password");?>"<button type="submit" class="btn btn-info btn-block btn-lg">Forgot Password</button></a>
+                       <button type="submit" class="btn btn-lg btn-success btn-block">Reset Password</button>
                     </div>
                 </div>
             </div>

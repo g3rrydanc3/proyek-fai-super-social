@@ -5,7 +5,7 @@ class Newsfeed extends MY_Controller {
 	public function __construct(){
 		parent::__construct();
 		if (!$this->check_logged_in()) {
-			redirect(site_url());
+			redirect($this->default_page);
 		}
 	}
 	public function index(){
