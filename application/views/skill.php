@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-<div class='container wrapper'>
 	<h1>Skill</h1>
 	<?php if (count($skill) > 0): ?>
 		<table class="table">
@@ -74,5 +73,5 @@ $this->load->view('layout/header.php');
 			</div>
 		</div>
 	<?php echo form_close();?>
-</div>
+
 <?php $this->load->view('layout/footer.php');

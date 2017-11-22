@@ -9,7 +9,6 @@ if (!in_array_r($friend_id, $friends)) {
 	}
 }
 ?>
-<div class='container wrapper'>
 	<div class="row">
 		<div class="col-sm-4">
 			<div class="panel panel-default">
@@ -82,5 +81,5 @@ if (!in_array_r($friend_id, $friends)) {
 			<h2>Profile ini private</h2>
 			Berteman untuk melihat profile
 		<?php endif; ?>
-</div>
+
 <?php $this->load->view('layout/footer.php');

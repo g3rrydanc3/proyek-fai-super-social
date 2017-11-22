@@ -2,7 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-<div class='container wrapper'>
+<?php
+?>
 	<h1>Edit Profile</h1>
 	<?php if ($this->session->flashdata('errors') != null): ?>
 		<div class="alert alert-danger">
@@ -348,7 +349,7 @@ $this->load->view('layout/header.php');
 			</div>
 		</div>
 	</div>
-</div>
+
 <script>
 $("#avatar-2").fileinput({
     overwriteInitial: true,

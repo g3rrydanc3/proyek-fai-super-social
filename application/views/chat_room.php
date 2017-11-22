@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-<div class='container wrapper'>
 	<div class="form-group">
 		<?php
 		echo form_open("cont", 'class="form-mention"') .
@@ -153,7 +152,6 @@ $this->load->view('layout/header.php');
 			<?php echo form_close();?>
 		</div>
 	</div>
-</div>
 
 <script>
 $(document).ready(function(){

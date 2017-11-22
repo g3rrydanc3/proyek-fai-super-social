@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-<div class='container wrapper'>
 	<h1><?php echo $namadepan.' '. $namabelakang;?>'s Skill</h1>
 	<?php if (count($skill) > 0): ?>
 		<table class="table">
@@ -58,5 +57,5 @@ $this->load->view('layout/header.php');
 	<?php else: ?>
 		Belum ada skill.
 	<?php endif; ?>
-</div>
+
 <?php $this->load->view('layout/footer.php');

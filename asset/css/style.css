@@ -2,7 +2,8 @@
 	 font-family: 'MikadoBlack';
     src: url('../fonts/MikadoBlack.otf');
 }
-.logo{
+
+.navbar-header, .navbar-brand{
 	font-family: MikadoBlack;
 }
 /* The Modal (background) */
@@ -198,8 +199,4 @@ body{
 .hr-slim{
 	margin-top: 7px;
 	margin-bottom: 7px;
-}
-
-.navbar{
-	margin-bottom: 0;
 }

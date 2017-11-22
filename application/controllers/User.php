@@ -6,7 +6,7 @@ class User extends MY_Controller {
 	}
 	public function index(){
 		if ($this->check_logged_in()) {
-			redirect($this->default_page);
+			redirect("profile");
 		}
 		else {
 			$this->load->view("home");
@@ -43,20 +43,20 @@ class User extends MY_Controller {
 				$this->session->set_userdata("_userskrng", $id);
 				$this->session_refresh();
 
-				redirect($this->default_page);
+				redirect("newsfeed");
 			}
 			else{
 				$this->session->set_flashdata('errors', validation_errors());
 				redirect("user/login");
 			}
 		}
-		else redirect($this->default_page);
+		else redirect("newsfeed");
 	}
 	public function register(){
 		if (!$this->check_logged_in()) {
 			$this->load->view("register");
 		}
-		else redirect($this->default_page);
+		else redirect("profile/index");
 	}
 	public function register_process(){
 		if (!$this->check_logged_in()) {
@@ -87,7 +87,7 @@ class User extends MY_Controller {
 				redirect("user/register");
 			}
 		}
-		else redirect($this->default_page);
+		else redirect("newsfeed");
 	}
 	public function register_process2(){
 		if ($this->check_logged_in()) {
@@ -106,7 +106,7 @@ class User extends MY_Controller {
 					echo "UPDATE ERROR";
 				}
 
-				redirect($this->default_page);
+				redirect("newsfeed");
 			}
 			else{
 				$this->session->set_flashdata('errors', validation_errors());
@@ -125,23 +125,6 @@ class User extends MY_Controller {
 		}
 		else redirect("user/login");
 	}
-	public function forgot_password(){
-		$this->load->view("forgot_password");
-	}
-	public function forgot_password_process(){
-		$email = $this->input->post("email");
-		$id = $this->mydb->get_id_from_email($email);
-		if ($id != -1) {
-			$this->memail->forgot_password($id);
-		}
-		$this->session->set_flashdata("msg", '<div class="alert alert-success">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  <strong>Sukses!</strong> Email terkirim. Cek email untuk reset password.
-		</div>');
-		redirect("user");
-	}
-
-
 
 	//-------------------------
 	//FORM VALIDATION FALLBACK

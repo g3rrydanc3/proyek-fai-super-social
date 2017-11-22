@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-<div class='container wrapper'>
 	<h1>Chat</h1>
 	<?php echo form_open("cont");?>
 	<?php echo form_hidden('chat_rooms_id', $chat_rooms_id);?>
@@ -45,5 +44,4 @@ $this->load->view('layout/header.php');
 
 	echo form_close();
 	?>
-</div>
 <?php $this->load->view('layout/footer.php');

@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-<div class='container wrapper'>
 	<?php if ($this->session->flashdata('goodbye') != null): ?>
 		<div class="alert alert-success">
 		  <?php echo $this->session->flashdata('goodbye'); ?>
@@ -30,11 +29,11 @@ $this->load->view('layout/header.php');
                        </div>
                        <!-- Change this to a button or input when using this as a form -->
                        <button type="submit" name="l_login" class="btn btn-lg btn-success btn-block">Login</button>
-                       <a href="<?php echo site_url("user/forgot_password");?>"<button type="submit" class="btn btn-info btn-block btn-lg">Forgot Password</button></a>
+                       <a href="<?php echo site_url("user/register");?>"<button type="submit" class="btn btn-info btn-block btn-lg">Register</button></a>
                     </div>
                 </div>
             </div>
         </div>
 	<?php echo form_close();?>
-</div>
+
 <?php $this->load->view('layout/footer.php');
