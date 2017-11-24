@@ -23,7 +23,7 @@ $this->load->view('layout/header.php');
 						<?php if ($friends !=null) :?>
 							<div class="row">
 								<?php foreach ($friends as $key => $value) :?>
-									<div class="col-sm-3">
+									<div class="col-md-2 col-sm-3">
 										<div class="checkbox">
 											<label>
 												<?php if ($value["img"] != null): ?>
@@ -38,13 +38,13 @@ $this->load->view('layout/header.php');
 								<?php endforeach;?>
 							</div>
 							<button type="submit" class="btn btn-primary" name="c_newroom" value="Create new room">Create new room</button>
-							<button type="submit" class="btn btn-primary" name="c_newprivateroom" value="Create new room">Create new private room</button>
+							<!--<<button type="submit" class="btn btn-primary" name="c_newprivateroom" value="Create new room">Create new private room</button>-->
 						<?php else:?>
 							<div class="alert alert-warning">
 								Belum ada teman.
 							</div>
 							<button type="submit" class="btn btn-primary" name="c_newroom" value="Create new room" disabled>Create new room</button>
-							<button type="submit" class="btn btn-primary" name="c_newprivateroom" value="Create new room" disabled>Create new private room</button>
+							<!--<button type="submit" class="btn btn-primary" name="c_newprivateroom" value="Create new room" disabled>Create new private room</button>-->
 						<?php endif;?>
 					<?php echo form_close();?>
 				</div>
@@ -53,72 +53,57 @@ $this->load->view('layout/header.php');
 	</div>
 
 
-<table class="table">
 	<?php foreach ($chat as $key => $value): ?>
-		<?php if ($value["read"] == "1"): ?>
-			<tr>
-		<?php else: ?>
-			<tr class="rowlightgreen">
-		<?php endif; ?>
-			<td>
-				<div class="img-wrapper">
-					<?php $count = count($value["participant"]);?>
-					<?php if ($count == 1): ?>
-						<?php if ($value["participant"][0]["img"] != null): ?>
-							<img src="<?php echo base_url()."uploads/". $value["participant"][0]["img"];?>" class="img-rounded img-center img-small img-zoom" alt="<?php echo $value["participant"][0]["namadepan"] . ' ' . $value["participant"][0]["namabelakang"];?>">
+		<a href="<?php echo site_url("cont/chat_room/").$value["id"]?>" class="no-style">
+			<div class="media">
+				<div class="media-left">
+					<div class="img-wrapper-small">
+						<?php $count = count($value["participant"]);?>
+						<?php if ($count == 1): ?>
+							<?php if ($value["participant"][0]["img"] != null): ?>
+								<img src="<?php echo base_url()."uploads/". $value["participant"][0]["img"];?>" class="img-rounded img-center profile-picture-50" alt="<?php echo $value["participant"][0]["namadepan"] . ' ' . $value["participant"][0]["namabelakang"];?>">
+							<?php else: ?>
+								<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-50"><?php echo strtoupper($value["participant"][0]["namadepan"][0].$value["participant"][0]["namabelakang"][0]);?></div>
+							<?php endif; ?>
 						<?php else: ?>
-							<div class="profile-picture-default profile-picture-default-small unselectable form-group"><?php echo strtoupper($value["participant"][0]["namadepan"][0].$value["participant"][0]["namabelakang"][0]);?></div>
+							<img src="<?php echo base_url()."asset/img/chat_group.png";?>" class="img-rounded img-center profile-picture-50" alt="Group Chat">
 						<?php endif; ?>
-					<?php else: ?>
-						<img src="<?php echo base_url()."asset/img/chat_group.png";?>" class="img-rounded img-center img-small" alt="Group Chat">
-					<?php endif; ?>
+						<?php if ($value["read"] == "0"): ?>
+							<span class="badge badge-notify">&nbsp;</span>
+						<?php endif;?>
+					</div>
 				</div>
-			</td>
-			<td>
-				<p>
-					<?php if ($count == 1): ?>
-						<?php echo $value["participant"][0]["namadepan"]." ".$value["participant"][0]["namabelakang"];?>
-					<?php else: ?>
-						<?php for ($i=0; $i< $count; $i++):
-							if ($i < $count-1):
-							echo $value["participant"][$i]["namadepan"]." ".$value["participant"][$i]["namabelakang"].", ";
-								else:
-							echo $value["participant"][$i]["namadepan"]." ".$value["participant"][$i]["namabelakang"];
-							endif;
-						endfor; ?>
-					<?php endif;?>
-				</p>
-				<p>
-					<?php echo $value['last_msg_time']; ?>
-				</p>
-			</td>
-
-			<td>
-				<?php
-				if ($value['private'] == "1") {
-					echo "<small>Room private.</small>";
-				}
-				else {
-					if ($value['last_msg'] != null) {
-						echo "Last message : ".$value['last_msg_namadepan']." ".$value['last_msg_namabelakang']." : ".$value['last_msg'];
-					}
-					else {
-						echo "<small>Tidak ada chat.</small>";
-					}
-				}
-
-				?>
-			</td>
-			<td>
-				<?php
-				echo form_open("cont");
-				echo form_hidden('chat_rooms_id', $value["id"]);
-				echo form_submit("c_room", "Buka chat room", "class='btn btn-primary'");
-				echo form_close();
-				?>
-		</tr>
+				<div class="media-body">
+					<h4 class="media-heading">
+						<?php if ($count == 1): ?>
+							<?php echo $value["participant"][0]["namadepan"]." ".$value["participant"][0]["namabelakang"];?>
+						<?php else: ?>
+							<?php for ($i=0; $i< $count; $i++):
+								if ($i < $count-1):
+								echo $value["participant"][$i]["namadepan"]." ".$value["participant"][$i]["namabelakang"].", ";
+									else:
+								echo $value["participant"][$i]["namadepan"]." ".$value["participant"][$i]["namabelakang"];
+								endif;
+							endfor; ?>
+						<?php endif;?>
+					</h4>
+					<p><?php echo $value['last_msg_time']; ?></p>
+					<p>
+						<?php if ($value['last_msg'] != null) {
+							echo "Last message : ".$value['last_msg_namadepan']." ".$value['last_msg_namabelakang']." : ".$value['last_msg'];
+						}
+						else {
+							echo "<small>Tidak ada chat.</small>";
+						}
+						?>
+					</p>
+				</div>
+			</div>
+		</a>
+		<hr>
 	<?php endforeach; ?>
-</table>
+
+
 <?php echo $links;?>
 </div>
 <?php $this->load->view('layout/footer.php');

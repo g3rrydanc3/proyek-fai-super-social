@@ -37,12 +37,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="col-xs-11">
 							<div class="media">
 								<div class="media-left">
-									<a href="#">
-										<img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" width="40" height="40" alt="...">
+									<a href="<?php echo site_url("cont/user/").$posts[$i]['user_id']?>" class="no-style">
+										<?php if ($posts[$i]["user_img"] != null): ?>
+											<img src="<?php echo base_url()."uploads/". $posts[$i]["user_img"];?>" class="media-object img-rounded img-center profile-picture-40" alt="<?php echo $posts[$i]["namadepan"] . ' ' . $posts[$i]["namabelakang"];?>">
+										<?php else: ?>
+											<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-40 media-object "><?php echo strtoupper($posts[$i]["namadepan"][0].$posts[$i]["namabelakang"][0]);?></div>
+										<?php endif; ?>
 									</a>
 								</div>
 								<div class="media-body">
-									<a href="#" class="anchor-username">
+									<a href="<?php echo site_url("cont/user/").$posts[$i]['user_id']?>" class="anchor-username">
 										<h4 class="media-heading">
 											<?php echo $posts[$i]["namadepan"]." ".$posts[$i]["namabelakang"];?>  <?php if ($verified) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b>
 										</h4>
@@ -120,8 +124,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="comment">
 							<div class="media">
 								<div class="media-left">
-									<a href="#">
-										<img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" width="32" height="32" alt="...">
+									<a href="<?php echo site_url("profile")?>" class="no-style">
+										<?php if ($img != null): ?>
+											<img src="<?php echo base_url()."uploads/". $img;?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $namadepan . ' ' . $namabelakang;?>">
+										<?php else: ?>
+											<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object "><?php echo strtoupper($namadepan[0].$namabelakang[0]);?></div>
+										<?php endif; ?>
 									</a>
 								</div>
 								<div class="media-body">
@@ -145,8 +153,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php foreach ($comments[$i] as $key1 => $value1):?>
 								<div class="media">
 									<div class="media-left">
-										<a href="<?php echo site_url("cont/user/").$value1['user_id']?>">
-											<img class="media-object photo-profile" src="http://0.gravatar.com/avatar/38d618563e55e6082adf4c8f8c13f3e4?s=40&d=mm&r=g" width="32" height="32" alt="...">
+										<a href="<?php echo site_url("cont/user/").$value1['user_id']?>" class="no-style">
+											<?php if ($posts[$i]["user_img"] != null): ?>
+												<img src="<?php echo base_url()."uploads/". $value1["user_img"];?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $value1["namadepan"] . ' ' . $value1["namabelakang"];?>">
+											<?php else: ?>
+												<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object"><?php echo strtoupper($value1["namadepan"][0].$value1["namabelakang"][0]);?></div>
+											<?php endif; ?>
 										</a>
 									</div>
 									<div class="media-body">

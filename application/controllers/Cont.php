@@ -303,16 +303,16 @@ class Cont extends MY_Controller {
 				redirect("cont/skill");
 			}
 			else{
-				redirect("profile");
+				redirect($this->default_page);
 			}
 		}
 	}
 
-	public function explore(){
+	public function explore($keyword = null){
 		if ($this->check_logged_in()) {
-			$this->load->view("explore");
+			$this->load->view("explore", array("keyword" => $keyword));
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function explore_data(){
 		if ($this->check_logged_in()) {
@@ -335,40 +335,45 @@ class Cont extends MY_Controller {
 
 			$this->load->view("exploredata", $data);
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function user($friend_id){
 		if ($this->check_logged_in()) {
-			$this->mydb->insert_notification_seeprofile($this->session->_userskrng, $friend_id);
+			if ($friend_id == $this->session->_userskrng) {
+				redirect("profile");
+			}
+			else {
+				$this->mydb->insert_notification_seeprofile($this->session->_userskrng, $friend_id);
 
-			$config['base_url'] = site_url("cont/user/".$friend_id);
-			$config['total_rows'] = $this->mydb->count_userposts($friend_id);
-			$config['per_page'] = 7;
-			$config['uri_segment'] = 4;
-			$page = ($this->uri->segment($config['uri_segment'])) ? $this->uri->segment($config['uri_segment']) : 0;
-			$this->pagination->initialize($config);
-			$data['links'] = $this->pagination->create_links();
+				$config['base_url'] = site_url("cont/user/".$friend_id);
+				$config['total_rows'] = $this->mydb->count_userposts($friend_id);
+				$config['per_page'] = 7;
+				$config['uri_segment'] = 4;
+				$page = ($this->uri->segment($config['uri_segment'])) ? $this->uri->segment($config['uri_segment']) : 0;
+				$this->pagination->initialize($config);
+				$data['links'] = $this->pagination->create_links();
 
-			$data += $this->mydb->get_userdata($friend_id);
-			$data += $this->mydb->get_userposts($friend_id, $this->session->_userskrng, $config["per_page"],$page);
+				$data += $this->mydb->get_userdata($friend_id);
+				$data += $this->mydb->get_userposts($friend_id, $this->session->_userskrng, $config["per_page"],$page);
 
-			$data['friend_id'] = $friend_id;
-			$data['friends_requested'] = $this->mydb->get_friends_requested($this->session->_userskrng);
-			$data['friends_request'] = $this->mydb->get_friends_request($this->session->_userskrng);
-			$data['friends'] = $this->mydb->get_friends($this->session->_userskrng);
-			$data['user'] = $this->mydb->get_userdata($this->session->_userskrng);
-			$data["skill"] = $this->mydb->get_skill($friend_id, 3);
+				$data['friend_id'] = $friend_id;
+				$data['friends_requested'] = $this->mydb->get_friends_requested($this->session->_userskrng);
+				$data['friends_request'] = $this->mydb->get_friends_request($this->session->_userskrng);
+				$data['friends'] = $this->mydb->get_friends($this->session->_userskrng);
+				$data['user'] = $this->mydb->get_userdata($this->session->_userskrng);
+				$data["skill"] = $this->mydb->get_skill($friend_id, 3);
 
-			$this->load->view("profileguest", $data);
+				$this->load->view("profileguest", $data);
+			}
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function skill(){
 		if ($this->check_logged_in()) {
 			$data["skill"] = $this->mydb->get_skill($this->session->_userskrng);
 			$this->load->view('skill', $data);
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function skilluser($friend_id){
 		if ($this->check_logged_in()) {
@@ -377,7 +382,7 @@ class Cont extends MY_Controller {
 			$data['friend_id'] = $friend_id;
 			$this->load->view('skillguest', $data);
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function notification(){
 		if ($this->check_logged_in()) {
@@ -395,7 +400,7 @@ class Cont extends MY_Controller {
 
 			$this->load->view('notification', $data);
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function chat(){
 		if ($this->check_logged_in()) {
@@ -412,7 +417,7 @@ class Cont extends MY_Controller {
 
 			$this->load->view('chat', $data);
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function chat_room($chat_rooms_id){
 		if ($this->check_logged_in()) {
@@ -427,7 +432,7 @@ class Cont extends MY_Controller {
 				redirect("cont/chat");
 			}
 		}
-		else redirect("cont/login");
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function chat_room_private($chat_rooms_id){
 		if ($this->check_logged_in()) {
@@ -442,7 +447,7 @@ class Cont extends MY_Controller {
 			}
 		}
 		else{
-			redirect("cont/login");
+			redirect($this->default_page_not_logged_in);
 		}
 	}
 

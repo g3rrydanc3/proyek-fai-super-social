@@ -120,50 +120,19 @@ body{
 	width: 100px;
 	height: 100px;
 }
-
-
-
-.chat
-{
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.img-wrapper-small{
+	width: 50px;
+	height: 50px;
 }
-
-.chat li
-{
-    margin-bottom: 10px;
-    padding: 5px;
-    border-bottom: 1px dotted #B3A9A9;
-}
-
-.chat li.left .chat-body
-{
-    margin-left: 60px;
-}
-
-.chat li.right .chat-body
-{
-    margin-right: 60px;
-}
-
-
-.chat li .chat-body p
-{
-    margin: 0;
-    color: #777777;
-}
-
-
-
-.bg-gray{
-	background-color: #f7f7f7;
-}
-
 
 .img-zoom {
     cursor: zoom-in;
 }
+
+
+
+
+
 
 .profile-picture-default{
 	font-weight: 600;
@@ -175,6 +144,7 @@ body{
 	height: 200px;
 	background-color: gray;
 	border-radius: 200px;
+	color:white;
 }
 .profile-picture-default-small{
 	width:100px;
@@ -190,6 +160,32 @@ body{
     -ms-user-select: none;
     user-select: none;
 }
+.profile-picture-50{
+	max-width:50px !important;
+	max-height: 50px !important;
+	font-size: 10pt !important;
+}
+
+.profile-picture-40{
+	max-width:40px !important;
+	max-height: 40px !important;
+	font-size: 10pt !important;
+	padding: 10px !important;
+}
+
+.profile-picture-32{
+	max-width:32px !important;
+	max-height: 32px !important;
+	font-size: 9pt !important;
+	padding: 7px !important;
+}
+
+
+a.no-style {
+    color:inherit !important;
+    text-decoration:none;
+}
+
 
 .strikethrough{
 	text-decoration: line-through;
@@ -202,4 +198,16 @@ body{
 
 .navbar{
 	margin-bottom: 0;
+}
+
+
+.badge-notify{
+	background:red;
+	position:relative;
+	top: -50px;
+	left: 35px;
+}
+
+.badge-red{
+	background:red;
 }

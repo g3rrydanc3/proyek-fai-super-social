@@ -35,18 +35,6 @@ $this->load->view('layout/header.php');
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label col-sm-2" for="password"><i class="fa fa-asterisk" aria-hidden="true"></i> Password</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="password" name="password" placeholder="Enter password" value="<?php echo $password;?>" data-toggle="tooltip" data-html="true" title="password must have at least 6 characters<br>a number<br>an uppercase character<br>a lowercase character<br>a symbol">
-		</div>
-	</div>
-	<div class="form-group">
-		<label class="control-label col-sm-2" for="password2"><i class="fa fa-asterisk" aria-hidden="true"></i> Konfirmasi Password:</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="password2" name="password2" placeholder="Enter konfirmasi password" value="<?php echo $password;?>">
-		</div>
-	</div>
-	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 			<small><i class="fa fa-asterisk" aria-hidden="true"></i> =  Harus di isi</small>
 		</div>
@@ -54,6 +42,24 @@ $this->load->view('layout/header.php');
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 		<button type="submit" class="btn btn-default" name="editaccount" value="Register">Edit</button>
+		</div>
+	</div>
+<?php echo form_close();?>
+
+
+
+<h2>Ganti Password</h2>
+<?php echo form_open('cont', 'class="form-horizontal"');?>
+	<div class="form-group">
+		<label class="control-label col-sm-2" for="password"><i class="fa fa-asterisk" aria-hidden="true"></i> Password</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="password" name="password" placeholder="Enter password" data-toggle="tooltip" data-html="true" title="password must have at least 6 characters<br>a number<br>an uppercase character<br>a lowercase character<br>a symbol">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-2" for="password2"><i class="fa fa-asterisk" aria-hidden="true"></i> Konfirmasi Password:</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="password2" name="password2" placeholder="Enter konfirmasi password">
 		</div>
 	</div>
 <?php echo form_close();?>

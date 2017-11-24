@@ -41,7 +41,7 @@ $this->load->view('layout/header.php');
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="alamat"><i class="fa fa-asterisk" aria-hidden="true"></i> Alamat:</label>
 				<div class="col-sm-10">
-					<input type="text" class="form-control" id="alamat" name="alamat" placeholder="Enter alamat" value="<?php echo $alamat;?>">
+					<textarea type="text" class="form-control" id="alamat" name="alamat" placeholder="Enter alamat"><?php echo $alamat;?></textarea>
 				</div>
 			</div>
 			<div class="form-group">

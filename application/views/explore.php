@@ -5,7 +5,7 @@ $this->load->view('layout/header.php');
 <div class='container wrapper'>
 	<h1>Explore</h1>
 	<div class="form-group">
-		<input type="text" class="form-control" id="search" placeholder="Enter keyword">
+		<input type="text" class="form-control" id="search" placeholder="Enter keyword" value="<?php echo $keyword?>">
 	</div>
 	<div class="form-group">
 		<label for="sortby">Sort by:</label>
@@ -38,7 +38,7 @@ $(document).ready(function(){
 				}
 			});
 		};
-		load_explore(0);
+		load_explore(0, $("#search").val());
 
 		$(document).on("click", ".pagination li a", function(event){
 			event.preventDefault();

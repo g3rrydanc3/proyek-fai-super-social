@@ -3,9 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
 	protected $default_page = "newsfeed";
+	protected $default_page_not_logged_in = "user/login";
 	function __construct(){
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
+		$this->chat_count_refresh();
 	}
 	protected $rulesRegister1 = array(
 		array(
@@ -81,6 +83,12 @@ class MY_Controller extends CI_Controller {
 		if ($this->session->userdata('_userskrng')) {
 			$id = $this->session->userdata('_userskrng');
 			$this->session->set_userdata("name", $this->mydb->get_userdata($id)["namadepan"] . " ". $this->mydb->get_userdata($id)["namabelakang"]);
+			$this->chat_count_refresh();
+		}
+	}
+	protected function chat_count_refresh(){
+		if ($this->session->userdata('_userskrng')) {
+			$this->session->set_userdata("unread_chat", $this->mydb->get_chat_notification($this->session->_userskrng));
 		}
 	}
 	protected function check_logged_in(){

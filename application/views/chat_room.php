@@ -60,76 +60,85 @@ $this->load->view('layout/header.php');
 			<ul class="chat">
 				<?php foreach ($chat as $key => $value): ?>
 					<?php if ($value["user_id"] == $this->session->_userskrng): ?>
-						<li class="left clearfix bg-info">
-							<span class="chat-img pull-left">
-								<div class="img-wrapper">
-									<?php if ($value["img"] != null): ?>
-										<img src="<?php echo base_url()."uploads/". $value["img"];?>" class="img-rounded img-center  img-small img-zoom" alt="<?php echo $value["namadepan"] . ' ' . $value["namabelakang"];?>">
-									<?php else: ?>
-										<div class="profile-picture-default profile-picture-default-small unselectable form-group"><?php echo strtoupper($chat_rooms_participant[0]["namadepan"][0].$chat_rooms_participant[0]["namabelakang"][0]);?></div>
-									<?php endif; ?>
-								</div>
-							</span>
-							<div class="chat-body clearfix">
-								<div class="header">
-									<strong class="primary-font"><?php echo $value["namadepan"]." ".$value["namabelakang"];?></strong>
-									<small class="text-muted">
-										<span class="glyphicon glyphicon-time"></span>
-										<?php echo $value["datetime"];?>
-									</small>
-									<div class="pull-right">
-										<?php echo form_open("cont", 'class="form-mention" onsubmit="return confirm(\'Do you really want to delete chat?\');"') .
-											form_hidden('message_id', $value["id"]) .
-											form_hidden('chat_rooms_id', $chat_rooms_id);?>
-											<button type="submit" class="btn btn-link" name="c_delchat" value="1"><span aria-hidden="true">&times;</span></button>
-										<?php echo form_close();?>
-									</div>
-								</div>
-								<p style="margin-left:40px;">
-									<?php if ($value["chat_img"] != null): ?>
-										<img src="<?php echo base_url("uploads/").$value["chat_img"];?>" class="img-responsive img-zoom">
-									<?php endif; ?>
-									<?php echo $value["msg"]; ?>
-								</p>
+					<li class="right clearfix">
+						<!--<div class="pull-right">
+							<?php /*echo form_open("cont", 'class="form-mention" onsubmit="return confirm(\'Do you really want to delete chat?\');"') .
+								form_hidden('message_id', $value["id"]) .
+								form_hidden('chat_rooms_id', $chat_rooms_id);?>
+								<button type="submit" class="btn btn-link" name="c_delchat" value="1"><span aria-hidden="true">&times;</span></button>
+							<?php echo form_close();*/?>
+						</div>-->
+						<span class="chat-img pull-right">
+							<div class="img-wrapper-small">
+								<?php if ($value["img"] != null): ?>
+									<img src="<?php echo base_url()."uploads/". $value["img"];?>" class="img-rounded img-center  img-chat img-zoom" alt="<?php echo $value["namadepan"] . ' ' . $value["namabelakang"];?>">
+								<?php else: ?>
+									<div class="profile-picture-default profile-picture-default-small unselectable form-group img-chat"><?php echo strtoupper($chat_rooms_participant[0]["namadepan"][0].$chat_rooms_participant[0]["namabelakang"][0]);?></div>
+								<?php endif; ?>
 							</div>
-						</li>
+						</span>
+						<div class="chat-body clearfix chat-bg-blue">
+							<div class="text-right">
+								<span class="chat-header-datetime  text-muted">
+									<?php echo $value["datetime"];?>
+									<span class="glyphicon glyphicon-time"></span>
+								</span>
+
+									<strong class="text-right chat-header-name"><?php echo $value["namadepan"]." ".$value["namabelakang"];?></strong>
+							</div>
+							<p class="text-right">
+								<?php if ($value["chat_img"] != null): ?>
+									<img src="<?php echo base_url("uploads/").$value["chat_img"];?>" class="img-responsive img-zoom">
+								<?php endif; ?>
+								<?php echo $value["msg"]; ?>
+							</p>
+						</div>
+					</li>
+
+
+
 					<?php else: ?>
-						<li class="right clearfix bg-gray">
-							<div class="pull-right">
-								<?php echo form_open("cont", 'class="form-mention" onsubmit="return confirm(\'Do you really want to delete chat?\');"') .
-									form_hidden('message_id', $value["id"]) .
-									form_hidden('chat_rooms_id', $chat_rooms_id);?>
-									<button type="submit" class="btn btn-link" name="c_delchat" value="1"><span aria-hidden="true">&times;</span></button>
-								<?php echo form_close();?>
-							</div>
-							<span class="chat-img pull-right">
-								<div class="img-wrapper">
-									<?php if ($value["img"] != null): ?>
-										<img src="<?php echo base_url()."uploads/". $value["img"];?>" class="img-rounded img-center  img-small img-zoom" alt="<?php echo $value["namadepan"] . ' ' . $value["namabelakang"];?>">
-									<?php else: ?>
-										<div class="profile-picture-default profile-picture-default-small unselectable form-group"><?php echo strtoupper($chat_rooms_participant[0]["namadepan"][0].$chat_rooms_participant[0]["namabelakang"][0]);?></div>
-									<?php endif; ?>
-								</div>
-							</span>
-							<div class="chat-body clearfix">
-								<div class="header">
-									<p class="text-right">
-										<small class=" text-muted">
-											<?php echo $value["datetime"];?>
+
+							<li class="left clearfix">
+								<span class="chat-img pull-left">
+									<div class="img-wrapper-small">
+										<?php if ($value["img"] != null): ?>
+											<img src="<?php echo base_url()."uploads/". $value["img"];?>" class="img-rounded img-center img-chat img-zoom" alt="<?php echo $value["namadepan"] . ' ' . $value["namabelakang"];?>">
+										<?php else: ?>
+											<div class="profile-picture-default profile-picture-default-small unselectable form-group img-chat"><?php echo strtoupper($chat_rooms_participant[0]["namadepan"][0].$chat_rooms_participant[0]["namabelakang"][0]);?></div>
+										<?php endif; ?>
+									</div>
+								</span>
+								<div class="chat-body clearfix chat-bg-gray">
+										<strong class="chat-header-name"><?php echo $value["namadepan"]." ".$value["namabelakang"];?></strong>
+
+										<span class="chat-header-datetime text-muted">
 											<span class="glyphicon glyphicon-time"></span>
-										</small>
-										<strong class="text-right primary-font"><?php echo $value["namadepan"]." ".$value["namabelakang"];?></strong>
+											<?php echo $value["datetime"];?>
+										</span>
+										<!--<div class="pull-right">
+											<?php /*echo form_open("cont", 'class="form-mention" onsubmit="return confirm(\'Do you really want to delete chat?\');"') .
+												form_hidden('message_id', $value["id"]) .
+												form_hidden('chat_rooms_id', $chat_rooms_id);?>
+												<button type="submit" class="btn btn-link" name="c_delchat" value="1"><span aria-hidden="true">&times;</span></button>
+											<?php echo form_close();*/?>
+										</div>-->
+
+									<p>
+										<?php if ($value["chat_img"] != null): ?>
+											<img src="<?php echo base_url("uploads/").$value["chat_img"];?>" class="img-responsive img-zoom">
+										<?php endif; ?>
+										<?php echo $value["msg"]; ?>
 									</p>
 								</div>
-								<p class="text-right" style="margin-left:40px;">
-									<?php if ($value["chat_img"] != null): ?>
-										<img src="<?php echo base_url("uploads/").$value["chat_img"];?>" class="img-responsive img-zoom">
-									<?php endif; ?>
-									<?php echo $value["msg"]; ?>
-								</p>
-							</div>
-						</li>
+							</li>
+
+
+
+
 					<?php endif;?>
+
+
 				<?php endforeach;?>
 			</ul>
 		</div>

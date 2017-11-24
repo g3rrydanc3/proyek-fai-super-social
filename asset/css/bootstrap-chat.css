@@ -1,0 +1,57 @@
+/* CSS used here will be applied after bootstrap.css */
+
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 0px;
+    padding: 5px;
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 55px;
+	 padding:10px;
+}
+
+.chat li.right .chat-body
+{
+    margin-right: 55px;
+	 padding:10px;
+}
+
+
+.chat li .chat-body p
+{
+    margin: 0;
+    color: #777777;
+}
+
+.chat-header-name{
+	font-size: 10pt;
+}
+
+.chat-header-datetime{
+	font-size: 8pt;
+}
+
+.chat-bg-gray{
+	background-color: #f7f7f7;
+	border-radius: 10px;
+}
+
+.chat-bg-blue{
+	background-color : #d9edf7;
+	border-radius: 10px;
+}
+
+.img-chat{
+	max-width:50px !important;
+	max-height: 50px !important;
+	font-size: 10pt !important;
+}

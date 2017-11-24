@@ -123,8 +123,9 @@
 			$subquery = $this->db->select("count(l.posts_id)")->from("likes l")->where("l.posts_id = p.id")->get_compiled_select();
 			$namadepan = $this->db->select("namadepan")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
 			$namabelakang = $this->db->select("namabelakang")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$img = $this->db->select("img")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
 			$verified = $this->db->select("verified")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
-			$query = $this->db->select("p.id, p.isi, p.datetime, p.timed, p.img, p.user_id,($subquery) as likes, ($namadepan) as namadepan, ($namabelakang) as namabelakang, ($verified) as verified")
+			$query = $this->db->select("p.id, p.isi, p.datetime, p.timed, p.img, p.user_id,($subquery) as likes, ($namadepan) as namadepan, ($namabelakang) as namabelakang, ($img) as user_img, ($verified) as verified")
 					->from("posts p")
 					->where("p.user_id = ", $id)
 					->group_start()
@@ -148,7 +149,7 @@
 				$query = $this->db->select("count(*) as count")->from("comments")->where("posts_id", $posts[$i]['id'])->get();
 				array_push($totalcommentsperpost, $query->row_array()['count']);
 
-				$query = $this->db->select("c.id, c.isi, c.datetime, c.img, u.id as user_id, u.namadepan, u.namabelakang, u.verified")
+				$query = $this->db->select("c.id, c.isi, c.datetime, c.img, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
 				->from("comments c, user u")
 				->where("c.user_id = u.id")->where("posts_id", $posts[$i]['id'])->order_by("c.datetime")->get();
 				array_push($comments, $query->result_array());
@@ -267,7 +268,6 @@
 			$subquerypost = $this->db->select("count(*)")->from("posts p")->where("p.user_id = u.id")
 			->group_start()->group_start()->where("p.timed = 0")->group_end()->or_group_start()->where("p.timed = 1")->where("p.datetime >", $now)->group_end()->group_end()
 			->group_by("p.user_id")->get_compiled_select();
-			$subquerybarang = $this->db->select("user_id")->from("barang b")->like("nama", $keyword)->get_compiled_select();
 
 
 			$this->db->select("u.id, u.namadepan, u.namabelakang, u.img, ($subquery1) as p_id,($subquery2) as p_isi,($subquery3) as p_datetime,($subquery4) as likes, ($subquerycomment) as comments, ($subquerypost) as posts")
@@ -283,8 +283,7 @@
 
 			if ($keyword != null) {
 				$this->db->like("u.namadepan",$keyword)
-				->or_like("u.namabelakang",$keyword)
-				->or_where("u.id in ($subquerybarang)");
+				->or_like("u.namabelakang",$keyword);
 			}
 			$query = $this->db->get();
 			//$query = $this->db->get_compiled_select();
@@ -402,8 +401,9 @@
 			$subquerystr = $this->db->select("count(l.posts_id)")->from("likes l")->where("l.posts_id = p.id")->get_compiled_select();
 			$namadepan = $this->db->select("namadepan")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
 			$namabelakang = $this->db->select("namabelakang")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$img = $this->db->select("img")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
 			$verified = $this->db->select("verified")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
-			$this->db->select("p.id, p.isi, p.datetime, p.img, p.timed,($subquerystr) as likes, ($namadepan) as namadepan, ($namabelakang) as namabelakang, p.user_id, ($verified) as verified")
+			$this->db->select("p.id, p.isi, p.datetime, p.img, p.timed,($subquerystr) as likes, ($namadepan) as namadepan, ($namabelakang) as namabelakang, p.user_id, ($img) as user_img, ($verified) as verified")
 			->from("posts p")
 			->group_start()
 				->group_start()
@@ -435,7 +435,7 @@
 				$query = $this->db->select("count(*) as count")->from("comments")->where("posts_id",$value['id'])->get();
 				array_push($totalcommentsperpost, $query->row_array()['count']);
 
-				$query = $this->db->select("c.id, c.isi, c.datetime, c.img, u.id as user_id, u.namadepan, u.namabelakang, u.verified")
+				$query = $this->db->select("c.id, c.isi, c.datetime, c.img, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
 				->from("comments c, user u")
 				->where("c.user_id = u.id")->where("posts_id", $value['id'])->order_by ("c.datetime")->get();
 				array_push($comments, $query->result_array());
