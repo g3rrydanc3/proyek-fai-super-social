@@ -23,7 +23,7 @@ $this->load->view('layout/header.php');
                     </div>
                     <div class="panel-body">
                        <div class="form-group">
-                           <input class="form-control input-lg" placeholder="E-mail / No HP" name="emailhp" type="email" autofocus>
+                           <input class="form-control input-lg" placeholder="E-mail" name="emailhp" type="email" autofocus>
                        </div>
                        <div class="form-group">
                            <input class="form-control input-lg" placeholder="Password" name="password" type="password" value="">

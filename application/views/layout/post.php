@@ -173,9 +173,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<p class="anchor-time"><?php echo $value1['datetime'];?></p>
 										<p>
-											<?php if ($value1["img"] != null): ?>
-												<img src="<?php echo base_url("uploads/").$value1["img"];?>" class="img-responsive img-zoom">
-											<?php endif; ?>
 											<?php echo $value1['isi'];?>
 										</p>
 									</div>

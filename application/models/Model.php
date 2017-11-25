@@ -8,7 +8,8 @@
 		//USERDATA
 		//-----------------------------------------------------
 		public function get_id($emailhp){
-			$this->db->select('id')->from('user')->where('email', $emailhp)->or_where('nohp', $emailhp)->limit(1);
+			//$this->db->select('id')->from('user')->where('email', $emailhp)->or_where('nohp', $emailhp)->limit(1);
+			$this->db->select('id')->from('user')->where('email', $emailhp)->limit(1);
 			$subquery = $this->db->get_compiled_select();
 			$query = $this->db->select("ifnull(($subquery), '-1') as id")->get();
 			return $query->row_array()['id'];
@@ -43,7 +44,9 @@
 				'namabelakang' => $namabelakang,
 				'email' => $email,
 				'nohp' => $nohp,
-				'password' => $password
+				'password' => $password,
+				'active' => 0,
+				'code_activation' => $this->getToken(20)
 			);
 			$this->db->insert('user', $data);
 			return $this->db->affected_rows();
@@ -149,10 +152,17 @@
 				$query = $this->db->select("count(*) as count")->from("comments")->where("posts_id", $posts[$i]['id'])->get();
 				array_push($totalcommentsperpost, $query->row_array()['count']);
 
-				$query = $this->db->select("c.id, c.isi, c.datetime, c.img, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
+				$query = $this->db->select("c.id, c.isi, c.datetime, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
 				->from("comments c, user u")
 				->where("c.user_id = u.id")->where("posts_id", $posts[$i]['id'])->order_by("c.datetime")->get();
-				array_push($comments, $query->result_array());
+				$comment = $query->result_array();
+				foreach ($comment as $key => $value) {
+					$query = $this->db->from("comments_reply")->where("comments_id", $value["id"])->get();
+					$comment_reply = $query->result_array();
+					array_push($comment['reply'], $comment_reply);
+				}
+				array_push($comments, $comment);
+
 
 				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified")
 				->from("user u, likes l")
@@ -223,7 +233,6 @@
 				"user_id" => $user_id,
 				"isi" => $isi,
 				"datetime" => date("Y-m-d H:i:s"),
-				"img" => $img
 			);
 			$query = $this->db->insert("comments", $data);
 			$query = $this->db->select("user_id")->from("posts")->where("id", $posts_id)->get();
@@ -435,7 +444,7 @@
 				$query = $this->db->select("count(*) as count")->from("comments")->where("posts_id",$value['id'])->get();
 				array_push($totalcommentsperpost, $query->row_array()['count']);
 
-				$query = $this->db->select("c.id, c.isi, c.datetime, c.img, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
+				$query = $this->db->select("c.id, c.isi, c.datetime, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
 				->from("comments c, user u")
 				->where("c.user_id = u.id")->where("posts_id", $value['id'])->order_by ("c.datetime")->get();
 				array_push($comments, $query->result_array());
@@ -1023,6 +1032,21 @@
 					}
 				}
 			}
+		}
+
+
+		protected function getToken($length){
+			$token = "";
+			$codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			$codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
+			$codeAlphabet.= "0123456789";
+			$max = strlen($codeAlphabet); // edited
+
+			for ($i=0; $i < $length; $i++) {
+			$token .= $codeAlphabet[random_int(0, $max-1)];
+			}
+
+			return $token;
 		}
 	}
 ?>
