@@ -73,13 +73,8 @@ class User extends MY_Controller {
 				$nohp = $this->input->post('nohp');
 				$password = $this->input->post('password');
 
-				if (!$this->mydb->register($namadepan, $namabelakang, $email, $nohp, $password)) {
-					echo "INSERT ERROR";
-				}else{
-					$id = $this->mydb->get_id($email);
-					$this->session->set_userdata("_userskrng", $id);
-					$this->session_refresh();
-					$this->load->view("register2");
+				if ($this->mydb->register($namadepan, $namabelakang, $email, $nohp, $password)) {
+					echo "email sent";
 				}
 			}
 			else{
@@ -89,8 +84,23 @@ class User extends MY_Controller {
 		}
 		else redirect($this->default_page);
 	}
+	public function register_confirm($user_id, $token){
+		if ($this->mydb->register_check($user_id, $token)) {
+			$data = array(
+				"user_id" => $user_id,
+				"token" => $token
+			);
+			$this->load->view("register2", $data);
+		}
+		else {
+			show_404();
+		}
+	}
 	public function register_process2(){
-		if ($this->check_logged_in()) {
+		$user_id = $this->input->post("user_id");
+		$token = $this->input->post("token");
+		if ($this->mydb->register_check($user_id, $token)) {
+
 			$this->form_validation->set_rules($this->rulesRegister2);
 
 			if($this->form_validation->run()){
@@ -102,18 +112,23 @@ class User extends MY_Controller {
 				$bioperusahaan = $this->input->post('bioperusahaan');
 				$biouser = $this->input->post('biouser');
 
-				if (!$this->mydb->set_editprofile($this->session->_userskrng, $alamat, $kodepos, $negara, $jabatan, $perusahaan, $bioperusahaan, $biouser)) {
-					echo "UPDATE ERROR";
-				}
+				if ($this->mydb->set_editprofile($user_id, $alamat, $kodepos, $negara, $jabatan, $perusahaan, $bioperusahaan, $biouser)) {
+					$this->mydb->register_confirm($user_id, $token);
+					$this->session->set_userdata("_userskrng", $user_id);
+					$this->session_refresh();
 
-				redirect($this->default_page);
+					redirect($this->default_page);
+				}
+				else{
+					show_404();
+				}
 			}
 			else{
 				$this->session->set_flashdata('errors', validation_errors());
-				$this->load->view("register2");
+				redirect("user/register_confirm/".$user_id."/".$token);
 			}
 		}
-		else redirect("user/login");
+		else show_404();
 	}
 	public function logout(){
 		if ($this->check_logged_in()) {

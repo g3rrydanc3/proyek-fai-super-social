@@ -20,6 +20,12 @@ class Post extends MY_Controller {
 		redirect($this->referrer);
 	}
 	public function posts(){
+		$config['upload_path']          = './uploads/';
+		$config['allowed_types']        = 'gif|jpg|png|mp4';
+		$config['overwrite']           = true;
+		$config['encrypt_name']           = true;
+		$this->upload->initialize($config);
+
 		if ($this->input->post("btn_posts")) {
 			$posts = $this->input->post('posts');
 			if ($_FILES["post-foto"]["name"] != "") {
@@ -99,6 +105,12 @@ class Post extends MY_Controller {
 		$posts = $this->mydb->get_post_from_id($posts_id) . "<br><br>" .
 		"Shared from @" .$this->mydb->get_userdata($friend_id)["namadepan"];
 		$this->mydb->insert_posts($this->session->_userskrng, $posts);
+		redirect($this->referrer);
+	}
+	public function addcommentreply(){
+		$comment_id = $this->input->post('comment_id');
+		$commentreply = $this->input->post('commentreply');
+		$this->mydb->insert_commentsreply($comment_id, $this->session->_userskrng, $commentreply);
 		redirect($this->referrer);
 	}
 }

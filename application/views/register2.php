@@ -9,7 +9,10 @@ $this->load->view('layout/header.php');
 	</div>
 <?php endif; ?>
 <?php echo form_open('user/register_process2', 'class="form-horizontal"');?>
+	<?php echo form_hidden("user_id", $user_id);?>
+	<?php echo form_hidden("token", $token);?>
 	<h1 class="form-signin-heading">Register</h1>
+	<p>Untuk menyelesaikan registrasi, anda harus mengisi profile anda</p>
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="alamat"><i class="fa fa-asterisk" aria-hidden="true"></i> Alamat:</label>
 		<div class="col-sm-10">

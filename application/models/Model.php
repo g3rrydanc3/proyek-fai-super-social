@@ -46,10 +46,31 @@
 				'nohp' => $nohp,
 				'password' => $password,
 				'active' => 0,
-				'code_activation' => $this->getToken(20)
+				'code_activation' => getToken(20)
 			);
 			$this->db->insert('user', $data);
+			$user_id = $this->db->insert_id();
+			$this->mEmail->register_confirm($user_id, $namadepan." "."$namabelakang", $email, $data["code_activation"]);
 			return $this->db->affected_rows();
+		}
+		public function register_check($user_id, $token){
+			$data = array(
+				"id" => $user_id,
+				"code_activation" => $token,
+				"active" => 0
+			);
+			$ada = $this->db->where($data)->count_all_results("user");
+			return boolval($ada);
+		}
+		public function register_confirm($user_id, $token){
+			if ($this->register_check($user_id, $token)) {
+				$data = array("active" => 1);
+				$this->db->where("id", $user_id)->update("user", $data);
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		public function get_id_from_namadepan($namadepan){
 			$this->db->select('id')->from('user')->where('namadepan', $namadepan)->limit(1);
@@ -156,10 +177,9 @@
 				->from("comments c, user u")
 				->where("c.user_id = u.id")->where("posts_id", $posts[$i]['id'])->order_by("c.datetime")->get();
 				$comment = $query->result_array();
-				foreach ($comment as $key => $value) {
-					$query = $this->db->from("comments_reply")->where("comments_id", $value["id"])->get();
-					$comment_reply = $query->result_array();
-					array_push($comment['reply'], $comment_reply);
+				for ($j=0; $j < count($comment); $j++) {
+					$query1 = $this->db->from("comments_reply cr, user u")->where("cr.comments_id", $comment[$j]["id"])->where("u.id = cr.user_id")->get();
+					$comment[$j]['reply'] = $query1->result_array();
 				}
 				array_push($comments, $comment);
 
@@ -243,6 +263,25 @@
 			return $this->db->affected_rows();
 		}
 		public function delete_comments($comments_id){
+			$query = $this->db->where("id", $comments_id)->delete("comments");
+			return $this->db->affected_rows();
+		}
+		public function insert_commentsreply($comments_id, $user_id, $isi){
+			$data = array(
+				"comments_id" => $comments_id,
+				"user_id" => $user_id,
+				"isi" => $isi,
+				"datetime" => date("Y-m-d H:i:s"),
+			);
+			$query = $this->db->insert("comments_reply", $data);
+			$query = $this->db->select("user_id")->from("comments")->where("id", $comments_id)->get();
+			$postowner = $query->row_array()['user_id'];
+			if ($postowner != $user_id) {
+				$this->insert_notification_commentreply($user_id, $postowner);
+			}
+			return $this->db->affected_rows();
+		}
+		public function delete_commentsreply($comments_id){
 			$query = $this->db->where("id", $comments_id)->delete("comments");
 			return $this->db->affected_rows();
 		}
@@ -504,6 +543,17 @@
 			$datasendiri = $this->get_userdata($id);
 			$nama = $datasendiri['namadepan']." ".$datasendiri['namabelakang'];
 			$msg = "<b>$nama</b> commented your post.";
+			$data = array(
+				"user_id" => $friend_id,
+				"msg" => $msg,
+				"datetime" => date("Y-m-d H:i:s")
+			);
+			$query = $this->db->insert("notification", $data);
+		}
+		public function insert_notification_commentreply($id, $friend_id){
+			$datasendiri = $this->get_userdata($id);
+			$nama = $datasendiri['namadepan']." ".$datasendiri['namabelakang'];
+			$msg = "<b>$nama</b> replied to your comment.";
 			$data = array(
 				"user_id" => $friend_id,
 				"msg" => $msg,
@@ -1034,19 +1084,5 @@
 			}
 		}
 
-
-		protected function getToken($length){
-			$token = "";
-			$codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			$codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
-			$codeAlphabet.= "0123456789";
-			$max = strlen($codeAlphabet); // edited
-
-			for ($i=0; $i < $length; $i++) {
-			$token .= $codeAlphabet[random_int(0, $max-1)];
-			}
-
-			return $token;
-		}
 	}
 ?>

@@ -7,7 +7,7 @@ class Profile extends MY_Controller {
 
 	public function index(){
 		if ($this->check_logged_in()) {
-			$config['base_url'] = site_url("cont/profile");
+			$config['base_url'] = site_url("profile/index");
 			$config['total_rows'] = $this->mydb->count_userposts($this->session->_userskrng);
 			$config['per_page'] = 7;
 			$config['uri_segment'] = 3;

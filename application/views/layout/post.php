@@ -85,7 +85,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</section>
 				<section class="post-body">
 					<?php if ($posts[$i]["img"] != null): ?>
-						<img src="<?php echo base_url("uploads/").$posts[$i]["img"];?>" class="img-responsive img-zoom">
+						<?php if (substr($posts[$i]["img"], -3) == "mp4"): ?>
+							<video width="320" height="240" controls>
+								<source src="<?php echo base_url("uploads/").$posts[$i]["img"];?>">
+								Your browser does not support the video tag.
+							</video>
+						<?php else: ?>
+							<img src="<?php echo base_url("uploads/").$posts[$i]["img"];?>" class="img-responsive img-zoom">
+						<?php endif; ?>
 					<?php endif; ?>
 					<p><?php echo $posts[$i]['isi'];?></p>
 				</section>
@@ -175,6 +182,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<p>
 											<?php echo $value1['isi'];?>
 										</p>
+										<p><a class="no-jump btn-reply" href="">Reply</p></a>
+										<?php if (count($value1['reply']) > 0): ?>
+											<div class ="comment-reply">
+										<?php else: ?>
+											<div class ="comment-reply comment-hide">
+										<?php endif; ?>
+											<?php foreach ($value1['reply'] as $key => $value2): ?>
+												<div class="media">
+													<div class="media-left">
+														<a href="<?php echo site_url("cont/user/").$value2['user_id']?>" class="no-style">
+															<?php if ($posts[$i]["user_img"] != null): ?>
+																<img src="<?php echo base_url()."uploads/". $value2["user_img"];?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $value2["namadepan"] . ' ' . $value2["namabelakang"];?>">
+															<?php else: ?>
+																<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object"><?php echo strtoupper($value2["namadepan"][0].$value2["namabelakang"][0]);?></div>
+															<?php endif; ?>
+														</a>
+													</div>
+													<div class="media-body">
+														<div class="row">
+															<div class="col-xs-11">
+																<a href="<?php echo site_url("cont/user/").$value2['user_id']?>" class="anchor-username"><h5 class="media-heading"><b><?php echo $value2['namadepan'] ." ". $value2['namabelakang'];?>  <?php if ($value2['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b></h5></a>
+															</div>
+															<div class="col-xs-1">
+																<a href="<?php echo site_url("post/delcomment/").$value2['id']?>" onclick="return confirm(\'Do you really want to delete comment?\');"><i class="fa fa-times" aria-hidden="true"></i></a>
+															</div>
+														</div>
+
+														<p class="anchor-time"><?php echo $value2['datetime'];?></p>
+														<p>
+															<?php echo $value2['isi'];?>
+														</p>
+													</div>
+												</div>
+												<hr class="hr-slim">
+											<?php endforeach; ?>
+											<?php echo form_open("post/addcommentreply");?>
+												<?php echo form_hidden("comment_id", $value1['id']);?>
+												<div class="input-group" class="form-group">
+													<input type="text" name="commentreply" class="form-control" placeholder="Type your message here..." />
+													<span class="input-group-btn">
+														<button class="btn btn-primary" type="submit" name="addcommentreply" value="1" id="btn-chat">Send</button>
+													</span>
+												</div>
+											<?php echo form_close();?>
+										</div>
 									</div>
 								</div>
 								<hr class="hr-slim">
@@ -194,6 +246,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <script>
 $(document).ready(function(){
+	$(".comment-hide").hide();
+	$(".btn-reply").click(function(){
+		$(this).parents(".media-body").find(".comment-reply").toggle("fast");
+	});
+
+
 	$(".divupload-foto").hide();
 	$(".upload-foto").fileinput({showUpload: false});
 
