@@ -28,7 +28,7 @@ class User extends MY_Controller {
 			$rules = array(
 				array(
 					'field' => 'emailhp',
-					'label' => 'Email / No HP',
+					'label' => 'Email',
 					'rules' => 'required|callback_emailhp_check[' . $id . ']'
 				),
 				array(
@@ -40,10 +40,16 @@ class User extends MY_Controller {
 			$this->form_validation->set_rules($rules);
 
 			if($this->form_validation->run()){
-				$this->session->set_userdata("_userskrng", $id);
-				$this->session_refresh();
+				if ($this->mydb->get_account_activated($emailhp)) {
+					$this->session->set_userdata("_userskrng", $id);
+					$this->session_refresh();
 
-				redirect($this->default_page);
+					redirect($this->default_page);
+				}
+				else {
+					$this->session->set_flashdata('errors', "Akun ini belum melakukan konfirmasi email.");
+					redirect("user/login");
+				}
 			}
 			else{
 				$this->session->set_flashdata('errors', validation_errors());
@@ -64,18 +70,24 @@ class User extends MY_Controller {
 			$this->form_validation->set_message('regex_match', '{field} harus terdapat huruf kecil, huruf kapital, angka, dan simbol');
 			$this->form_validation->set_message('alphamatches', 'Konfirmasi {field} tidak cocok');
 
-			$this->session->set_flashdata('errors', validation_errors());
+			$namadepan = $this->input->post('namadepan');
+			$namabelakang = $this->input->post('namabelakang');
+			$email = strtolower($this->input->post('email'));
+			$nohp = $this->input->post('nohp');
+			$password = $this->input->post('password');
 
-			if($this->form_validation->run()){
-				$namadepan = $this->input->post('namadepan');
-				$namabelakang = $this->input->post('namabelakang');
-				$email = strtolower($this->input->post('email'));
-				$nohp = $this->input->post('nohp');
-				$password = $this->input->post('password');
-
+			if ($this->mydb->get_id($email) != -1) {
+				$this->session->set_flashdata('errors', "Email sudah dipakai.");
+				redirect("user/register");
+			}
+			else if($this->form_validation->run()){
 				if ($this->mydb->register($namadepan, $namabelakang, $email, $nohp, $password)) {
-					echo "email sent";
+					$this->session->set_flashdata("msg", "<b>Sukses</b>, proses registrasi berhasil. Email konfirmasi anda sudah di kirim.");
 				}
+				else {
+					$this->session->set_flashdata("msg", "<b>Gagal</b>.");
+				}
+				redirect(site_url());
 			}
 			else{
 				$this->session->set_flashdata('errors', validation_errors());
@@ -84,22 +96,27 @@ class User extends MY_Controller {
 		}
 		else redirect($this->default_page);
 	}
-	public function register_confirm($user_id, $token){
-		if ($this->mydb->register_check($user_id, $token)) {
-			$data = array(
-				"user_id" => $user_id,
-				"token" => $token
-			);
-			$this->load->view("register2", $data);
-		}
-		else {
-			show_404();
-		}
+	public function register_confirm($user_id = null, $token = null){
+		if (!$this->check_logged_in()) {
+			if ($this->mydb->register_check($user_id, $token)) {
+				$data = array(
+					"user_id" => $user_id,
+					"token" => $token
+				);
+				$this->load->view("register2", $data);
+			}
+			else {
+				show_404();
+			}
+		} else redirect($this->default_page);
 	}
 	public function register_process2(){
 		$user_id = $this->input->post("user_id");
 		$token = $this->input->post("token");
-		if ($this->mydb->register_check($user_id, $token)) {
+		if ($user_id != null || $token != null) {
+			show_404();
+		}
+		else if ($this->mydb->register_check($user_id, $token)) {
 
 			$this->form_validation->set_rules($this->rulesRegister2);
 
@@ -116,6 +133,8 @@ class User extends MY_Controller {
 					$this->mydb->register_confirm($user_id, $token);
 					$this->session->set_userdata("_userskrng", $user_id);
 					$this->session_refresh();
+
+					$this->mydb->delete_token_confirmation($user_id);
 
 					redirect($this->default_page);
 				}
@@ -140,20 +159,48 @@ class User extends MY_Controller {
 		}
 		else redirect("user/login");
 	}
-	public function forgot_password(){
-		$this->load->view("forgot_password");
+	public function forgot_password($user_id = null, $token = null){
+		if (!$this->check_logged_in()) {
+			if ($this->mydb->forgot_password_check($user_id, $token)) {
+				$data = array(
+					"user_id" => $user_id,
+					"token" => $token
+				);
+				$this->load->view("reset_password", $data);
+			}
+			else if ($user_id != null || $token != null) {
+				show_404();
+			}
+			else {
+				$this->load->view("forgot_password");
+			}
+		}
+		else redirect("newsfeed");
+	}
+	public function forgot_password_email(){
+		$email = $this->input->post("email");
+		$this->mydb->request_forgot_password($email);
+		$this->session->set_flashdata("msg", '<strong>Sukses!</strong> Email terkirim. Cek email untuk reset password.');
+		redirect("user");
 	}
 	public function forgot_password_process(){
-		$email = $this->input->post("email");
-		$id = $this->mydb->get_id_from_email($email);
-		if ($id != -1) {
-			$this->memail->forgot_password($id);
+		$user_id = $this->input->post("user_id");
+		$token = $this->input->post("token");
+		$password = $this->input->post("password");
+		$password2 = $this->input->post("password2");
+
+		$this->form_validation->set_rules($this->rulesgantipassword);
+
+		if($this->form_validation->run()){
+			$this->mydb->change_password($user_id, $password);
+			$this->mydb->delete_token_password($user_id);
+			$this->session->set_flashdata("msg", "<b>Sukses</b>, penggantian password berhasil, silahkan login.");
+			redirect(site_url());
 		}
-		$this->session->set_flashdata("msg", '<div class="alert alert-success">
-			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-		  <strong>Sukses!</strong> Email terkirim. Cek email untuk reset password.
-		</div>');
-		redirect("user");
+		else {
+			$this->session->set_flashdata('errors', validation_errors());
+			redirect("user/forgot_password/".$user_id."/".$token);
+		}
 	}
 
 
@@ -163,7 +210,7 @@ class User extends MY_Controller {
 	//-------------------------
 	public function emailhp_check($str, $id){
 		if ($id == -1) {
-			$this->form_validation->set_message('emailhp_check', 'Email/No HP tidak terdaftar');
+			$this->form_validation->set_message('emailhp_check', 'Email tidak terdaftar');
 			return false;
 		}
 		else {

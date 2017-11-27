@@ -12,58 +12,6 @@ class Cont extends MY_Controller {
 		}
 		else {
 			//-----------------------------------------------------
-			//EDIT PROFILE
-			//-----------------------------------------------------
-			if($this->input->post('editprofile')){
-				$this->form_validation->set_rules($this->rulesRegister2);
-
-				if($this->form_validation->run()){
-					$id = $this->session->_userskrng;
-					$alamat = $this->input->post('alamat');
-					$kodepos = $this->input->post('kodepos');
-					$negara = $this->input->post('negara');
-					$jabatan = $this->input->post('jabatan');
-					$perusahaan = $this->input->post('perusahaan');
-					$bioperusahaan = $this->input->post('bioperusahaan');
-					$biouser = $this->input->post('biouser');
-					$private = $this->input->post('private');
-
-					if (!$this->mydb->set_editprofile($id, $alamat, $kodepos, $negara, $jabatan, $perusahaan, $bioperusahaan, $biouser, $private)) {
-						echo "UPDATE ERROR";
-					}
-
-					redirect("profile/index");
-				}
-				else{
-					$data = $this->datapost = $this->mydb->get_userdata($this->session->_userskrng);
-					$this->load->view('editprofile', $data);
-				}
-			}
-			else if($this->input->post('editaccount')){
-				$this->form_validation->set_rules($this->rulesRegister1);
-				$this->form_validation->set_message('regex_match', '{field} harus terdapat huruf kecil, huruf kapital, angka, dan simbol');
-				$this->form_validation->set_message('alphamatches', 'Konfirmasi {field} tidak cocok');
-
-				if($this->form_validation->run()){
-					$id = $this->session->_userskrng;
-					$namadepan = $this->input->post('namadepan');
-					$namabelakang = $this->input->post('namabelakang');
-					$email = strtolower($this->input->post('email'));
-					$nohp = $this->input->post('nohp');
-					$password = $this->input->post('password');
-
-					if (!$this->mydb->set_editaccount($id, $namadepan, $namabelakang, $email, $nohp, $password)) {
-						echo "UPDATE ERROR";
-					}
-
-					redirect("profile/index");
-				}
-				else{
-					$data = $this->datapost = $this->mydb->get_userdata($this->session->_userskrng);
-					$this->load->view('editaccount', $data);
-				}
-			}
-			//-----------------------------------------------------
 			//EXPLORE
 			//-----------------------------------------------------
 			else if($this->input->post('e_addfriend')){

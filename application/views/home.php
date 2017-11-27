@@ -2,9 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
-	
+
 	<?php if ($this->session->flashdata("msg") != null): ?>
-		<div class="container" style="margin-top:20px;">
+		<div class="container alert alert-info" style="margin-top:20px;">
 			<?php echo $this->session->flashdata("msg")?>
 		</div>
 	<?php endif; ?>

@@ -3,12 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->view('layout/header.php');
 ?>
 <div class='container wrapper'>
-<?php if (validation_errors() != null): ?>
-	<div class="alert alert-danger">
-	  <?php echo validation_errors(); ?>
-	</div>
-<?php endif; ?>
-<?php echo form_open('cont', 'class="form-horizontal"');?>
+	<?php if ($this->session->flashdata("errors") != null): ?>
+		<div class="alert alert-danger">
+		  <?php echo $this->session->flashdata("errors"); ?>
+		</div>
+	<?php endif; ?>
+<?php echo form_open('profile/edit_account_process', 'class="form-horizontal"');?>
 	<h1 class="form-signin-heading">Edit Account</h1>
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="namadepan"><i class="fa fa-asterisk" aria-hidden="true"></i> Nama Depan:</label>
@@ -17,7 +17,7 @@ $this->load->view('layout/header.php');
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="control-label col-sm-2" for="namabelakang">Nama Belakang</label>
+		<label class="control-label col-sm-2" for="namabelakang"><i class="fa fa-asterisk" aria-hidden="true"></i> Nama Belakang</label>
 		<div class="col-sm-10">
 			<input type="text" class="form-control" id="" name="namabelakang" placeholder="Enter nama belakang" value="<?php echo $namabelakang;?>">
 		</div>
@@ -49,17 +49,27 @@ $this->load->view('layout/header.php');
 
 
 <h2>Ganti Password</h2>
-<?php echo form_open('cont', 'class="form-horizontal"');?>
+<?php if ($this->session->flashdata("errors_password") != null): ?>
+	<div class="alert alert-danger">
+	  <?php echo $this->session->flashdata("errors_password"); ?>
+	</div>
+<?php endif; ?>
+<?php echo form_open('profile/edit_account_process_password', 'class="form-horizontal"');?>
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="password"><i class="fa fa-asterisk" aria-hidden="true"></i> Password</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="password" name="password" placeholder="Enter password" data-toggle="tooltip" data-html="true" title="password must have at least 6 characters<br>a number<br>an uppercase character<br>a lowercase character<br>a symbol">
+			<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" data-toggle="tooltip" data-html="true" title="password must have at least 6 characters<br>a number<br>an uppercase character<br>a lowercase character<br>a symbol">
 		</div>
 	</div>
 	<div class="form-group">
 		<label class="control-label col-sm-2" for="password2"><i class="fa fa-asterisk" aria-hidden="true"></i> Konfirmasi Password:</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" id="password2" name="password2" placeholder="Enter konfirmasi password">
+			<input type="password" class="form-control" id="password2" name="password2" placeholder="Enter konfirmasi password">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+		<button type="submit" class="btn btn-default" value="Register">Edit</button>
 		</div>
 	</div>
 <?php echo form_close();?>

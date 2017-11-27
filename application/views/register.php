@@ -17,7 +17,7 @@ $this->load->view('layout/header.php');
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-sm-2" for="namabelakang">Nama Belakang</label>
+			<label class="control-label col-sm-2" for="namabelakang"><i class="fa fa-asterisk" aria-hidden="true"></i> Nama Belakang</label>
 			<div class="col-sm-10">
 				<input type="text" class="form-control" id="" name="namabelakang" placeholder="Enter nama belakang">
 			</div>

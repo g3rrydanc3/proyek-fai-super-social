@@ -20,9 +20,55 @@
 			$query = $this->db->select("ifnull(($subquery), '-1') as id")->get();
 			return $query->row_array()['id'];
 		}
+		public function get_account_activated($email){
+			$data = array(
+				'active' => 1,
+				'email' => $email
+			);
+			$ada = $this->db->where($data)->count_all_results("user");
+			return boolval($ada);
+		}
+		public function request_forgot_password($email){
+			$token = getToken(20);
+			$data = array("code_password" => $token);
+			$this->db->where("email", $email)->update("user", $data);
+			if ($this->db->affected_rows() >= 1) {
+				$user_id = $this->get_id($email);
+				if ($user_id != -1) {
+					$userdata = $this->get_userdata($user_id);
+					$nama = $userdata["namadepan"] ." ". $userdata["namabelakang"];
+					$this->mEmail->e_forgot_password($user_id, $nama, $email, $token);
+				}
+			}
+		}
+		public function forgot_password_check($user_id = null, $token = null){
+			if ($token == null) {
+				return false;
+			}
+			else {
+				$data = array(
+					"id" => $user_id,
+					"code_password" => $token
+				);
+				$ada = $this->db->where($data)->count_all_results("user");
+				return boolval($ada);
+			}
+		}
 		public function get_password($id){
 			$query = $this->db->select('password')->from('user')->where('id', $id)->get();
 			return $query->row_array()['password'];
+		}
+		public function change_password($user_id, $password){
+			$data = array("password" => $password);
+			$this->db->where("id", $user_id)->update("user", $data);
+		}
+		public function delete_token_confirmation($user_id){
+			$data = array("code_activation" => "");
+			$this->db->where("id", $user_id)->update("user", $data);
+		}
+		public function delete_token_password($user_id){
+			$data = array("code_password" => "");
+			$this->db->where("id", $user_id)->update("user", $data);
 		}
 		public function get_userdata($id){
 			$query = $this->db->select('*')->from('user')->where('id', $id)->get();
@@ -50,17 +96,23 @@
 			);
 			$this->db->insert('user', $data);
 			$user_id = $this->db->insert_id();
-			$this->mEmail->register_confirm($user_id, $namadepan." "."$namabelakang", $email, $data["code_activation"]);
-			return $this->db->affected_rows();
+			if ($this->mEmail->e_register_confirm($user_id, $namadepan." "."$namabelakang", $email, $data["code_activation"])) {
+				return true;
+			}
 		}
-		public function register_check($user_id, $token){
-			$data = array(
-				"id" => $user_id,
-				"code_activation" => $token,
-				"active" => 0
-			);
-			$ada = $this->db->where($data)->count_all_results("user");
-			return boolval($ada);
+		public function register_check($user_id = null, $token = null){
+			if ($token == null) {
+				return false;
+			}
+			else {
+				$data = array(
+					"id" => $user_id,
+					"code_activation" => $token,
+					"active" => 0
+				);
+				$ada = $this->db->where($data)->count_all_results("user");
+				return boolval($ada);
+			}
 		}
 		public function register_confirm($user_id, $token){
 			if ($this->register_check($user_id, $token)) {
@@ -486,7 +538,12 @@
 				$query = $this->db->select("c.id, c.isi, c.datetime, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
 				->from("comments c, user u")
 				->where("c.user_id = u.id")->where("posts_id", $value['id'])->order_by ("c.datetime")->get();
-				array_push($comments, $query->result_array());
+				$comment = $query->result_array();
+				for ($j=0; $j < count($comment); $j++) {
+					$query1 = $this->db->from("comments_reply cr, user u")->where("cr.comments_id", $comment[$j]["id"])->where("u.id = cr.user_id")->get();
+					$comment[$j]['reply'] = $query1->result_array();
+				}
+				array_push($comments, $comment);
 
 				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified")
 				->from("user u, likes l")

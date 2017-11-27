@@ -30,12 +30,77 @@ class Profile extends MY_Controller {
 		}
 		else redirect("cont/login");
 	}
+	public function edit_profile_process(){
+		$this->form_validation->set_rules($this->rulesRegister2);
+
+		if($this->form_validation->run()){
+			$id = $this->session->_userskrng;
+			$alamat = $this->input->post('alamat');
+			$kodepos = $this->input->post('kodepos');
+			$negara = $this->input->post('negara');
+			$jabatan = $this->input->post('jabatan');
+			$perusahaan = $this->input->post('perusahaan');
+			$bioperusahaan = $this->input->post('bioperusahaan');
+			$biouser = $this->input->post('biouser');
+			$private = $this->input->post('private');
+
+			if (!$this->mydb->set_editprofile($id, $alamat, $kodepos, $negara, $jabatan, $perusahaan, $bioperusahaan, $biouser, $private)) {
+				echo "UPDATE ERROR";
+			}
+
+			redirect("profile/index");
+		}
+		else{
+			$this->session->set_flashdata('errors', validation_errors());
+			redirect("profile/edit_profile");
+		}
+	}
 	public function edit_account(){
 		if ($this->check_logged_in()) {
 			$data = $this->datapost = $this->mydb->get_userdata($this->session->_userskrng);
 			$this->load->view('editaccount', $data);
 		}
 		else redirect("cont/login");
+	}
+	public function edit_account_process(){
+		$this->form_validation->set_rules($this->ruleseditaccount);
+		$this->form_validation->set_message('regex_match', '{field} harus terdapat huruf kecil, huruf kapital, angka, dan simbol');
+		$this->form_validation->set_message('alphamatches', 'Konfirmasi {field} tidak cocok');
+
+		if($this->form_validation->run()){
+			$id = $this->session->_userskrng;
+			$namadepan = $this->input->post('namadepan');
+			$namabelakang = $this->input->post('namabelakang');
+			$email = strtolower($this->input->post('email'));
+			$nohp = $this->input->post('nohp');
+			$password = $this->input->post('password');
+
+			if (!$this->mydb->set_editaccount($id, $namadepan, $namabelakang, $email, $nohp, $password)) {
+				echo "UPDATE ERROR";
+			}
+
+			redirect("profile/index");
+		}
+		else{
+			$this->session->set_flashdata('errors', validation_errors());
+			redirect("profile/edit_account");
+		}
+	}
+	public function edit_account_process_password(){
+		$password = $this->input->post("password");
+		$password2 = $this->input->post("password2");
+
+		$this->form_validation->set_rules($this->rulesgantipassword);
+
+		if($this->form_validation->run()){
+			$this->mydb->change_password($this->session->_userskrng, $password);
+			$this->session->set_flashdata("msg", "<b>Sukses</b>, penggantian password berhasil");
+			redirect(site_url());
+		}
+		else {
+			$this->session->set_flashdata('errors_password', validation_errors());
+			redirect("profile/edit_account");
+		}
 	}
 	public function upload_foto(){
 		if (empty($_FILES['userfile'])) {

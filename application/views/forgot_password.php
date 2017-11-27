@@ -14,7 +14,7 @@ $this->load->view('layout/header.php');
 		  <?php echo $this->session->flashdata('errors'); ?>
 		</div>
 	<?php endif; ?>
-	<?php echo form_open('user/forgot_password_process');?>
+	<?php echo form_open('user/forgot_password_email');?>
 			<div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">

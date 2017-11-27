@@ -37,7 +37,7 @@ $this->load->view('layout/header.php');
 
 		</div>
 		<div class="col-sm-8">
-			<?php echo form_open('cont', 'class="form-horizontal"');?>
+			<?php echo form_open('profile/edit_profile_process', 'class="form-horizontal"');?>
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="alamat"><i class="fa fa-asterisk" aria-hidden="true"></i> Alamat:</label>
 				<div class="col-sm-10">

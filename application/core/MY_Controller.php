@@ -18,7 +18,7 @@ class MY_Controller extends CI_Controller {
 		array(
 			'field' => 'namabelakang',
 			'label' => 'Nama Belakang',
-			'rules' => 'alpha'
+			'rules' => 'required|alpha'
 		),
 		array(
 			'field' => 'email',
@@ -76,6 +76,40 @@ class MY_Controller extends CI_Controller {
 			'field' => 'biouser',
 			'label' => 'Bio User',
 			'rules' => ''
+		)
+	);
+	protected $rulesgantipassword = array(
+		array(
+			'field' => 'password',
+			'label' => 'Password',
+			'rules' => 'required|min_length[6]|regex_match["^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]"]'
+		),
+		array(
+			'field' => 'password2',
+			'label' => 'Konfirmasi Password',
+			'rules' => 'required|matches[password]'
+		)
+	);
+	protected $ruleseditaccount= array(
+		array(
+			'field' => 'namadepan',
+			'label' => 'Nama Depan',
+			'rules' => 'required|alpha'
+		),
+		array(
+			'field' => 'namabelakang',
+			'label' => 'Nama Belakang',
+			'rules' => 'required|alpha'
+		),
+		array(
+			'field' => 'email',
+			'label' => 'E-mail',
+			'rules' => 'required|valid_email'
+		),
+		array(
+			'field' => 'nohp',
+			'label' => 'No HP',
+			'rules' => 'required|numeric'
 		)
 	);
 
