@@ -16,9 +16,8 @@ class Newsfeed extends MY_Controller {
 		$page = ($this->uri->segment($config['uri_segment'])) ? $this->uri->segment($config['uri_segment']) : 0;
 		$this->pagination->initialize($config);
 		$data['links'] = $this->pagination->create_links();
-		$data['pesan'] = "";
 		if ($this->session->flashdata()) {
-			$data['pesan'] = $this->session->flashdata('pesan');
+			$this->pesan = $this->session->flashdata('pesan');
 		}
 		$data += $this->datapost = $this->mydb->get_userdata($this->session->_userskrng) + $this->mydb->get_newsfeed($this->session->_userskrng, $config["per_page"], $page);
 		$this->load->view('newsfeed', $data);

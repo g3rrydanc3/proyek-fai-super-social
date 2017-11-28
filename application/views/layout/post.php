@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <?php
-	if($pesan != ""){
-		echo "<script> alert('".$pesan."'); </script>";
+	if($this->pesan != ""){
+		echo "<script> alert('".$this->pesan."'); </script>";
 	}
 ?>
 

@@ -3,11 +3,11 @@
 		echo "<h4>Apa yang sedang terjadi?</h4>";
 		echo form_open('Post/report');
 			echo form_hidden('id_post', $id_post);
-			echo form_radio('report', 'Ini mengganggu atau tidak menarik')."Ini mengganggu atau tidak menarik";
+			echo form_radio('report', 'Ini mengganggu atau tidak menarik.')."Ini mengganggu atau tidak menarik.";
 			echo "<br>";
-			echo form_radio('report', 'Menurut saya ini tidak seharusnya ada di Facebook')."Menurut saya ini tidak seharusnya ada di Facebook";
+			echo form_radio('report', 'Menurut saya ini tidak seharusnya ada di SuperSocial.')."Menurut saya ini tidak seharusnya ada di SuperSocial.";
 			echo "<br>";
-			echo form_radio('report', 'Ini adalah spam')."Ini adalah spam";
+			echo form_radio('report', 'Ini adalah spam.')."Ini adalah spam.";
 			echo "<br><br>";
 			echo form_submit('lanjut', 'Lanjutkan', "class = 'btn btn-primary'");
 		echo form_close();
