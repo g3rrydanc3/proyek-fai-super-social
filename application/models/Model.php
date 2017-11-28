@@ -251,6 +251,10 @@
 			$ret['totalcommentsperpost'] = $totalcommentsperpost;
 			return $ret;
 		}
+		public function get_post_by_id($id) {
+			$query = $this->db->query("select * from posts where id = '$id'");
+			return $query->row();
+		}
 		public function insert_posts($id, $isi, $img = null){
 			$this->notification_post_mention($isi, $id);
 			$data = array(
@@ -1139,6 +1143,14 @@
 					}
 				}
 			}
+		}
+		
+		public function insert_report($user_id_reporter, $user_id_reported, $reason) {
+			$data = array("user_id_reporter" => $user_id_reporter,
+						  "user_id_reported" => $user_id_reported,
+						  "reason" => $reason
+					);
+			$this->db->insert("report", $data);
 		}
 
 	}

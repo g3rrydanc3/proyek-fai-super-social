@@ -16,9 +16,31 @@ class Post extends MY_Controller {
 			redirect(site_url());
 		}
 	}
+	
+	public function report() {
+		$id_post = $this->input->post('id_post');
+		if ($this->input->post('report') != "") {
+			$reason = $this->input->post('report');
+			$user_id_reporter = $this->session->userdata('_userskrng');
+			$query = $this->mydb->get_post_by_id($id_post);
+			$user_id_reported = $query->user_id;
+			$this->mydb->insert_report($user_id_reporter, $user_id_reported, $reason);
+			$this->session->set_flashdata('pesan', 'Terimakasih, report Anda akan kami proses.');
+			redirect($this->default_page);
+		}else {
+			$this->reportpost($id_post);
+		}
+	}
+	
+	public function reportpost($idpost) {
+		$data['id_post'] = $idpost;
+		$this->load->view('report_post', $data);
+	}
+	
 	public function index(){
 		redirect($this->referrer);
 	}
+	
 	public function posts(){
 		$config['upload_path']          = './uploads/';
 		$config['allowed_types']        = 'gif|jpg|png|mp4';

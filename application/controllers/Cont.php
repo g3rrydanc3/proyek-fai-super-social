@@ -14,7 +14,7 @@ class Cont extends MY_Controller {
 			//-----------------------------------------------------
 			//EXPLORE
 			//-----------------------------------------------------
-			else if($this->input->post('e_addfriend')){
+			if($this->input->post('e_addfriend')){
 				$friend_id = $this->input->post('friend_id');
 				$this->mydb->request_friend($this->session->_userskrng, $friend_id);
 

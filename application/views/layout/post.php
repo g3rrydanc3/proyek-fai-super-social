@@ -2,6 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
+<?php
+	if($pesan != ""){
+		echo "<script> alert('".$pesan."'); </script>";
+	}
+?>
+
 <?php if (count($posts) > 0): ?>
 	<?php for ($i = 0; $i<count($posts); $i++) : ?>
 		<!--MODAL-->
