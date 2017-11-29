@@ -4,6 +4,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Controller extends CI_Controller {
 	protected $default_page = "newsfeed";
 	protected $default_page_not_logged_in = "user/login";
+	protected $email_admin = array(
+		"admin@admin.com"
+	);
 
 	function __construct(){
 		parent::__construct();

@@ -43,8 +43,10 @@ class User extends MY_Controller {
 				if ($this->mydb->get_account_activated($emailhp)) {
 					$this->session->set_userdata("_userskrng", $id);
 					$this->session_refresh();
-
-					redirect($this->default_page);
+					if (in_array($emailhp, $this->email_admin)) {
+						$this->session->set_userdata("is_admin", true);
+					}
+					//redirect($this->default_page);
 				}
 				else {
 					$this->session->set_flashdata('errors', "Akun ini belum melakukan konfirmasi email.");
@@ -154,6 +156,7 @@ class User extends MY_Controller {
 			$this->session->set_flashdata("goodbye", $this->session->name." berhasil logout!");
 			$this->session->unset_userdata("_userskrng");
 			$this->session->unset_userdata("name");
+			$this->session->unset_userdata("is_admin");
 
 			redirect("user");
 		}
