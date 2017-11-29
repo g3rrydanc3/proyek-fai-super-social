@@ -62,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php if ($this->session->_userskrng && $this->session->_userskrng != null): ?>
 				<ul class="nav navbar-nav">
 					<li class="<?php if($this->uri->segment(1)=="newsfeed"){echo 'active';}?>"><a href="<?php echo site_url("newsfeed");?>">News Feed</a></li>
-					<li class="<?php if($this->uri->segment(2)=="explore"){echo 'active';}?>"><a href="<?php echo site_url("cont/explore");?>">Explore</a></li>
+					<li class="<?php if($this->uri->segment(1)=="search"){echo 'active';}?>"><a href="<?php echo site_url("search");?>">Search</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="<?php if($this->uri->segment(2)=="notification"){echo 'active';}?>"><a href="<?php echo site_url("cont/notification");?>">Notification</a></li>

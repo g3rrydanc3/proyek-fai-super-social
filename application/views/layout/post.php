@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<?php if (count($posts) > 0): ?>
+<?php if (isset($posts) && count($posts) > 0): ?>
 	<?php for ($i = 0; $i<count($posts); $i++) : ?>
 		<!--MODAL-->
 		<div id="myModal<?php echo $i;?>" class="modal">
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="media-body">
 									<a href="<?php echo site_url("cont/user/").$posts[$i]['user_id']?>" class="anchor-username">
 										<h4 class="media-heading">
-											<?php echo $posts[$i]["namadepan"]." ".$posts[$i]["namabelakang"];?>  <?php if ($verified) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b>
+											<?php echo $posts[$i]["namadepan"]." ".$posts[$i]["namabelakang"];?>  <?php if ($posts[$i]["verified"]) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b>
 										</h4>
 									</a>
 									<span class="anchor-time">
@@ -132,10 +132,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="media">
 								<div class="media-left">
 									<a href="<?php echo site_url("profile")?>" class="no-style">
-										<?php if ($img != null): ?>
-											<img src="<?php echo base_url()."uploads/". $img;?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $namadepan . ' ' . $namabelakang;?>">
+										<?php if ($posts[$i]["img"] != null): ?>
+											<img src="<?php echo base_url()."uploads/". $img;?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $posts[$i]['namadepan'] . ' ' . $posts[$i]['namabelakang'];?>">
 										<?php else: ?>
-											<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object "><?php echo strtoupper($namadepan[0].$namabelakang[0]);?></div>
+											<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object "><?php echo strtoupper($posts[$i]['namadepan'][0].$posts[$i]['namabelakang'][0]);?></div>
 										<?php endif; ?>
 									</a>
 								</div>
@@ -161,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="media">
 									<div class="media-left">
 										<a href="<?php echo site_url("cont/user/").$value1['user_id']?>" class="no-style">
-											<?php if ($posts[$i]["user_img"] != null): ?>
+											<?php if ($value1["user_img"] != null): ?>
 												<img src="<?php echo base_url()."uploads/". $value1["user_img"];?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $value1["namadepan"] . ' ' . $value1["namabelakang"];?>">
 											<?php else: ?>
 												<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object"><?php echo strtoupper($value1["namadepan"][0].$value1["namabelakang"][0]);?></div>
@@ -241,7 +241,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php	endfor;?>
 <?php echo $links;?>
 <?php else: ?>
-	<p><span class="label label-default">Anda belum pernah post.</span></p>
+	<div class="alert alert-warning">
+		Tidak ada post.
+	</div>
 <?php endif; ?>
 
 <script>

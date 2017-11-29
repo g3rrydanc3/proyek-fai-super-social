@@ -140,4 +140,5 @@ class Post extends MY_Controller {
 		}
 		else redirect($this->default_page_not_logged_in);
 	}
+}
 ?>

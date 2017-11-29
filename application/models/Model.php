@@ -243,6 +243,7 @@
 
 				//CEK MENTION
 				$posts[$i]["isi"] = $this->return_post_with_mention($posts[$i]["isi"], $_userskrng);
+				$posts[$i]["isi"] = $this->return_post_with_hashtag($posts[$i]["isi"]);
 			}
 
 			$ret['posts'] = $posts;
@@ -572,6 +573,7 @@
 
 			for ($i=0; $i < count($posts); $i++) {
 				$posts[$i]["isi"] = $this->return_post_with_mention($posts[$i]["isi"], $id);
+				$posts[$i]["isi"] = $this->return_post_with_hashtag($posts[$i]["isi"]);
 			}
 
 			$comments = array();
@@ -1055,52 +1057,66 @@
 			);
 			$this->db->insert("message_deleted", $data);
 		}
-		//
-		public function get_all_friends_shop($user_id){
-			$friends = $this->get_friends_clean($user_id);
-			$query = $this->db->select("u.namadepan, u.namabelakang, u.kota, u.verified, b.id, b.nama, b.harga, b.stok, b.img")
-			->from("user u")->from("barang b")
-			->where("u.id = b.user_id")
-			->where_in("u.id", $friends)
-			->get();
-			return $query->result_array();
-		}
-		public function get_friends_shop($barang_id){
-			$query = $this->db->select("u.namadepan, u.namabelakang, u.kota, u.verified, b.id, b.nama, b.harga, b.stok, b.img")
-			->from("user u")->from("barang b")
-			->where("u.id = b.user_id")
-			->where("b.id", $barang_id)
-			->get();
-			return $query->result_array();
-		}
-		public function get_barang($barang_id){
-			$query = $this->db->where("id", $barang_id)->get("barang");
-			return $query->result_array()[0];
-		}
-		public function check_out(){
-			$this->db->trans_start();
-			$gagal = array();
-			foreach ($this->cart->contents() as $key => $value) {
-				$barang = $this->mydb->get_barang($value["id"]);
 
-				$data = array("stok" => $barang["stok"] - $value["qty"]);
-				$this->db->where("id", $barang["id"])->update("barang", $data);
+		public function get_post_from_hashtag($hashtag, $_userskrng, $limit = 0, $start = 0){
+			$hashtag = "#" . "$hashtag";
 
-				if ($barang["stok"] - $value["qty"] < 0) {
-					$msg = $value["name"] . " sisa stok hanya " . $barang["stok"];
-					array_push($gagal, $msg);
+			$now = date("Y-m-d H:i:s", time() - 120);
+			$subquery = $this->db->select("count(l.posts_id)")->from("likes l")->where("l.posts_id = p.id")->get_compiled_select();
+			$namadepan = $this->db->select("namadepan")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$namabelakang = $this->db->select("namabelakang")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$img = $this->db->select("img")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$verified = $this->db->select("verified")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$query = $this->db->select("p.id, p.isi, p.datetime, p.timed, p.img, p.user_id,($subquery) as likes, ($namadepan) as namadepan, ($namabelakang) as namabelakang, ($img) as user_img, ($verified) as verified")
+					->from("posts p")
+					->like("p.isi", $hashtag)
+					->group_start()
+						->group_start()
+							->where("p.timed = 0")
+						->group_end()
+						->or_group_start()
+							->where("p.timed = 1")
+							->where("p.datetime >", $now)
+						->group_end()
+					->group_end()
+					->order_by("datetime desc")
+					->limit($limit,$start)->get();
+
+			$posts = $query->result_array();
+
+			$comments = array();
+			$likes = array();
+			$totalcommentsperpost = array();
+			for ($i=0; $i < count($posts); $i++) {
+				$query = $this->db->select("count(*) as count")->from("comments")->where("posts_id", $posts[$i]['id'])->get();
+				array_push($totalcommentsperpost, $query->row_array()['count']);
+
+				$query = $this->db->select("c.id, c.isi, c.datetime, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
+				->from("comments c, user u")
+				->where("c.user_id = u.id")->where("posts_id", $posts[$i]['id'])->order_by("c.datetime")->get();
+				$comment = $query->result_array();
+				for ($j=0; $j < count($comment); $j++) {
+					$query1 = $this->db->from("comments_reply cr, user u")->where("cr.comments_id", $comment[$j]["id"])->where("u.id = cr.user_id")->get();
+					$comment[$j]['reply'] = $query1->result_array();
 				}
+				array_push($comments, $comment);
+
+
+				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified")
+				->from("user u, likes l")
+				->where("u.id = l.user_id")->where("l.posts_id", $posts[$i]['id'])->get();
+				array_push($likes, $query->result_array());
+
+				//CEK MENTION
+				$posts[$i]["isi"] = $this->return_post_with_mention($posts[$i]["isi"], $_userskrng);
+				$posts[$i]["isi"] = $this->return_post_with_hashtag($posts[$i]["isi"]);
 			}
-			if (count($gagal) > 0 || $this->db->trans_status() === FALSE) {
-				$this->db->trans_rollback();
-				return $gagal;
-			}
-			else {
-				$this->db->trans_commit();
-				$data = array("verified" => "1");
-				$this->db->where("id", $barang["user_id"])->update("user", $data);
-				return TRUE;
-			}
+
+			$ret['posts'] = $posts;
+			$ret['comments'] = $comments;
+			$ret['likes'] = $likes;
+			$ret['totalcommentsperpost'] = $totalcommentsperpost;
+			return $ret;
 		}
 
 		public function return_post_with_mention($post, $_userskrng){
@@ -1185,6 +1201,9 @@
 					}
 				}
 			}
+		}
+		public function return_post_with_hashtag($post){
+			return preg_replace('/(?:^|\s)#(\w+)/', ' <a href="'.site_url("search/hashtag").'/$1">#$1</a>', $post);
 		}
 
 		public function insert_report($user_id_reporter, $user_id_reported, $posts_id, $reason) {
