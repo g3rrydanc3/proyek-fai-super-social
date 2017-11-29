@@ -8,6 +8,9 @@ if (!in_array_r($friend_id, $friends)) {
 		$bolehlihat = false;
 	}
 }
+if ($blocked) {
+	$bolehlihat = false;
+}
 ?>
 <div class='container wrapper'>
 	<div class="row">
@@ -34,14 +37,26 @@ if (!in_array_r($friend_id, $friends)) {
 					</ul>
 					<?php echo form_open("cont");?>
 					<?php	echo form_hidden('friend_id', $friend_id);?>
-					<?php if (in_array_r($friend_id, $friends_requested)):?>
-						<button class="btn btn-primary" disabled>Requested</button>
-					<?php elseif (in_array_r($friend_id, $friends)):?>
-						<button type="submit" class="btn btn-primary" name="pg_removefriend" value="Remove Friend">Remove Friend</button>
-						<button type="submit" class="btn btn-primary" name="pg_sendmessage" value="Send Message">Send Message</button>
-					<?php else:?>
-						<button type="submit" class="btn btn-primary" name="pg_addfriend" value="Add Friend">Add Friend</button>
-					<?php endif;?>
+					<center>
+							<?php if (!$blocked): ?>
+								<div class="btn-group-vertical btn-block">
+								<?php if (!$block): ?>
+									<?php if (in_array_r($friend_id, $friends_requested)):?>
+										<button class="btn btn-block btn-success" disabled>Requested</button>
+									<?php elseif (in_array_r($friend_id, $friends)):?>
+										<button type="submit" class="btn btn-success" name="pg_sendmessage" value="Send Message">Send Message</button>
+										<button type="submit" class="btn btn-warning" name="pg_removefriend" value="Remove Friend">Remove Friend</button>
+									<?php else:?>
+										<button type="submit" class="btn btn-success" name="pg_addfriend" value="Add Friend">Add Friend</button>
+									<?php endif;?>
+									<button type="submit" class="btn btn-danger" name="pg_blockfriend" value="Add Friend">Block This Person</button>
+								<?php else: ?>
+									<button type="submit" class="btn btn-danger" name="pg_removefriend" value="Add Friend">Unblock This Person</button>
+								<?php endif; ?>
+								</div>
+							<?php endif; ?>
+						<button type="submit" class="btn btn-info btn-block" name="pg_reportfriend" value="Add Friend">Report This Person</button>
+					</center>
 					<?php echo form_close();?>
 				</div>
 			</div>

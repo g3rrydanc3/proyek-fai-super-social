@@ -57,6 +57,12 @@ class Cont extends MY_Controller {
 
 				redirect("cont/user/". $friend_id);
 			}
+			else if($this->input->post('pg_blockfriend')){
+				$friend_id = $this->input->post('friend_id');
+				$this->mydb->block_friend($this->session->_userskrng, $friend_id);
+
+				redirect("cont/user/". $friend_id);
+			}
 			else if($this->input->post('pg_like')){
 				$friend_id = $this->input->post('friend_id');
 				$posts_id = $this->input->post('posts_id');
@@ -310,6 +316,9 @@ class Cont extends MY_Controller {
 				$data['friends'] = $this->mydb->get_friends($this->session->_userskrng);
 				$data['user'] = $this->mydb->get_userdata($this->session->_userskrng);
 				$data["skill"] = $this->mydb->get_skill($friend_id, 3);
+				$data["block"] = $this->mydb->check_block($this->session->_userskrng, $friend_id);
+				$data["blocked"] = $this->mydb->check_blocked($this->session->_userskrng, $friend_id);
+
 
 				$this->load->view("profileguest", $data);
 			}

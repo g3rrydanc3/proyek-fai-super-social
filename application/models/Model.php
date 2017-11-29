@@ -345,9 +345,15 @@
 		//FRIENDS
 		//-----------------------------------------------------
 		public function count_explore($id, $keyword = null){
+			$subqueryblocked = $this->db->select("f.user_id1")->from("friends f")->where("f.user_id2", $id)->get()->result_array();
+			$blocked = array();
+			foreach ($subqueryblocked as $key => $value) {
+				array_push($blocked, $value["user_id1"]);
+			}
 
 			$this->db->from("user u")
-				->where("u.id not like ",$id)->order_by("likes desc");
+				->where("u.id not like ",$id)
+				->where_not_in("u.id", $blocked);
 			if ($keyword != null) {
 				$this->db->like("u.namadepan",$keyword)
 				->or_like("u.namabelakang",$keyword);
@@ -373,22 +379,29 @@
 			->group_start()->group_start()->where("p.timed = 0")->group_end()->or_group_start()->where("p.timed = 1")->where("p.datetime >", $now)->group_end()->group_end()
 			->group_by("p.user_id")->get_compiled_select();
 
+			$subqueryblocked = $this->db->select("f.user_id1")->from("friends f")->where("f.user_id2", $id)->get()->result_array();
+			$blocked = array();
+			foreach ($subqueryblocked as $key => $value) {
+				array_push($blocked, $value["user_id1"]);
+			}
 
 			$this->db->select("u.id, u.namadepan, u.namabelakang, u.img, ($subquery1) as p_id,($subquery2) as p_isi,($subquery3) as p_datetime,($subquery4) as likes, ($subquerycomment) as comments, ($subquerypost) as posts")
 				->from("user u")
 				->where("u.id not like ",$id)
+				->where_not_in("u.id", $blocked)
 				->limit($limit, $page);
-			if ($sortby == null && $sort == null) {
-				$this->db->order_by("likes desc");
-			}
-			else {
-				$this->db->order_by("$sortby $sort");
-			}
 
-			if ($keyword != null) {
-				$this->db->like("u.namadepan",$keyword)
-				->or_like("u.namabelakang",$keyword);
-			}
+				if ($keyword != null) {
+					$this->db->like("u.namadepan",$keyword)
+					->or_like("u.namabelakang",$keyword);
+				}
+
+				if ($sortby == null && $sort == null) {
+					$this->db->order_by("likes desc");
+				}
+				else {
+					$this->db->order_by("$sortby $sort");
+				}
 			$query = $this->db->get();
 			//$query = $this->db->get_compiled_select();
 			//echo $query;
@@ -451,11 +464,40 @@
 		public function accept_friend($id, $friend_id){
 			$data = array(
 				"status" => "friend",
+				"datetime" => date("Y-m-d H:i:s")
 			);
 			$query = $this->db->where("user_id1", $friend_id)->where("user_id2", $id)->update("friends", $data);
 			$this->insert_notification_accepted_friend_request($id, $friend_id);
 			return $this->db->affected_rows();
 		}
+
+		public function check_block($id, $user_id2){
+			$this->db->from("friends f")
+			->where("f.user_id1", $id)
+			->where("f.user_id2", $user_id2)
+			->where("status", "blocked");
+			return boolval($this->db->count_all_results());
+		}
+		public function check_blocked($id, $user_id2){
+			$this->db->from("friends f")
+			->where("f.user_id2", $id)
+			->where("f.user_id1", $user_id2)
+			->where("status", "blocked");
+			return boolval($this->db->count_all_results());
+		}
+		public function block_friend($id, $friend_id){
+			$data = array(
+				"status" => "blocked",
+				"datetime" => date("Y-m-d H:i:s")
+			);
+			$query = $this->db->where("user_id1", $id)->where("user_id2", $friend_id)->update("friends", $data);
+			if ($this->db->affected_rows() == 0) {
+				$data["user_id1"] = $id;
+				$data["user_id2"] = $friend_id;
+				$query = $this->db->insert("friends", $data);
+			}
+		}
+
 		//-----------------------------------------------------
 		//NEWSFEED
 		//-----------------------------------------------------
