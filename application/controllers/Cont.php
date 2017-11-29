@@ -119,6 +119,11 @@ class Cont extends MY_Controller {
 				}
 				redirect("cont/chat_room/". $chat_rooms_id);
 			}
+			else if($this->input->post('pg_reportfriend')){
+				$friend_id = $this->input->post('friend_id');
+
+				redirect("user/reportuser/".$friend_id);
+			}
 			//-----------------------------------------------------
 			//NOTIFICATION
 			//-----------------------------------------------------

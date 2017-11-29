@@ -202,6 +202,30 @@ class User extends MY_Controller {
 			redirect("user/forgot_password/".$user_id."/".$token);
 		}
 	}
+	public function reportuser($user_id){
+		if ($this->check_logged_in()) {
+			$data['user_id'] = $user_id;
+			$this->load->view('report_user', $data);
+		}
+		else redirect($this->default_page_not_logged_in);
+	}
+	public function report_process() {
+		if ($this->check_logged_in()) {
+			$reason = $this->input->post('report');
+			$user_id_reporter = $this->session->userdata('_userskrng');
+			$other_reason = $this->input->post('other_reason');
+			if ($reason == "Other") {
+				$reason = $other_reason;
+			}
+
+			$user_id_reported = $this->input->post("user_id");
+
+			$this->mydb->insert_report($user_id_reporter, $user_id_reported, null, $reason);
+			$this->session->set_flashdata('msg', 'Terimakasih, report Anda akan kami proses.');
+			redirect($this->default_page);
+		}
+		else redirect($this->default_page_not_logged_in);
+	}
 
 
 

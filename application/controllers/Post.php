@@ -115,24 +115,29 @@ class Post extends MY_Controller {
 		redirect($this->referrer);
 	}
 	public function reportpost($post_id) {
-		$data['post_id'] = $post_id;
-		$this->load->view('report_post', $data);
+		if ($this->check_logged_in()) {
+			$data['post_id'] = $post_id;
+			$this->load->view('report_post', $data);
+		}
+		else redirect($this->default_page_not_logged_in);
 	}
 	public function report_process() {
-		$posts_id = $this->input->post('post_id');
-		$reason = $this->input->post('report');
-		$user_id_reporter = $this->session->userdata('_userskrng');
-		$other_reason = $this->input->post('other_reason');
-		if ($reason == "Other") {
-			$reason = $other_reason;
+		if ($this->check_logged_in()) {
+			$posts_id = $this->input->post('post_id');
+			$reason = $this->input->post('report');
+			$user_id_reporter = $this->session->userdata('_userskrng');
+			$other_reason = $this->input->post('other_reason');
+			if ($reason == "Other") {
+				$reason = $other_reason;
+			}
+
+			$query = $this->mydb->get_post_by_id($posts_id);
+			$user_id_reported = $query->user_id;
+
+			$this->mydb->insert_report($user_id_reporter, $user_id_reported, $posts_id, $reason);
+			$this->session->set_flashdata('msg', 'Terimakasih, report Anda akan kami proses.');
+			redirect($this->default_page);
 		}
-
-		$query = $this->mydb->get_post_by_id($posts_id);
-		$user_id_reported = $query->user_id;
-
-		$this->mydb->insert_report($user_id_reporter, $user_id_reported, $posts_id, $reason);
-		$this->session->set_flashdata('msg', 'Terimakasih, report Anda akan kami proses.');
-		redirect($this->default_page);
+		else redirect($this->default_page_not_logged_in);
 	}
-}
 ?>
