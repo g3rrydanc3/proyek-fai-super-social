@@ -16,31 +16,10 @@ class Post extends MY_Controller {
 			redirect(site_url());
 		}
 	}
-	
-	public function report() {
-		$id_post = $this->input->post('id_post');
-		if ($this->input->post('report') != "") {
-			$reason = $this->input->post('report');
-			$user_id_reporter = $this->session->userdata('_userskrng');
-			$query = $this->mydb->get_post_by_id($id_post);
-			$user_id_reported = $query->user_id;
-			$this->mydb->insert_report($user_id_reporter, $user_id_reported, $reason);
-			$this->session->set_flashdata('pesan', 'Terimakasih, report Anda akan kami proses.');
-			redirect($this->default_page);
-		}else {
-			$this->reportpost($id_post);
-		}
-	}
-	
-	public function reportpost($idpost) {
-		$data['id_post'] = $idpost;
-		$this->load->view('report_post', $data);
-	}
-	
+
 	public function index(){
 		redirect($this->referrer);
 	}
-	
 	public function posts(){
 		$config['upload_path']          = './uploads/';
 		$config['allowed_types']        = 'gif|jpg|png|mp4';
@@ -134,6 +113,26 @@ class Post extends MY_Controller {
 		$commentreply = $this->input->post('commentreply');
 		$this->mydb->insert_commentsreply($comment_id, $this->session->_userskrng, $commentreply);
 		redirect($this->referrer);
+	}
+	public function reportpost($post_id) {
+		$data['post_id'] = $post_id;
+		$this->load->view('report_post', $data);
+	}
+	public function report_process() {
+		$posts_id = $this->input->post('post_id');
+		$reason = $this->input->post('report');
+		$user_id_reporter = $this->session->userdata('_userskrng');
+		$other_reason = $this->input->post('other_reason');
+		if ($reason == "Other") {
+			$reason = $other_reason;
+		}
+
+		$query = $this->mydb->get_post_by_id($posts_id);
+		$user_id_reported = $query->user_id;
+
+		$this->mydb->insert_report($user_id_reporter, $user_id_reported, $posts_id, $reason);
+		$this->session->set_flashdata('msg', 'Terimakasih, report Anda akan kami proses.');
+		redirect($this->default_page);
 	}
 }
 ?>

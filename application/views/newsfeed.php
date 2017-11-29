@@ -5,6 +5,12 @@ $this->load->view('layout/header.php');
 <div class='container wrapper'>
 	<h1>News Feed</h1>
 
+	<?php if ($this->session->flashdata("msg") != null): ?>
+		<div class="container alert alert-info" style="margin-top:20px;">
+			<?php echo $this->session->flashdata("msg")?>
+		</div>
+	<?php endif; ?>
+	
 <?php $this->load->view("layout/post_new");?>
 
 <?php $this->load->view("layout/post");?>

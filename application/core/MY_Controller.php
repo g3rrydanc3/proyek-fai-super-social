@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class MY_Controller extends CI_Controller {
 	protected $default_page = "newsfeed";
 	protected $default_page_not_logged_in = "user/login";
-	public $pesan = "";
+
 	function __construct(){
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');

@@ -1144,10 +1144,11 @@
 				}
 			}
 		}
-		
-		public function insert_report($user_id_reporter, $user_id_reported, $reason) {
+
+		public function insert_report($user_id_reporter, $user_id_reported, $posts_id, $reason) {
 			$data = array("user_id_reporter" => $user_id_reporter,
 						  "user_id_reported" => $user_id_reported,
+						  "posts_id" => $posts_id,
 						  "reason" => $reason
 					);
 			$this->db->insert("report", $data);
