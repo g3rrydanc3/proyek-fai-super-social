@@ -20,8 +20,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap-chat.css">
 	<link rel="stylesheet" href="<?php echo base_url('asset/css/style.css');?>">
 
-	<?php if (false): ?>
-		<link rel="stylesheet" href="<?php echo base_url();?>asset/css/sb-admin-2.min.css">
+	<?php if ($this->session->is_admin): ?>
+		<link rel="stylesheet" href="<?php echo base_url();?>asset/css/sb-admin-2.css">
 	<?php endif; ?>
 
 
