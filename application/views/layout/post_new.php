@@ -17,7 +17,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<textarea name="posts" class="form-control"></textarea>
 			</div>
 			<div class="form-group">
-				<label for="post-foto">Add Photo</label>
+				<label for="post-foto">
+					Add Photo/Video<br>
+					<small>(gif|jpg|png|mp4)</small>
+				</label>
 				<input id="post-foto" name="post-foto" type="file" value="Add Photo">
 			</div>
 			<div class="form-group">
