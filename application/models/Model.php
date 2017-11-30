@@ -286,10 +286,11 @@
 			$query = $this->db->where('id = ',$posts_id)->delete('posts');
 			return $this->db->affected_rows();
 		}
-		public function insert_likes($posts_id, $user_id){
+		public function insert_likes($posts_id, $user_id, $type){
 			$data = array(
 				"posts_id" => $posts_id,
-				"user_id" => $user_id
+				"user_id" => $user_id,
+				"type" => $type
 			);
 			$query = $this->db->insert("likes", $data);
 			$query = $this->db->select("user_id")->from("posts")->where("id", $posts_id)->get();

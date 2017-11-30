@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'form', 'cookie', 'search_in_array_r', 'getto
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('emoji');
 
 /*
 | -------------------------------------------------------------------

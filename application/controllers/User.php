@@ -46,7 +46,7 @@ class User extends MY_Controller {
 					if (in_array($emailhp, $this->email_admin)) {
 						$this->session->set_userdata("is_admin", true);
 					}
-					//redirect($this->default_page);
+					redirect($this->default_page);
 				}
 				else {
 					$this->session->set_flashdata('errors', "Akun ini belum melakukan konfirmasi email.");

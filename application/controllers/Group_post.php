@@ -71,19 +71,10 @@ class Post extends MY_Controller {
 	public function like(){
 		$friend_id = $this->input->post('friend_id');
 		$posts_id = $this->input->post('posts_id');
-		$like = $this->input->post("like");
-		$like_valid = false;
-
-		foreach ($this->config->item('emoji') as $key => $value) {
-			if ($like == $key) {
-				$like_valid = true;
-			}
+		if($this->input->post('like') == "Like"){
+			$this->mydb->insert_likes($posts_id, $this->session->_userskrng);
 		}
-
-		if($like_valid){
-			$this->mydb->insert_likes($posts_id, $this->session->_userskrng, $like);
-		}
-		else if ($like == "Unlike") {
+		else{
 			$this->mydb->delete_likes($posts_id, $this->session->_userskrng);
 		}
 		redirect($this->referrer);

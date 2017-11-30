@@ -1,5 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+$emoji = $this->config->item('emoji');
+$btn_reaction = "";
+foreach ($emoji as $key => $value) {
+	$btn_reaction .="<button type='submit' name='like' value='".$key."' class='btn-like btn-reaction'>".$value."</button>";
+}
 ?>
 
 <?php if (isset($posts) && count($posts) > 0): ?>
@@ -106,7 +111,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
 										<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
 										<?php if (!in_array_r($this->session->_userskrng, $likes[$i])) :?>
-											<li><button type="submit" name="like" value="Like" class="btn-like"><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span> Like</button></li>
+											<li>
+												<button class="no-jump btn-like" data-toggle="popover" data-placement="top" data-html="true" data-content="<?php echo $btn_reaction?>"><span><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></span> Like</button>
+											</li>
 										<?php else: ?>
 											<li><button type="submit" name="like" value="Unlike" class="btn-unlike"><span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span> Unlike</button></li>
 										<?php endif; ?>
