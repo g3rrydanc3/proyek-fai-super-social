@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['emoji'] = array(
 	"like" => "👍🏻",
-	"love" => "❤️",
+	"love" => "💖",
 	"funny"=> "🤣",
 	"wow" => "😲",
 	"sad" => "😭",

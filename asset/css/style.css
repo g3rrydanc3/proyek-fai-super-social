@@ -252,3 +252,10 @@ a.no-style {
 .btn-reaction{
 	font-size: 21pt;
 }
+
+.reaction{
+	position: absolute;
+	top: 25px;
+	left: 40px;
+	font-size: 21px;
+}

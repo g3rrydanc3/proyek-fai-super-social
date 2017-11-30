@@ -236,7 +236,7 @@
 				array_push($comments, $comment);
 
 
-				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified")
+				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified, u.img, l.type")
 				->from("user u, likes l")
 				->where("u.id = l.user_id")->where("l.posts_id", $posts[$i]['id'])->get();
 				array_push($likes, $query->result_array());
@@ -594,7 +594,7 @@
 				}
 				array_push($comments, $comment);
 
-				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified")
+				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified, u.img, l.type")
 				->from("user u, likes l")
 				->where("u.id = l.user_id")->where("l.posts_id", $value['id'])->get();
 				array_push($likes, $query->result_array());

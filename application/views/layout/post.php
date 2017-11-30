@@ -21,7 +21,23 @@ foreach ($emoji as $key => $value) {
 							<?php if (count($likes[$i]) != 0) :?>
 								<ul class="list-group">
 								<?php foreach ($likes[$i] as $key1 => $value1) :?>
-										<li class="list-group-item"><?php echo $value1['namadepan'] . ' ' . $value1['namabelakang'];?> <?php if ($value1['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></li>
+										<li class="list-group-item">
+											<div class="media">
+												<div class="media-left">
+													<?php if ($value1["img"] != null): ?>
+														<img src="<?php echo base_url()."uploads/". $value1["img"];?>" class="media-object img-rounded img-center profile-picture-40" alt="<?php echo $value1["namadepan"] . ' ' . $value1["namabelakang"];?>">
+													<?php else: ?>
+														<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-40 media-object "><?php echo strtoupper($value1["namadepan"][0].$value1["namabelakang"][0]);?></div>
+													<?php endif; ?>
+													<span class="unselectable reaction"><?php echo $emoji[$value1["type"]] ?></span>
+												</div>
+												<div class="media-body">
+													<h4 class="media-heading"><?php echo $value1['namadepan'] . ' ' . $value1['namabelakang'];?> <?php if ($value1['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></h4>
+												</div>
+											</div>
+
+
+										</li>
 								<?php endforeach;?>
 								</ul>
 							<?php else :?>
