@@ -18,6 +18,7 @@ class Profile extends MY_Controller {
 			$data += $this->mydb->get_userposts($this->session->_userskrng, $this->session->_userskrng, $config["per_page"],$page);
 			$data += $this->datapost = $this->mydb->get_userdata($this->session->_userskrng);
 			$data["skill"] = $this->mydb->get_skill($this->session->_userskrng, 3);
+			$data["controller"] = "post";
 
 			$this->load->view('profile', $data);
 		}

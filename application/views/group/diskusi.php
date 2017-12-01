@@ -9,7 +9,7 @@ $this->load->view('layout/header.php');
 			<?php echo $this->session->flashdata("msg")?>
 		</div>
 	<?php endif; ?>
-	
+
 	<div class="row">
 		<div class="col-sm-4">
 			<?php $this->load->view("group/sidebar");?>
@@ -22,6 +22,8 @@ $this->load->view('layout/header.php');
 					Anda harus menjadi member di group untuk bisa melihat diskusi.
 				</div>
 			<?php endif; ?>
+			<?php $this->load->view("layout/post_new")?>
+			<?php $this->load->view("layout/post")?>
 		</div>
 	</div>
 </div>

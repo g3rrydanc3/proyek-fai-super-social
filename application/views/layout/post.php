@@ -95,10 +95,10 @@ foreach ($emoji as $key => $value) {
 							</button>
 							<ul class="dropdown-menu">
 								<?php if ($posts[$i]["user_id"] == $this->session->_userskrng): ?>
-									<li><a href="<?php echo site_url("post/delpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to delete post?\');">Delete Post</a></li>
+									<li><a href="<?php echo site_url("$controller/delpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to delete post?\');">Delete Post</a></li>
 								<?php endif; ?>
 								<?php if ($posts[$i]["user_id"] != $this->session->_userskrng): ?>
-									<li><a href="<?php echo site_url("post/reportpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to report post?\');">Report Post</a></li>
+									<li><a href="<?php echo site_url("$controller/reportpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to report post?\');">Report Post</a></li>
 								<?php endif; ?>
 							</ul>
 						</div>
@@ -123,7 +123,7 @@ foreach ($emoji as $key => $value) {
 						<div class="col-xs-8">
 							<div class="post-footer-option">
 								<ul class="list-unstyled">
-									<?php echo form_open('post/like');?>
+									<?php echo form_open("$controller/like");?>
 										<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
 										<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
 										<?php if (!in_array_r($this->session->_userskrng, $likes[$i])) :?>
@@ -135,7 +135,7 @@ foreach ($emoji as $key => $value) {
 										<?php endif; ?>
 									<?php echo form_close();?>
 									<!--<li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>-->
-									<?php echo form_open('post/sharepost');?>
+									<?php echo form_open("$controller/sharepost");?>
 										<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
 										<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
 										<li><button type="submit" class="btn-like"><i class="glyphicon glyphicon-share-alt"></i> Share</button></li>
@@ -155,15 +155,15 @@ foreach ($emoji as $key => $value) {
 							<div class="media">
 								<div class="media-left">
 									<a href="<?php echo site_url("profile")?>" class="no-style">
-										<?php if ($posts[$i]["img"] != null): ?>
-											<img src="<?php echo base_url()."uploads/". $img;?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $posts[$i]['namadepan'] . ' ' . $posts[$i]['namabelakang'];?>">
+										<?php if ($posts[$i]["user_img"] != null): ?>
+											<img src="<?php echo base_url()."uploads/". $posts[$i]["user_img"];?>" class="media-object img-rounded img-center profile-picture-32" alt="<?php echo $posts[$i]['namadepan'] . ' ' . $posts[$i]['namabelakang'];?>">
 										<?php else: ?>
 											<div class="profile-picture-default profile-picture-default-small unselectable form-group profile-picture-32 media-object "><?php echo strtoupper($posts[$i]['namadepan'][0].$posts[$i]['namabelakang'][0]);?></div>
 										<?php endif; ?>
 									</a>
 								</div>
 								<div class="media-body">
-									<?php echo form_open_multipart("post/addcomment");?>
+									<?php echo form_open_multipart("$controller/addcomment");?>
 									<?php echo form_hidden("posts_id", $posts[$i]['id']);?>
 									<div class="divupload-foto">
 										<input class="upload-foto" name="upload-foto" type="file">
@@ -197,7 +197,7 @@ foreach ($emoji as $key => $value) {
 												<a href="<?php echo site_url("cont/user/").$value1['user_id']?>" class="anchor-username"><h5 class="media-heading"><b><?php echo $value1['namadepan'] ." ". $value1['namabelakang'];?>  <?php if ($value1['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b></h5></a>
 											</div>
 											<div class="col-xs-1">
-												<a href="<?php echo site_url("post/delcomment/").$value1['id']?>" onclick="return confirm(\'Do you really want to delete comment?\');"><i class="fa fa-times" aria-hidden="true"></i></a>
+												<a href="<?php echo site_url("$controller/delcomment/").$value1['id']?>" onclick="return confirm(\'Do you really want to delete comment?\');"><i class="fa fa-times" aria-hidden="true"></i></a>
 											</div>
 										</div>
 
@@ -228,7 +228,7 @@ foreach ($emoji as $key => $value) {
 																<a href="<?php echo site_url("cont/user/").$value2['user_id']?>" class="anchor-username"><h5 class="media-heading"><b><?php echo $value2['namadepan'] ." ". $value2['namabelakang'];?>  <?php if ($value2['verified']) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?></b></h5></a>
 															</div>
 															<div class="col-xs-1">
-																<a href="<?php echo site_url("post/delcomment/").$value2['id']?>" onclick="return confirm(\'Do you really want to delete comment?\');"><i class="fa fa-times" aria-hidden="true"></i></a>
+																<a href="<?php echo site_url("$controller/delcommentreply/").$value2['id']?>" onclick="return confirm(\'Do you really want to delete comment?\');"><i class="fa fa-times" aria-hidden="true"></i></a>
 															</div>
 														</div>
 
@@ -240,7 +240,7 @@ foreach ($emoji as $key => $value) {
 												</div>
 												<hr class="hr-slim">
 											<?php endforeach; ?>
-											<?php echo form_open("post/addcommentreply");?>
+											<?php echo form_open("$controller/addcommentreply");?>
 												<?php echo form_hidden("comment_id", $value1['id']);?>
 												<div class="input-group" class="form-group">
 													<input type="text" name="commentreply" class="form-control" placeholder="Type your message here..." />

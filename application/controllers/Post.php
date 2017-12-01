@@ -123,6 +123,10 @@ class Post extends MY_Controller {
 		$this->mydb->insert_commentsreply($comment_id, $this->session->_userskrng, $commentreply);
 		redirect($this->referrer);
 	}
+	public function delcommentreply($commentreply = null){
+		$this->mydb->delete_commentsreply($commentreply);
+		redirect($this->referrer);
+	}
 	public function reportpost($post_id) {
 		if ($this->check_logged_in()) {
 			$data['post_id'] = $post_id;

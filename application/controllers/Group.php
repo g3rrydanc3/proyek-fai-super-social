@@ -39,6 +39,9 @@ class Group extends MY_Controller {
 				$data["tentang"] = $this->mydb->get_group_tentang($group_id);
 				$data["group_id"] = $group_id;
 				$data["is_user_member"] = $this->mydb->is_user_member($group_id, $this->session->_userskrng);
+				$data += $this->mydb->get_group_posts($group_id);
+				$data["links"] = null;
+				$data["controller"] = "group_post";
 
 				$this->load->view('group/diskusi', $data);
 			}

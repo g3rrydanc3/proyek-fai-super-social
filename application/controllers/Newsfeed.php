@@ -20,6 +20,8 @@ class Newsfeed extends MY_Controller {
 			$this->pesan = $this->session->flashdata('pesan');
 		}
 		$data += $this->datapost = $this->mydb->get_userdata($this->session->_userskrng) + $this->mydb->get_newsfeed($this->session->_userskrng, $config["per_page"], $page);
+
+		$data["controller"] = "post";
 		$this->load->view('newsfeed', $data);
 	}
 }

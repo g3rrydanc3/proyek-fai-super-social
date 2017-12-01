@@ -12,7 +12,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php echo $this->session->flashdata('post-image-error'); ?>
 			</div>
 		<?php endif; ?>
-		<?php echo form_open_multipart("post/posts", "form-control");?>
+		<?php echo form_open_multipart("$controller/posts", "form-control");?>
+		<?php if ($controller == "group_post"): ?>
+			<?php echo form_hidden("group_id", $group_id) ?>
+		<?php endif; ?>
 			<div class="form-group">
 				<textarea name="posts" class="form-control"></textarea>
 			</div>
@@ -31,3 +34,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<?php echo form_close();?>
 	</div>
 </div>
+
+<script>
+$("#post-foto").fileinput({showCaption: false,
+	maxFileCount: 1,
+	showClose: false,
+	showUpload: false
+});
+</script>

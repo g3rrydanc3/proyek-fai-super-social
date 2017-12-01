@@ -15,12 +15,5 @@ $this->load->view('layout/header.php');
 
 <?php $this->load->view("layout/post");?>
 
-	<script>
-	$("#post-foto").fileinput({showCaption: false,
-		maxFileCount: 1,
-		showClose: false,
-		showUpload: false
-	});
-	</script>
 </div>
 <?php $this->load->view('layout/footer.php');
