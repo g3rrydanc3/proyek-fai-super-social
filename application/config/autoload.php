@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'form', 'cookie', 'search_in_array_r', 'gettoken');
+$autoload['helper'] = array('url', 'form', 'cookie', 'search_in_array_r', 'gettoken', 'country_dropdown');
 
 /*
 | -------------------------------------------------------------------
@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'form', 'cookie', 'search_in_array_r', 'getto
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('emoji');
+$autoload['config'] = array('emoji', 'country_list');
 
 /*
 | -------------------------------------------------------------------
