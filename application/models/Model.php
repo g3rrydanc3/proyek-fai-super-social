@@ -1216,5 +1216,107 @@
 			$this->db->insert("report", $data);
 		}
 
+		public function is_user_member($group_id, $user_id){
+			$this->db->from("group_member")
+			->where("user_id", $user_id)
+			->where("group_id", $group_id);
+			return boolval($this->db->count_all_results());
+		}
+		public function join_group($group_id, $user_id){
+			$data = array(
+				"group_id" => $group_id,
+				"user_id" => $user_id
+			);
+			$this->db->insert("group_member", $data);
+		}
+		public function leave_group($group_id, $user_id){
+			$data = array(
+				"group_id" => $group_id,
+				"user_id" => $user_id
+			);
+			$this->db->where($data)->delete("group_member");
+		}
+		public function get_group_tentang($group_id){
+			$query = $this->db->select("g.id, g.user_id, g.name, g.description, g.img as group_img, g.datetime, u.namadepan, u.namabelakang, u.img as user_img, u.verified")
+			->from("user u, group g")
+			->where("g.id", $group_id)
+			->where("u.id = g.user_id")
+			->get();
+			return $query->result_array()[0];
+		}
+		public function get_group_member($group_id){
+			$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.img, u.verified")
+			->from("user u, group_member m")
+			->where("u.id = m.user_id")
+			->where("m.group_id", $group_id)
+			->get();
+			return $query->result_array();
+		}
+		public function get_group_posts($group_id){
+			$now = date("Y-m-d H:i:s", time() - 120);
+			$friendlistraw = $this->get_friends($id);
+			$friendlist = array();
+			array_push($friendlist, $id);
+			foreach ($friendlistraw as $key => $value) {
+				$friend = $value['user_id1'];
+				if ($value['user_id1'] == $id) {
+					$friend = $value['user_id2'];
+				}
+				array_push($friendlist, $friend);
+			}
+
+			$subquerystr = $this->db->select("count(l.posts_id)")->from("likes l")->where("l.posts_id = p.id")->get_compiled_select();
+			$namadepan = $this->db->select("namadepan")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$namabelakang = $this->db->select("namabelakang")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$img = $this->db->select("img")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$verified = $this->db->select("verified")->from("user u")->where("u.id = p.user_id")->get_compiled_select();
+			$this->db->select("p.id, p.isi, p.datetime, p.img, p.timed,($subquerystr) as likes, ($namadepan) as namadepan, ($namabelakang) as namabelakang, p.user_id, ($img) as user_img, ($verified) as verified")
+			->from("posts p")
+
+			->group_start();
+			for ($i=0; $i < count($friendlist); $i++) {
+					$this->db->or_where("p.user_id", $friendlist[$i]);
+			}
+			$this->db->group_end();
+			$this->db->order_by("datetime desc")
+			->limit($limit, $start);
+			$query = $this->db->get();
+			$posts = $query->result_array();
+
+			for ($i=0; $i < count($posts); $i++) {
+				$posts[$i]["isi"] = $this->return_post_with_mention($posts[$i]["isi"], $id);
+				$posts[$i]["isi"] = $this->return_post_with_hashtag($posts[$i]["isi"]);
+			}
+
+			$comments = array();
+			$likes = array();
+			$totalcommentsperpost = array();
+			foreach ($posts as $key => $value) {
+				$query = $this->db->select("count(*) as count")->from("comments")->where("posts_id",$value['id'])->get();
+				array_push($totalcommentsperpost, $query->row_array()['count']);
+
+				$query = $this->db->select("c.id, c.isi, c.datetime, u.id as user_id, u.namadepan, u.namabelakang, u.verified, u.img as user_img")
+				->from("comments c, user u")
+				->where("c.user_id = u.id")->where("posts_id", $value['id'])->order_by ("c.datetime")->get();
+				$comment = $query->result_array();
+				for ($j=0; $j < count($comment); $j++) {
+					$query1 = $this->db->from("comments_reply cr, user u")->where("cr.comments_id", $comment[$j]["id"])->where("u.id = cr.user_id")->get();
+					$comment[$j]['reply'] = $query1->result_array();
+				}
+				array_push($comments, $comment);
+
+				$query = $this->db->select("u.id, u.namadepan, u.namabelakang, u.verified, u.img, l.type")
+				->from("user u, likes l")
+				->where("u.id = l.user_id")->where("l.posts_id", $value['id'])->get();
+				array_push($likes, $query->result_array());
+			}
+
+			$ret['posts'] = $posts;
+			$ret['comments'] = $comments;
+			$ret['likes'] = $likes;
+			$ret['totalcommentsperpost'] = $totalcommentsperpost;
+			return $ret;
+		}
+
 	}
 ?>

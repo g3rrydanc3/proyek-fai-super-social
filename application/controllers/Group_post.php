@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Post extends MY_Controller {
+class Group_Post extends MY_Controller {
 	private $referrer;
 	public function __construct(){
 		parent::__construct();
