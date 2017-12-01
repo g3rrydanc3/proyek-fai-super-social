@@ -135,11 +135,13 @@ foreach ($emoji as $key => $value) {
 										<?php endif; ?>
 									<?php echo form_close();?>
 									<!--<li><a href="#"><i class="glyphicon glyphicon-comment"></i> Comment</a></li>-->
-									<?php echo form_open("$controller/sharepost");?>
-										<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
-										<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
-										<li><button type="submit" class="btn-like"><i class="glyphicon glyphicon-share-alt"></i> Share</button></li>
-									<?php echo form_close();?>
+									<?php if ($controller != "group_post"): ?>
+										<?php echo form_open("$controller/sharepost");?>
+											<?php echo form_hidden('friend_id', $posts[$i]['user_id']);?>
+											<?php echo form_hidden('posts_id', $posts[$i]['id']);?>
+											<li><button type="submit" class="btn-like"><i class="glyphicon glyphicon-share-alt"></i> Share</button></li>
+										<?php echo form_close();?>
+									<?php endif; ?>
 								</ul>
 							</div>
 						</div>

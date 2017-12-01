@@ -49,8 +49,22 @@ class Search extends MY_Controller {
 			$data += $this->mydb->get_post_from_hashtag($hashtag, $this->session->_userskrng);
 			$data["links"] = null;
 		}
-		
+
 		$this->load->view("search/hashtag", $data);
+	}
+	public function group($group = null){
+		if ($this->input->post("group")) {
+			redirect("search/group/".$this->input->post("group"));
+		}
+		$data = array(
+			"group" => $group
+		);
+		if ($group != null) {
+			$data["result"]= $this->mydb->get_group_from_search($group);
+			$data["links"] = null;
+		}
+
+		$this->load->view("search/group", $data);
 	}
 }
 ?>

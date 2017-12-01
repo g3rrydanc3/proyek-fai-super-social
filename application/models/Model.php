@@ -1148,23 +1148,11 @@
 				$namadepan = substr($post, $startpos+1, $lastpos-$startpos-1);
 				$idguestprofile = $this->get_id_from_namadepan($namadepan);
 				if ($idguestprofile != -1) {
-					if ($_userskrng == $idguestprofile) {
-						$closingtag = "'>" . form_close();
-						$post = substr_replace($post, $closingtag , $lastpos, 0);
-						$openingtag = form_open('cont', 'class = form-mention') .
-						form_hidden('_userskrng', $_userskrng) .
-						"<input type='submit' name='profile' class='btn-mention' value='";
-						$post = substr_replace($post, $openingtag , $startpos, 0);
-					}
-					else {
-						$closingtag = "'>" . form_close();
-						$post = substr_replace($post, $closingtag , $lastpos, 0);
-						$openingtag = form_open('cont', 'class = form-mention') .
-						form_hidden('_userskrng', $_userskrng) .
-						form_hidden('friend_id', $idguestprofile) .
-						"<input type='submit' name='profileuser' class='btn-mention' value='";
-						$post = substr_replace($post, $openingtag , $startpos, 0);
-					}
+
+					$closingtag = "</a>";
+					$post = substr_replace($post, $closingtag , $lastpos, 0);
+					$openingtag = "<a href='".site_url('cont/user/'.$idguestprofile)."'>";
+					$post = substr_replace($post, $openingtag , $startpos, 0);
 				}
 			}
 			return $post;
@@ -1252,6 +1240,7 @@
 			->get();
 			return $query->result_array();
 		}
+
 		public function get_group_posts($group_id, $limit = 0, $start = 0){
 			$now = date("Y-m-d H:i:s", time() - 120);
 			$subquery = $this->db->select("count(l.posts_group_id)")->from("likes_group l")->where("l.posts_group_id = p.id")->get_compiled_select();
@@ -1311,7 +1300,6 @@
 			$ret['totalcommentsperpost'] = $totalcommentsperpost;
 			return $ret;
 		}
-
 		public function get_post_group_by_id($id) {
 			$query = $this->db->query("select * from posts_group where id = '$id'");
 			return $query->row();
@@ -1403,6 +1391,9 @@
 			$query = $this->db->where("id", $comments_id)->delete("comments_group_reply");
 			return $this->db->affected_rows();
 		}
-
+		public function get_group_from_search($search){
+			$query = $this->db->like("name", $search)->get("group");
+			return $query->result_array();
+		}
 	}
 ?>
