@@ -12,26 +12,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/fileinput.min.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/font-awesome.min.css" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap-footer.css">
-	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/metisMenu.min.css">
-	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/morris.css">
+
 
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap-post.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap-index.css">
 	<link rel="stylesheet" href="<?php echo base_url();?>asset/css/bootstrap-chat.css">
 	<link rel="stylesheet" href="<?php echo base_url('asset/css/style.css');?>">
 
-	<?php if ($this->session->is_admin): ?>
-		<link rel="stylesheet" href="<?php echo base_url();?>asset/css/sb-admin-2.css">
-	<?php endif; ?>
-
 
 	<script type="text/javascript" src="<?php echo base_url('asset/js/jquery-3.2.1.min.js');?>"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>asset/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>asset/js/fileinput.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url();?>asset/js/metisMenu.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url();?>asset/js/morris.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url();?>asset/js/raphael.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url();?>asset/js/sb-admin-2.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url('asset/js/script.js');?>"></script>
 
 </head>
