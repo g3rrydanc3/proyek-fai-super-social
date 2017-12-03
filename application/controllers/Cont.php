@@ -323,6 +323,7 @@ class Cont extends MY_Controller {
 				$data["skill"] = $this->mydb->get_skill($friend_id, 3);
 				$data["block"] = $this->mydb->check_block($this->session->_userskrng, $friend_id);
 				$data["blocked"] = $this->mydb->check_blocked($this->session->_userskrng, $friend_id);
+				$data["controller"] = "profile";
 
 
 				$this->load->view("profileguest", $data);

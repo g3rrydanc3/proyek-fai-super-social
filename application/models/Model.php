@@ -354,8 +354,10 @@
 			}
 
 			$this->db->from("user u")
-				->where("u.id not like ",$id)
-				->where_not_in("u.id", $blocked);
+				->where("u.id not like ",$id);
+			if ($blocked != null) {
+				$this->db->where_not_in("u.id", $blocked);
+			}
 			if ($keyword != null) {
 				$this->db->like("u.namadepan",$keyword)
 				->or_like("u.namabelakang",$keyword);
@@ -389,9 +391,11 @@
 
 			$this->db->select("u.id, u.namadepan, u.namabelakang, u.img, ($subquery1) as p_id,($subquery2) as p_isi,($subquery3) as p_datetime,($subquery4) as likes, ($subquerycomment) as comments, ($subquerypost) as posts")
 				->from("user u")
-				->where("u.id not like ",$id)
-				->where_not_in("u.id", $blocked)
-				->limit($limit, $page);
+				->where("u.id not like ",$id);
+				if ($blocked != null) {
+					$this->db->where_not_in("u.id", $blocked);
+				}
+			$this->db->limit($limit, $page);
 
 				if ($keyword != null) {
 					$this->db->like("u.namadepan",$keyword)
@@ -1199,9 +1203,12 @@
 			$data = array("user_id_reporter" => $user_id_reporter,
 						  "user_id_reported" => $user_id_reported,
 						  "posts_id" => $posts_id,
-						  "reason" => $reason
+						  "reason" => $reason,
+						  "done" => 0,
+						  "datetime" => date("Y-m-d H:i:s")
 					);
 			$this->db->insert("report", $data);
+			return $this->db->affected_rows();
 		}
 
 		public function is_user_member($group_id, $user_id){

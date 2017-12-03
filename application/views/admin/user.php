@@ -11,7 +11,7 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>ID</th><th></th><th>Nama </th><th>Email</th><th>No HP</th><th>Negara</th><th></th><th></th>
+							<th>ID</th><th></th><th>Nama </th><th>Email</th><th>No HP</th><th>Negara</th><th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -26,14 +26,15 @@
 									<?php endif; ?>
 								</td>
 								<td>
-									<?php echo $value["namadepan"] ." ". $value["namabelakang"]?>
-									<?php if ($value["verified"]) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?>
+									<a href="<?php echo site_url("cont/user/".$value['id'])?>">
+										<?php echo $value["namadepan"] ." ". $value["namabelakang"]?>
+										<?php if ($value["verified"]) echo '<i class="fa fa-check-circle text-primary" aria-hidden="true"></i>'; ?>
+									</a>
 								</td>
 								<td><?php echo $value["email"]?></td>
 								<td><?php echo $value["nohp"]?></td>
 								<td><?php echo $value["negara"]?></td>
 								<td class="td-fit"><a href="<?php echo site_url("admin/user/").$value["id"] ?>"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-								<td class="td-fit"><a href="<?php echo site_url("admin/user_post/").$value["id"] ?>"><i class="fa fa-comments" aria-hidden="true"></i></a></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>

@@ -20,7 +20,7 @@
 			<?php endif; ?>
 			<?php echo form_open('admin/user_data_process', 'class="form-horizontal"');?>
 				<?php echo form_hidden("id", $user_data["id"])?>
-				<h1 class="form-signin-heading">Edit Account</h1>
+				<h1 class="form-signin-heading">Edit User "<?php echo $user_data["namadepan"]. ' '. $user_data["namabelakang"]?>"</h1>
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="id"><i class="fa fa-asterisk" aria-hidden="true"></i> ID:</label>
 					<div class="col-sm-10">

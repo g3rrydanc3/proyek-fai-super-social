@@ -223,8 +223,8 @@ class User extends MY_Controller {
 
 			$user_id_reported = $this->input->post("user_id");
 
-			$this->mydb->insert_report($user_id_reporter, $user_id_reported, null, $reason);
-			$this->session->set_flashdata('msg', 'Terimakasih, report Anda akan kami proses.');
+			$affected_rows = $this->mydb->insert_report($user_id_reporter, $user_id_reported, null, $reason);
+			$this->session->set_flashdata('msg', "$affected_rows Terimakasih, report Anda akan kami proses.");
 			redirect($this->default_page);
 		}
 		else redirect($this->default_page_not_logged_in);

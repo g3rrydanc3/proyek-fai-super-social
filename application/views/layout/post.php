@@ -98,7 +98,7 @@ foreach ($emoji as $key => $value) {
 									<li><a href="<?php echo site_url("$controller/delpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to delete post?\');">Delete Post</a></li>
 								<?php endif; ?>
 								<?php if ($posts[$i]["user_id"] != $this->session->_userskrng): ?>
-									<li><a href="<?php echo site_url("$controller/reportpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to report post?\');">Report Post</a></li>
+									<li><a href="<?php echo site_url("post/reportpost/").$posts[$i]['id']?>" onclick="return confirm(\'Do you really want to report post?\');">Report Post</a></li>
 								<?php endif; ?>
 							</ul>
 						</div>

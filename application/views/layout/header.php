@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			      <li><a href="<?php echo site_url("user/logout");?>"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 			      <li><a><?php echo "Hello, ".$this->session->name;?></a></li>
 					<?php if ($this->session->is_admin): ?>
-						<li class="<?php if($this->uri->segment(1)=="admin"){echo 'active';}?>"><a href="<?php echo site_url("admin");?>"><i class="fa fa-key" aria-hidden="true"></i> Admin</a></li>
+						<li class="<?php if($this->uri->segment(1)=="admin"){echo 'active';}?>"><a href="<?php echo site_url("admin/index");?>"><i class="fa fa-key" aria-hidden="true"></i> Admin</a></li>
 					<?php endif; ?>
 			    </ul>
 			<?php else: ?>

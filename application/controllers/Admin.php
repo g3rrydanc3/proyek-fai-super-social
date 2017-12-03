@@ -21,15 +21,6 @@ class Admin extends MY_Controller {
 			$this->load->view("admin/user_data",$data);
 		}
 	}
-	public function user_post($user = null){
-		if (!$user == null) {
-			//$data;
-			$this->load->view("admin/user_post");
-		}
-		else{
-			show_404();
-		}
-	}
 	public function user_data_process(){
 		$rulesEditUser = array(
 			array(
@@ -105,11 +96,59 @@ class Admin extends MY_Controller {
 		redirect($this->agent->referrer());
 	}
 
-	public function group(){
-		$this->load->view("admin/group");
+	public function group($group_id = null){
+		if ($group_id == null) {
+			$data["group"] = $this->madmin->get_all_group();
+			$this->load->view("admin/group", $data);
+		}
+		else {
+			$data["group_data"] = $this->madmin->get_group_data($group_id);
+			$this->load->view("admin/group_data", $data);
+		}
+
+	}
+	public function group_data_process(){
+		$rulesEditGroup = array(
+			array(
+				'field' => 'group_id',
+				'label' => 'ID Group',
+				'rules' => 'required|numeric'
+			),
+			array(
+				'field' => 'user_id',
+				'label' => 'ID User',
+				'rules' => 'required|numeric'
+			),
+			array(
+				'field' => 'name',
+				'label' => 'Nama',
+				'rules' => 'required'
+			),
+			array(
+				'field' => 'datetime',
+				'label' => 'Tanggal pembuatan',
+				'rules' => 'required'
+			),
+		);
+		$this->form_validation->set_rules($rulesEditGroup);
+
+		if($this->form_validation->run()){
+			$this->madmin->update_group($this->input->post());
+			$this->session->set_flashdata('msg', "Update group berhasil.");
+		}
+		else{
+			$this->session->set_flashdata('errors', validation_errors());
+		}
+		redirect($this->agent->referrer());
 	}
 	public function reported_user(){
-		$this->load->view("admin/reported_user");
+		$data["reported_user"] = $this->madmin->get_all_report();
+		$this->load->view("admin/reported_user", $data);
+	}
+	public function reported_user_process($group_id){
+		$this->db->report_done($group_id);
+		$this->session->flashdata("msg", "Report sudah selesai");
+		redirect("admin/reported_user");
 	}
 	public function report(){
 		$this->load->view("admin/report");
