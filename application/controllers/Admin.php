@@ -142,11 +142,12 @@ class Admin extends MY_Controller {
 		redirect($this->agent->referrer());
 	}
 	public function reported_user(){
-		$data["reported_user"] = $this->madmin->get_all_report();
+		$data["reported_user"] = $this->madmin->get_all_report_not_done();
+		$data["reported_user_done"] = $this->madmin->get_all_report_done();
 		$this->load->view("admin/reported_user", $data);
 	}
 	public function reported_user_process($group_id){
-		$this->db->report_done($group_id);
+		$this->madmin->report_done($group_id);
 		$this->session->flashdata("msg", "Report sudah selesai");
 		redirect("admin/reported_user");
 	}

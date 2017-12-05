@@ -47,7 +47,7 @@
 			$this->db->where('id', $group_id)->update('group', $postarray);
 		}
 
-		public function get_all_report(){
+		public function get_all_report_not_done(){
 			$query = $this->db->select("r.id, r.datetime, r.done, r.reason")
 			->select("u1.id as u1_id, u1.namadepan as u1_namadepan, u1.namabelakang as u1_namabelakang, u1.img as u1_img, u1.verified as u1_verified")
 			->select("u2.id as u2_id, u2.namadepan as u2_namadepan, u2.namabelakang as u2_namabelakang, u2.img as u2_img, u2.verified as u2_verified")
@@ -56,11 +56,26 @@
 			->join('user u1', 'r.user_id_reporter = u1.id')
 			->join('user u2', 'r.user_id_reported = u2.id')
 			->join('posts p', 'r.posts_id = p.id', 'left')
+			->where("r.done", "0")
 			->order_by("r.id")
 			->get();
 			return $query->result_array();
 		}
-		pubilc function report_done($report_id){
+		public function get_all_report_done(){
+			$query = $this->db->select("r.id, r.datetime, r.done, r.reason")
+			->select("u1.id as u1_id, u1.namadepan as u1_namadepan, u1.namabelakang as u1_namabelakang, u1.img as u1_img, u1.verified as u1_verified")
+			->select("u2.id as u2_id, u2.namadepan as u2_namadepan, u2.namabelakang as u2_namabelakang, u2.img as u2_img, u2.verified as u2_verified")
+			->select("p.id as posts_id, p.isi as p_isi, p.datetime as p_datetime, p.timed as p_timed, p.img as p_img")
+			->from("report r")
+			->join('user u1', 'r.user_id_reporter = u1.id')
+			->join('user u2', 'r.user_id_reported = u2.id')
+			->join('posts p', 'r.posts_id = p.id', 'left')
+			->where("r.done", "1")
+			->order_by("r.id")
+			->get();
+			return $query->result_array();
+		}
+		public function report_done($report_id){
 			$data = array(
 				"done" => 1
 			);
