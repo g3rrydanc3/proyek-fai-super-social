@@ -51,6 +51,7 @@
 			}
 			else {
 				return false;
+				echo $this->email->print_debugger();
 			}
 		}
 	}

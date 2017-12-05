@@ -85,11 +85,11 @@ class User extends MY_Controller {
 			else if($this->form_validation->run()){
 				if ($this->mydb->register($namadepan, $namabelakang, $email, $nohp, $password)) {
 					$this->session->set_flashdata("msg", "<b>Sukses</b>, proses registrasi berhasil. Email konfirmasi anda sudah di kirim.");
+					redirect(site_url());
 				}
 				else {
 					$this->session->set_flashdata("msg", "<b>Gagal</b>.");
 				}
-				redirect(site_url());
 			}
 			else{
 				$this->session->set_flashdata('errors', validation_errors());
