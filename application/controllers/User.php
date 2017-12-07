@@ -45,6 +45,7 @@ class User extends MY_Controller {
 					$this->session_refresh();
 					if (in_array($emailhp, $this->email_admin)) {
 						$this->session->set_userdata("is_admin", true);
+						redirect("admin");
 					}
 					redirect($this->default_page);
 				}

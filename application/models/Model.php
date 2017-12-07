@@ -697,6 +697,14 @@
 			);
 			$query = $this->db->insert("notification", $data);
 		}
+		public function insert_notification($user_id, $msg){
+			$data = array(
+				"user_id" => $user_id,
+				"msg" => $msg,
+				"datetime" => date("Y-m-d H:i:s")
+			);
+			$query = $this->db->insert("notification", $data);
+		}
 		public function count_notification($id){
 			return $this->db->select("*")->from("notification")->where("user_id", $id)->count_all_results();
 		}

@@ -148,10 +148,12 @@ class Admin extends MY_Controller {
 	}
 	public function reported_user_process($group_id){
 		$this->madmin->report_done($group_id);
-		$this->session->flashdata("msg", "Report sudah selesai");
+		$this->session->set_flashdata("msg", "Report sudah selesai!");
 		redirect("admin/reported_user");
 	}
-	public function report(){
+	/public function report(){
+		//$data["posts"] = $this->madmin->get_report_posts();
+		//var_dump($data["posts"]);
 		$this->load->view("admin/report");
 	}
 }

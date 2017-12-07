@@ -12,6 +12,7 @@
 					<?php echo $this->session->flashdata("msg")?>
 				</div>
 			<?php endif; ?>
+			<h1>Reported User</h1>
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
@@ -74,6 +75,7 @@
 					</tbody>
 				</table>
 			</div>
+			<h2>Reported User Selesai</h2>
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>

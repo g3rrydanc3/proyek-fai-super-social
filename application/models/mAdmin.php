@@ -80,7 +80,24 @@
 				"done" => 1
 			);
 			$this->db->where("id", $report_id)->update("report", $data);
+
+			$query = $this->db->select("*")->where("id", $report_id)->get("report");
+			$result = $query->row();
+
+			$user_data_reported = $this->mydb->get_userdata($result->user_id_reported);
+			$msg = "We reviewed your report of <a href='".site_url("cont/user/").$user_data_reported['id']."'>".$user_data_reported['namadepan']." ".$user_data_reported['namabelakang']."</a>'s profile.";
+
+			$this->mydb->insert_notification($result->user_id_reporter, $msg);
 		}
+
+		/*public function get_report_posts(){
+			$query = $this->db->select("count(*) as count, datetime")
+			->from("posts p")
+			->group_by("datetime")
+			->get();
+
+			return $query->result();
+		}*/
 
 	}
 ?>
