@@ -151,10 +151,56 @@ class Admin extends MY_Controller {
 		$this->session->set_flashdata("msg", "Report sudah selesai!");
 		redirect("admin/reported_user");
 	}
-	/public function report(){
-		//$data["posts"] = $this->madmin->get_report_posts();
-		//var_dump($data["posts"]);
-		$this->load->view("admin/report");
+	public function report(){
+
+		$data['charts']['post'] = $this->chart_post();
+		$data['charts']['private'] = $this->chart_private();
+		$data['charts']['reportuser'] = $this->chart_reportuser();
+
+		$this->load->view("admin/report", $data);
+	}
+
+
+
+
+	private function chart_post(){
+		$this->load->library('highcharts');
+
+		$data_chart_post['x_labels'] 	= 'datetime'; // optionnal, set axis categories from result row
+		$data_chart_post['series'] 	= array('datetime', 'count'); // set values to create series, values are result rows
+		$data_chart_post['data']		= $this->madmin->get_report_posts();
+
+		$this->highcharts->set_title('POST USER', 'Sesuai tanggal'); // set chart title: title, subtitle(optional)
+		$this->highcharts->set_axis_titles('Tanggal', 'Jumlah Post'); // axis titles: x axis,  y axis
+		$this->highcharts->from_result($data_chart_post)->add(); // first graph: add() register the graph
+
+		return $this->highcharts->render();
+	}
+	private function chart_private(){
+		$this->load->library('highcharts');
+
+		$data_chart_private['series'] 	= array('count'); // set values to create series, values are result rows
+		$data_chart_private['data']		= $this->madmin->get_report_private();
+
+		$this->highcharts->set_type('column'); // drauwing type
+		$this->highcharts->set_title('PRIVATE USER'); // set chart title: title, subtitle(optional)
+		$this->highcharts->set_axis_titles('Private (0=tidak private, 1= private)', 'Jumlah User'); // axis titles: x axis,  y axis
+		$this->highcharts->from_result($data_chart_private)->add(); // first graph: add() register the graph
+
+		return $this->highcharts->render();
+	}
+	private function chart_reportuser(){
+		$this->load->library('highcharts');
+
+		$data_chart_post['x_labels'] 	= 'datetime'; // optionnal, set axis categories from result row
+		$data_chart_post['series'] 	= array('datetime', 'count'); // set values to create series, values are result rows
+		$data_chart_post['data']		= $this->madmin->get_report_reportuser_monthly();
+
+		$this->highcharts->set_title('POST USER', 'Sesuai tanggal'); // set chart title: title, subtitle(optional)
+		$this->highcharts->set_axis_titles('Tanggal', 'Jumlah Post'); // axis titles: x axis,  y axis
+		$this->highcharts->from_result($data_chart_post)->add(); // first graph: add() register the graph
+
+		return $this->highcharts->render();
 	}
 }
 ?>

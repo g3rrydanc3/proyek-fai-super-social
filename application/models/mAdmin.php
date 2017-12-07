@@ -90,14 +90,30 @@
 			$this->mydb->insert_notification($result->user_id_reporter, $msg);
 		}
 
-		/*public function get_report_posts(){
-			$query = $this->db->select("count(*) as count, datetime")
+		public function get_report_posts(){
+			$query = $this->db->select("count(*) as count, DATE_FORMAT(datetime, '%d-%m-%Y') as datetime ")
 			->from("posts p")
 			->group_by("datetime")
 			->get();
 
 			return $query->result();
-		}*/
+		}
+		public function get_report_private(){
+			$query = $this->db->select("count(*) as count, private")
+			->from("user u")
+			->group_by("private")
+			->get();
+
+			return $query->result();
+		}
+		public function get_report_reportuser_monthly(){
+			$query = $this->db->select("count(*) as count, DATE_FORMAT(datetime, '%d-%m-%Y') as datetime")
+			->from("report u")
+			->group_by("month(datetime)")
+			->get();
+
+			return $query->result();
+		}
 
 	}
 ?>

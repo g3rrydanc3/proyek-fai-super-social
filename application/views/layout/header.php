@@ -24,6 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript" src="<?php echo base_url();?>asset/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>asset/js/fileinput.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url('asset/js/script.js');?>"></script>
+	<?php if ($this->session->is_admin): ?>
+		<script type="text/javascript" src="<?php echo base_url('asset/js/highcharts-6.0.3.src.js');?>"></script>
+	<?php endif; ?>
 
 </head>
 <body>
