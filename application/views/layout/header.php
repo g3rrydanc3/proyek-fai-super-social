@@ -60,6 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<li class="<?php if($this->uri->segment(1)=="search"){echo 'active';}?>"><a href="<?php echo site_url("search");?>">Search</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
+						<li class="<?php if($this->uri->segment(1)=="group"){echo 'active';}?>"><a href="<?php echo site_url("group/index");?>">Group</a></li>
 						<li class="<?php if($this->uri->segment(2)=="notification"){echo 'active';}?>"><a href="<?php echo site_url("cont/notification");?>">Notification</a></li>
 						<li class="<?php if($this->uri->segment(2)=="chat"){echo 'active';}?>">
 							<a href="<?php echo site_url("cont/chat");?>">

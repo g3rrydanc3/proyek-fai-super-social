@@ -5,18 +5,14 @@ class Group extends MY_Controller {
 		parent::__construct();
 	}
 
-	public function index($group_id = null){
-		if (!$group_id == null) {
-			if ($this->check_logged_in()) {
-				redirect("group/tentang/". $group_id);
-			}
-			else redirect("cont/login");
+	public function index(){
+		if ($this->check_logged_in()) {
+			$data["group"] = $this->mydb->get_group($this->session->_userskrng);
+			$data["browsegroup"] = $this->mydb->get_group_browse($this->session->_userskrng);
+			$this->load->view('group/home', $data);
 		}
-		else {
-			show_404();
-		}
+		else redirect("cont/login");
 	}
-
 	public function tentang($group_id = null){
 		if (!$group_id == null) {
 			if ($this->check_logged_in()) {
@@ -32,7 +28,6 @@ class Group extends MY_Controller {
 			show_404();
 		}
 	}
-
 	public function diskusi($group_id = null){
 		if (!$group_id == null) {
 			if ($this->check_logged_in()) {
@@ -51,7 +46,6 @@ class Group extends MY_Controller {
 			show_404();
 		}
 	}
-
 	public function member($group_id = null){
 		if (!$group_id == null) {
 			if ($this->check_logged_in()) {
@@ -68,23 +62,27 @@ class Group extends MY_Controller {
 			show_404();
 		}
 	}
-
 	public function join(){
 		if ($this->input->post("join")) {
 			$group_id = $this->input->post("group_id");
-			$this->mydb->join_group($this->session->_userskrng, $group_id);
+			$this->mydb->join_group($group_id, $this->session->_userskrng);
 			$this->session->set_flashdata("msg", "Berhasil masuk grup.");
 			redirect($this->agent->referrer());
 		}
 	}
-
 	public function leave(){
 		if ($this->input->post("leave")) {
 			$group_id = $this->input->post("group_id");
-			$this->mydb->leave_group($this->session->_userskrng, $group_id);
+			$this->mydb->leave_group($group_id, $this->session->_userskrng);
 			$this->session->set_flashdata("msg", "Berhasil keluar grup.");
 			redirect($this->agent->referrer());
 		}
+	}
+	public function create(){
+		$this->load->view("group/create");
+	}
+	public function create_process(){
+
 	}
 }
 ?>

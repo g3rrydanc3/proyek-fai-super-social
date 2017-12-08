@@ -1219,6 +1219,32 @@
 			return $this->db->affected_rows();
 		}
 
+		public function get_group($user_id){
+			$query = $this->db->select("")
+			->from("group g, group_member m")
+			->where("g.id = m.group_id")
+			->where("m.user_id", $user_id)
+			->get();
+
+			return $query->result_array();
+		}
+		public function get_group_browse($user_id, $limit = 10){
+			$subquery = $this->db->select("m.group_id")
+			->from("group_member m")
+			->where("m.user_id", $user_id)
+			->get_compiled_select();
+
+			$query = $this->db->select("g.id, g.user_id, g.name, g.description, g.img, g.datetime")
+			->distinct()
+			->from("group g, group_member m")
+			->where("g.id = m.group_id")
+			->where("m.group_id not in($subquery)")
+			->order_by("rand()")
+			->limit($limit)
+			->get();
+
+			return $query->result_array();
+		}
 		public function is_user_member($group_id, $user_id){
 			$this->db->from("group_member")
 			->where("user_id", $user_id)
