@@ -179,6 +179,62 @@
 
 			return $query->result();
 		}
+		public function get_report_type_likes(){
+			$subquerylike = $this->db->select("count(*)")
+			->from("likes l")
+			->where("type", "like")
+			->get_compiled_select();
+			$subquerylove = $this->db->select("count(*)")
+			->from("likes l")
+			->where("type", "love")
+			->get_compiled_select();
+			$subqueryfunny = $this->db->select("count(*)")
+			->from("likes l")
+			->where("type", "funny")
+			->get_compiled_select();
+			$subquerywow = $this->db->select("count(*)")
+			->from("likes l")
+			->where("type", "wow")
+			->get_compiled_select();
+			$subquerysad = $this->db->select("count(*)")
+			->from("likes l")
+			->where("type", "sad")
+			->get_compiled_select();
+			$subquerymad = $this->db->select("count(*)")
+			->from("likes l")
+			->where("type", "mad")
+			->get_compiled_select();
+
+			$query = $this->db->select("($subquerylike) as 'Like',
+					($subquerylove) as 'Love',
+					($subqueryfunny) as 'Funny',
+					($subquerywow) as 'Wow',
+					($subquerysad) as 'Sad',
+					($subquerymad) as 'Mad'")
+				->get();
+
+			return $query->result();
+		}
+		public function get_report_status_friends(){
+			$subqueryfriend = $this->db->select("count(*)")
+				->from("friends f")
+				->where("status", "friend")
+				->get_compiled_select();
+			$subqueryrequest = $this->db->select("count(*)")
+				->from("friends f")
+				->where("status", "request")
+				->get_compiled_select();
+			$subqueryblocked = $this->db->select("count(*)")
+				->from("friends f")
+				->where("status", "blocked")
+				->get_compiled_select();
+			$query = $this->db->select("($subqueryfriend) as Friend,
+					($subqueryrequest) as Request,
+					($subqueryblocked) as Blocked")
+				->get();
+
+			return $query->result();
+		}
 
 	}
 ?>

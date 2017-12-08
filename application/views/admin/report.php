@@ -21,27 +21,28 @@
 							<?php echo buildYearDropdown("", date('Y'), "class='form-control' id='year_post'")?>
 						</div>
 					</div>
-					<div id="chart_post" class="chart-height">
-						<?php if (isset($charts['post'])) echo $charts['post']; ?>
-					</div>
+					<div id="chart_post" class="chart-height"></div>
 				</li>
 
 
 				<li class="list-group-item">
-					<div id="chart_private" class="chart-height">
-						<?php if (isset($charts['private'])) echo $charts['private']; ?>
-					</div>
+					<div id="chart_private" class="chart-height"></div>
 				</li>
 
 
 				<li class="list-group-item">
 					<label for="year_report_user">Year</label>
 					<?php echo buildYearDropdown("", date('Y'), "class='form-control' id='year_report_user'")?>
-					<div id="chart_report_user" class="chart-height">
-						<?php if (isset($charts['reportuser'])) echo $charts['reportuser']; ?>
-					</div>
+					<div id="chart_report_user" class="chart-height"></div>
 				</li>
 
+				<li class="list-group-item">
+					<div id="chart_type_like" class="chart-height"></div>
+				</li>
+
+				<li class="list-group-item">
+					<div id="chart_status_friend" class="chart-height"></div>
+				</li>
 
 			</ul>
 		</div>
@@ -77,7 +78,15 @@
 			chart_report_user($("#year_report_user").val());
 		});
 
+		function chart_type_like(){
+			$("#chart_type_like").load("<?php echo site_url("admin/chart_type_like/")?>")
+		}
+		chart_type_like();
 
+		function chart_status_friend(){
+			$("#chart_status_friend").load("<?php echo site_url("admin/chart_status_friend/")?>")
+		}
+		chart_status_friend();
 	});
 </script>
 <?php $this->load->view("layout/footer");?>

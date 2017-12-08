@@ -202,5 +202,33 @@ class Admin extends MY_Controller {
 
 		echo $this->highcharts->render();
 	}
+	public function chart_type_like(){
+		$this->load->library('highcharts');
+
+		$this->highcharts->render_to("chart_type_like");
+		$data_chart_private['series'] 	= array('Like', 'Love', 'Funny', 'Wow', 'Sad', 'Mad'); // set values to create series, values are result rows
+		$data_chart_private['data']		= $this->madmin->get_report_type_likes();
+
+		$this->highcharts->set_type('column'); // drauwing type
+		$this->highcharts->set_title('TYPE REACTION'); // set chart title: title, subtitle(optional)
+		$this->highcharts->set_axis_titles('Type Reaction','Jumlah Reaction'); // axis titles: x axis,  y axis
+		$this->highcharts->from_result($data_chart_private)->add(); // first graph: add() register the graph
+
+		echo $this->highcharts->render();
+	}
+	public function chart_status_friend(){
+		$this->load->library('highcharts');
+
+		$this->highcharts->render_to("chart_status_friend");
+		$data_chart_private['series'] 	= array('Friend', 'Request', 'Blocked'); // set values to create series, values are result rows
+		$data_chart_private['data']		= $this->madmin->get_report_status_friends();
+
+		$this->highcharts->set_type('column'); // drauwing type
+		$this->highcharts->set_title('TYPE REACTION'); // set chart title: title, subtitle(optional)
+		$this->highcharts->set_axis_titles('Type Reaction','Jumlah Reaction'); // axis titles: x axis,  y axis
+		$this->highcharts->from_result($data_chart_private)->add(); // first graph: add() register the graph
+
+		echo $this->highcharts->render();
+	}
 }
 ?>
