@@ -259,3 +259,7 @@ a.no-style {
 	left: 40px;
 	font-size: 21px;
 }
+
+.chart-height{
+	height: 400px;
+}

@@ -342,14 +342,15 @@ class Highcharts {
 	 */
 	public function push_serie_data($value = '', $serie_name = ''){
 		
-		if ($serie_name AND $value)
-		{
+
+		//if ($serie_name AND $value)
+		//{
 			$index = $this->find_serie_name($serie_name);
 			
-			$value = (is_numeric($value)) ? (float)$value : $value;
-				
+			$value = floatval($value);
+			
 			$this->opts['series'][$index]['data'][] = $value;
-		}
+		//}
 		return $this;
 	}
 	
@@ -667,4 +668,7 @@ class Highcharts {
 		return $string;
 	}
 
+	public function set_custom_option($option){
+		$this->opts = array_merge($option, $this->opts);
+	}
 }

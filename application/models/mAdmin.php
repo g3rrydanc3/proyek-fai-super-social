@@ -90,27 +90,92 @@
 			$this->mydb->insert_notification($result->user_id_reporter, $msg);
 		}
 
-		public function get_report_posts(){
-			$query = $this->db->select("count(*) as count, DATE_FORMAT(datetime, '%d-%m-%Y') as datetime ")
-			->from("posts p")
-			->group_by("datetime")
-			->get();
+		public function get_report_posts($year, $month){
+			$subquery = "
+				SELECT 1 AS Date UNION ALL
+				SELECT 2 UNION ALL
+				SELECT 3 UNION ALL
+				SELECT 4 UNION ALL
+				SELECT 5 UNION ALL
+				SELECT 6 UNION ALL
+				SELECT 7 UNION ALL
+				SELECT 8 UNION ALL
+				SELECT 9 UNION ALL
+				SELECT 10 UNION ALL
+				SELECT 11 UNION ALL
+				SELECT 12 UNION ALL
+				SELECT 13 UNION ALL
+				SELECT 14 UNION ALL
+				SELECT 15 UNION ALL
+				SELECT 16 UNION ALL
+				SELECT 17 UNION ALL
+				SELECT 18 UNION ALL
+				SELECT 19 UNION ALL
+				SELECT 20 UNION ALL
+				SELECT 21 UNION ALL
+				SELECT 22 UNION ALL
+				SELECT 23 UNION ALL
+				SELECT 24 UNION ALL
+				SELECT 25 UNION ALL
+				SELECT 26 UNION ALL
+				SELECT 27 UNION ALL
+				SELECT 28 UNION ALL
+				SELECT 29 UNION ALL
+				SELECT 30 UNION ALL
+				SELECT 31
+			";
+			$query = $this->db->select("count(`id`) AS 'Jumlah Post', md.date as datetime")
+				->from("($subquery) as md")
+				->join("posts p", "md.date = day(p.datetime)
+					and month(p.datetime) = $month
+					and year(p.datetime) = $year"
+					, "left")
+				->where("md.date <= day(LAST_DAY('$year-$month-01'))")
+				->group_by("md.date")
+				->get();
 
 			return $query->result();
 		}
 		public function get_report_private(){
-			$query = $this->db->select("count(*) as count, private")
-			->from("user u")
-			->group_by("private")
-			->get();
+			$subqueryprivate = $this->db->select("count(*)")
+				->from("user u")
+				->where("private = 1")
+				->group_by("private")
+				->get_compiled_select();
+
+			$subquerynotprivate = $this->db->select("count(*)")
+				->from("user u")
+				->where("private = 0")
+				->group_by("private")
+				->get_compiled_select();
+
+			$query = $this->db->select("($subqueryprivate) as 'Private User', ($subquerynotprivate) as 'Not Private User'")
+				->get();
 
 			return $query->result();
 		}
-		public function get_report_reportuser_monthly(){
-			$query = $this->db->select("count(*) as count, DATE_FORMAT(datetime, '%d-%m-%Y') as datetime")
-			->from("report u")
-			->group_by("month(datetime)")
-			->get();
+		public function get_report_reportuser_yearly($year){
+			$subquery = "
+				SELECT 1 AS month UNION ALL
+				SELECT 2 UNION ALL
+				SELECT 3 UNION ALL
+				SELECT 4 UNION ALL
+				SELECT 5 UNION ALL
+				SELECT 6 UNION ALL
+				SELECT 7 UNION ALL
+				SELECT 8 UNION ALL
+				SELECT 9 UNION ALL
+				SELECT 10 UNION ALL
+				SELECT 11 UNION ALL
+				SELECT 12
+			";
+			$query = $this->db->select("count(`id`) AS 'Jumlah Report', md.month as datetime")
+				->from("($subquery) as md")
+				->join("report r", "md.month = month(r.datetime)
+					and year(r.datetime) = $year"
+					, "left")
+				->group_by("md.month")
+				->get();
 
 			return $query->result();
 		}
