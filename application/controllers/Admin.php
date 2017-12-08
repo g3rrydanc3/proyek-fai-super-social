@@ -153,7 +153,7 @@ class Admin extends MY_Controller {
 	}
 	public function report(){
 		$this->load->helper("date_dropdown");
-		
+
 		$this->load->view("admin/report");
 	}
 
@@ -197,7 +197,7 @@ class Admin extends MY_Controller {
 
 		$this->highcharts->render_to("chart_report_user");
 		$this->highcharts->set_title('REPORT USER', $year); // set chart title: title, subtitle(optional)
-		$this->highcharts->set_axis_titles('Tanggal', 'Jumlah Post'); // axis titles: x axis,  y axis
+		$this->highcharts->set_axis_titles('Bulan', 'Jumlah Post'); // axis titles: x axis,  y axis
 		$this->highcharts->from_result($data_chart_post)->add(); // first graph: add() register the graph
 
 		echo $this->highcharts->render();
