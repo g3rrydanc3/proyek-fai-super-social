@@ -12,8 +12,7 @@
 			$this->db->select('id')->from('user')->where('email', $emailhp)->limit(1);
 			$subquery = $this->db->get_compiled_select();
 			$query = $this->db->select("ifnull(($subquery), '-1') as id")->get();
-			return $query->row_array()['id'];
-		}
+			return $query->row_array()['id']; }
 		public function get_id_from_email(){
 			$this->db->select('id')->from('user')->where('email', $emailhp)->limit(1);
 			$subquery = $this->db->get_compiled_select();
@@ -1236,9 +1235,9 @@
 
 			$query = $this->db->select("g.id, g.user_id, g.name, g.description, g.img, g.datetime")
 			->distinct()
-			->from("group g, group_member m")
-			->where("g.id = m.group_id")
-			->where("m.group_id not in($subquery)")
+			->from("group g")
+			->join("group_member m", "g.id = m.group_id", "left")
+			->where("g.id not in ($subquery)")
 			->order_by("rand()")
 			->limit($limit)
 			->get();
@@ -1280,6 +1279,28 @@
 			->where("m.group_id", $group_id)
 			->get();
 			return $query->result_array();
+		}
+		public function create_group($name, $description, $user_id, $img = null){
+			$data = array(
+				"user_id" => $user_id,
+				"name" => $name,
+				"description" => $description,
+				"img" => $img,
+				"datetime" => date("Y-m-d H:i:s")
+			);
+			$query = $this->db->insert("group", $data);
+			$group_id = $this->db->insert_id();
+			if ($this->db->affected_rows() > 0) {
+				$data = array(
+					"user_id" => $user_id,
+					"group_id" => $group_id
+				);
+				$query = $this->db->insert("group_member", $data);
+				return $group_id;
+			}
+			else {
+				return false;
+			}
 		}
 
 		public function get_group_posts($group_id, $limit = 0, $start = 0){

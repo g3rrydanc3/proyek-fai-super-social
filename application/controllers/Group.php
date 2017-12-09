@@ -82,7 +82,36 @@ class Group extends MY_Controller {
 		$this->load->view("group/create");
 	}
 	public function create_process(){
+		$name = $this->input->post("name");
+		$description = $this->input->post("description");
 
+		$this->form_validation->set_rules('name', 'Group name', 'required');
+		$this->form_validation->set_rules('description', 'Group description', 'required');
+
+		if ($this->form_validation->run()){
+			if ($_FILES["upload-foto"]["name"] != "") {
+				if(!$this->upload->do_upload('upload-foto')){
+					$this->session->set_flashdata("msg", $this->upload->display_errors());
+					$this->session->set_flashdata("data_post", array("name" => $name, "description" => $description));
+					echo $this->upload->display_errors();
+					redirect("group/create");
+				}
+				else{
+					$filename = $this->upload->data()["file_name"];
+					$group_id = $this->mydb->create_group($name, $description, $this->session->_userskrng, $filename);
+					redirect("group/tentang/".$group_id);
+				}
+			}
+			else {
+				$group_id = $this->mydb->create_group($name, $description, $this->session->_userskrng);
+				redirect("group/tentang/".$group_id);
+			}
+		}
+		else {
+			$this->session->set_flashdata("msg", validation_errors());
+			$this->session->set_flashdata("data_post", array("name" => $name, "description" => $description));
+			redirect("group/create");
+		}
 	}
 }
 ?>
