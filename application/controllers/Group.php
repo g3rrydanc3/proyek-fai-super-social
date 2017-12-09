@@ -19,6 +19,7 @@ class Group extends MY_Controller {
 				$data["tentang"] = $this->mydb->get_group_tentang($group_id);
 				$data["group_id"] = $group_id;
 				$data["is_user_member"] = $this->mydb->is_user_member($group_id, $this->session->_userskrng);
+				$data["is_user_admin"] = $this->mydb->is_user_admin($group_id, $this->session->_userskrng);
 				$this->load->view('group/tentang', $data);
 			}
 			else redirect("cont/login");
@@ -34,6 +35,7 @@ class Group extends MY_Controller {
 				$data["tentang"] = $this->mydb->get_group_tentang($group_id);
 				$data["group_id"] = $group_id;
 				$data["is_user_member"] = $this->mydb->is_user_member($group_id, $this->session->_userskrng);
+				$data["is_user_admin"] = $this->mydb->is_user_admin($group_id, $this->session->_userskrng);
 				$data += $this->mydb->get_group_posts($group_id);
 				$data["links"] = null;
 				$data["controller"] = "group_post";
@@ -52,6 +54,7 @@ class Group extends MY_Controller {
 				$data["tentang"] = $this->mydb->get_group_tentang($group_id);
 				$data["group_id"] = $group_id;
 				$data["is_user_member"] = $this->mydb->is_user_member($group_id, $this->session->_userskrng);
+				$data["is_user_admin"] = $this->mydb->is_user_admin($group_id, $this->session->_userskrng);
 
 				$data["member"] = $this->mydb->get_group_member($group_id);
 				$this->load->view('group/member', $data);
@@ -111,6 +114,60 @@ class Group extends MY_Controller {
 			$this->session->set_flashdata("msg", validation_errors());
 			$this->session->set_flashdata("data_post", array("name" => $name, "description" => $description));
 			redirect("group/create");
+		}
+	}
+	public function edit($group_id = null){
+		if ($this->check_logged_in()) {
+			if (!$group_id == null && $this->mydb->is_user_admin($group_id, $this->session->_userskrng)) {
+				$data["tentang"] = $this->mydb->get_group_tentang($group_id);
+				$data["group_id"] = $group_id;
+				$data["is_user_member"] = $this->mydb->is_user_member($group_id, $this->session->_userskrng);
+				$data["is_user_admin"] = $this->mydb->is_user_admin($group_id, $this->session->_userskrng);
+
+				foreach ($this->mydb->get_group_member($group_id) as $key => $value) {
+					$data["member"][$value["id"]] = $value["namadepan"] . " " . $value["namabelakang"];
+				}
+
+				$this->load->view('group/edit', $data);
+			}
+			else {
+				show_404();
+			}
+		}
+		else redirect("cont/login");
+	}
+	public function edit_process(){
+		$group_id = $this->input->post("group_id");
+		$name = $this->input->post("name");
+		$description = $this->input->post("description");
+		$admin = $this->input->post("admin");
+
+		$this->form_validation->set_rules('group_id', 'Group ID', 'required');
+		$this->form_validation->set_rules('name', 'Group name', 'required');
+		$this->form_validation->set_rules('description', 'Group description', 'required');
+		$this->form_validation->set_rules('admin', 'Admin', 'required');
+
+		if ($this->form_validation->run()){
+			if ($_FILES["upload-foto"]["name"] != "") {
+				if(!$this->upload->do_upload('upload-foto')){
+					$this->session->set_flashdata("msg", $this->upload->display_errors());
+					echo $this->upload->display_errors();
+					redirect("group/edit/".$group_id);
+				}
+				else{
+					$filename = $this->upload->data()["file_name"];
+					$this->mydb->edit_group($group_id, $name, $description, $admin, $filename);
+					redirect("group/tentang/".$group_id);
+				}
+			}
+			else {
+				$this->mydb->edit_group($group_id, $name, $description, $admin);
+				redirect("group/tentang/".$group_id);
+			}
+		}
+		else {
+			$this->session->set_flashdata("msg", validation_errors());
+			redirect("group/edit/".$group_id);
 		}
 	}
 }

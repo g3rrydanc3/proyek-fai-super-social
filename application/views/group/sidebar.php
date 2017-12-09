@@ -29,5 +29,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php echo form_close(); ?>
 		<?php endif; ?>
 
+		<?php if ($is_user_admin): ?>
+			<center>
+				<a href="<?php echo site_url("group/edit/".$group_id)?>">
+					<button type="button" class="btn btn-info btn-block">Edit Group</button>
+				</a>
+			</center>
+		<?php endif; ?>
+
 	</div>
 </div>

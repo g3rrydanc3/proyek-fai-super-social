@@ -1244,6 +1244,12 @@
 
 			return $query->result_array();
 		}
+		public function is_user_admin($group_id, $user_id){
+			$this->db->from("group g")
+			->where("user_id", $user_id)
+			->where("id", $group_id);
+			return boolval($this->db->count_all_results());
+		}
 		public function is_user_member($group_id, $user_id){
 			$this->db->from("group_member")
 			->where("user_id", $user_id)
@@ -1301,6 +1307,16 @@
 			else {
 				return false;
 			}
+		}
+		public function edit_group($group_id, $name, $description, $user_id, $img = null){
+			$data = array(
+				"user_id" => $user_id,
+				"name" => $name,
+				"description" => $description,
+				"img" => $img,
+				"datetime" => date("Y-m-d H:i:s")
+			);
+			$query = $this->db->where("id", $group_id)->update("group", $data);
 		}
 
 		public function get_group_posts($group_id, $limit = 0, $start = 0){
