@@ -397,6 +397,76 @@ class Cont extends MY_Controller {
 		}
 		else redirect($this->default_page_not_logged_in);
 	}
+	public function refresh_chat_room($chat_rooms_id) {
+		if ($this->check_logged_in()) {
+			if ($this->mydb->check_room_accessible($this->session->_userskrng, $chat_rooms_id)) {
+				$this->mydb->update_room_read($chat_rooms_id, $this->session->_userskrng);
+				$chat = $this->mydb->get_chat($chat_rooms_id, $this->session->_userskrng);
+				$chat_rooms_participant = $this->mydb->get_participant($chat_rooms_id ,$this->session->_userskrng);
+				foreach ($chat as $key => $value) {
+					if ($value["user_id"] == $this->session->_userskrng) {
+						echo '<li class="right clearfix">';
+						echo '<span class="chat-img pull-right">';
+							echo '<div class="img-wrapper-small">';
+								if ($value["img"] != null) {
+									echo '<img src="'.base_url().'"uploads/"'. $value["img"].'" class="img-rounded img-center  img-chat img-zoom" alt="'.$value["namadepan"]. '" "' . $value["namabelakang"].'">';
+								}else {
+									echo '<div class="profile-picture-default profile-picture-default-small unselectable form-group img-chat">'.strtoupper($chat_rooms_participant[0]["namadepan"][0].$chat_rooms_participant[0]["namabelakang"][0]).'</div>';
+								}
+							echo '</div>';
+						echo '</span>';
+						echo '<div class="chat-body clearfix chat-bg-blue">';
+							echo '<div class="text-right">';
+								echo '<span class="chat-header-datetime  text-muted">';
+									echo $value["datetime"];
+									echo '<span class="glyphicon glyphicon-time"></span>';
+								echo '</span>';
+
+									echo '<strong class="text-right chat-header-name">'.$value["namadepan"]." ".$value["namabelakang"].'</strong>';
+							echo '</div>';
+							echo '<p class="text-right">';
+								if ($value["chat_img"] != null){
+									echo '<img src="'.base_url("uploads/").$value["chat_img"].'" class="img-responsive img-zoom">';
+								}
+								echo $value["msg"];
+							echo '</p>';
+						echo '</div>';
+						echo '</li>';
+					}else {
+						echo '<li class="left clearfix">';
+							echo '<span class="chat-img pull-left">';
+								echo '<div class="img-wrapper-small">';
+									if ($value["img"] != null){
+										echo '<img src="'.base_url()."uploads/". $value["img"].'" class="img-rounded img-center img-chat img-zoom" alt="'.$value["namadepan"] .'" "'. $value["namabelakang"].'">';
+									}else {
+										echo '<div class="profile-picture-default profile-picture-default-small unselectable form-group img-chat">'.strtoupper($chat_rooms_participant[0]["namadepan"][0].$chat_rooms_participant[0]["namabelakang"][0]).'</div>';
+									}
+								echo '</div>';
+							echo '</span>';
+							echo '<div class="chat-body clearfix chat-bg-gray">';
+									echo '<strong class="chat-header-name">'.$value["namadepan"].'" "'.$value["namabelakang"].'</strong>';
+
+									echo '<span class="chat-header-datetime text-muted">';
+										echo '<span class="glyphicon glyphicon-time"></span>';
+										echo $value["datetime"];
+									echo '</span>';
+								echo '<p>';
+									if ($value["chat_img"] != null){
+										echo '<img src="'.base_url("uploads/").$value["chat_img"].'" class="img-responsive img-zoom">';
+									}
+									echo $value["msg"];
+								echo '</p>';
+							echo '</div>';
+						echo '</li>';
+					}
+				}
+			}
+			else {
+				redirect("cont/chat");
+			}
+		}
+		else redirect($this->default_page_not_logged_in);
+	}
 	public function chat_room_private($chat_rooms_id){
 		if ($this->check_logged_in()) {
 			if ($this->mydb->check_room_private_accessible($this->session->_userskrng, $chat_rooms_id)) {
