@@ -183,9 +183,15 @@ class User extends MY_Controller {
 	}
 	public function forgot_password_email(){
 		$email = $this->input->post("email");
-		$this->mydb->request_forgot_password($email);
-		$this->session->set_flashdata("msg", '<strong>Sukses!</strong> Email terkirim. Cek email untuk reset password.');
-		redirect("user");
+		if ($this->mydb->request_forgot_password($email)) {
+			$this->session->set_flashdata("msg", '<strong>Sukses!</strong> Email terkirim. Cek email untuk reset password.');
+			redirect("user");
+		}
+		else {
+			$this->session->set_flashdata("msg", "<b>Gagal</b>.");
+		}
+
+
 	}
 	public function forgot_password_process(){
 		$user_id = $this->input->post("user_id");

@@ -1,9 +1,5 @@
 <?php
 	class M_Email extends CI_Model {
-		public function forgot_password($user_id){
-			$userdata = $this->mydb->get_userdata($user_id);
-		}
-
 		public function e_register_confirm($user_id, $nama, $email, $token){
 			$link = site_url("user/register_confirm/").$user_id."/".$token;
 			$dataemail = array(
@@ -26,6 +22,7 @@
 			}
 			else {
 				return false;
+				echo $this->email->print_debugger();
 			}
 		}
 
