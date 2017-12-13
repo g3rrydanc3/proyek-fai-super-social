@@ -1,5 +1,5 @@
 <?php
-	class mEmail extends CI_Model {
+	class M_Email extends CI_Model {
 		public function forgot_password($user_id){
 			$userdata = $this->mydb->get_userdata($user_id);
 		}
