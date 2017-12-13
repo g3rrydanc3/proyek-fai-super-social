@@ -6,7 +6,7 @@ class Admin extends MY_Controller {
 		if (!$this->session->is_admin) {
 			redirect($this->default_page_not_logged_in);
 		}
-		$this->load->model("madmin");
+		$this->load->model("M_Admin","madmin");
 	}
 	public function index(){
 		$this->load->view("admin/home");
@@ -161,7 +161,7 @@ class Admin extends MY_Controller {
 
 
 	public function chart_post($year, $month){
-		$this->load->library('highcharts');
+		$this->load->library('Highcharts', 'highcharts');
 
 		$data_chart_post['x_labels'] 	= 'datetime'; // optionnal, set axis categories from result row
 		$data_chart_post['series'] 	= array('Jumlah Post'); // set values to create series, values are result rows
@@ -175,7 +175,7 @@ class Admin extends MY_Controller {
 		echo $this->highcharts->render();
 	}
 	public function chart_private(){
-		$this->load->library('highcharts');
+		$this->load->library('Highcharts', 'highcharts');
 
 		$this->highcharts->render_to("chart_private");
 		$data_chart_private['series'] 	= array('Private User', 'Not Private User'); // set values to create series, values are result rows
@@ -189,7 +189,7 @@ class Admin extends MY_Controller {
 		echo $this->highcharts->render();
 	}
 	public function chart_reportuser($year){
-		$this->load->library('highcharts');
+		$this->load->library('Highcharts', 'highcharts');
 
 		$data_chart_post['x_labels'] 	= 'datetime'; // optionnal, set axis categories from result row
 		$data_chart_post['series'] 	= array('Jumlah Report'); // set values to create series, values are result rows
@@ -203,7 +203,7 @@ class Admin extends MY_Controller {
 		echo $this->highcharts->render();
 	}
 	public function chart_type_like(){
-		$this->load->library('highcharts');
+		$this->load->library('Highcharts', 'highcharts');
 
 		$this->highcharts->render_to("chart_type_like");
 		$data_chart_private['series'] 	= array('Like', 'Love', 'Funny', 'Wow', 'Sad', 'Mad'); // set values to create series, values are result rows
@@ -217,7 +217,7 @@ class Admin extends MY_Controller {
 		echo $this->highcharts->render();
 	}
 	public function chart_status_friend(){
-		$this->load->library('highcharts');
+		$this->load->library('Highcharts', 'highcharts');
 
 		$this->highcharts->render_to("chart_status_friend");
 		$data_chart_private['series'] 	= array('Friend', 'Request', 'Blocked'); // set values to create series, values are result rows
